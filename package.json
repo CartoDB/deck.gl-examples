@@ -2,6 +2,14 @@
   "name": "typescript",
   "version": "0.0.0",
   "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^4.4.8"
+  },
   "dependencies": {
     "@deck.gl/aggregation-layers": "^8.0.0",
     "@deck.gl/carto": "^8.9.32",
