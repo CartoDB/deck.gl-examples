@@ -15,11 +15,9 @@ const route = (document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <canvas id="deck-canvas"></canvas>
 `);
 
-const apiBaseUrl = 'https://gcp-us-east1.api.carto.com';
-const accessToken =
-  'eyJhbGciOiJIUzI1NiJ9.eyJhIjoiYWNfN3hoZnd5bWwiLCJqdGkiOiI3ZDVmYjMwMiJ9.ySr1HanHcYklesFUIqDJfxoaeB8bpGrR3QcImrxmXEk';
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
 setDefaultCredentials({ apiBaseUrl, accessToken });
-
 
 const INITIAL_VIEW_STATE = {
   latitude: 39.8097343,
