@@ -4,20 +4,21 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { Deck } from '@deck.gl/core';
 import {
   BASEMAP,
-  CartoLayer,
-  setDefaultCredentials,
-  MAP_TYPES,
-} from '@deck.gl/carto/typed';
+  vectorTableSource,
+  VectorTileLayer
+} from '@deck.gl/carto';
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
+const connectionName = 'carto_dw';
+const cartoConfig = { apiBaseUrl, accessToken, connectionName };
+
+console.log(cartoConfig)
 
 const route = (document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div id="map"></div>
   <canvas id="deck-canvas"></canvas>
 `);
-
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
-setDefaultCredentials({ apiBaseUrl, accessToken });
 
 const INITIAL_VIEW_STATE = {
   latitude: 39.8097343,
@@ -27,16 +28,19 @@ const INITIAL_VIEW_STATE = {
   pitch: 30,
 };
 
+const vectorTableSource = vectorTableSource({
+  ...cartoConfig,
+  tableName: 'carto-demo-data.demo_tables.populated_places',
+});
+
 const deck = new Deck({
   canvas: 'deck-canvas',
   initialViewState: INITIAL_VIEW_STATE,
   controller: true,
   layers: [
-    new CartoLayer({
+    new VectorTileLayer({
       id: 'places',
-      connection: 'carto_dw',
-      type: MAP_TYPES.TABLE,
-      data: 'carto-demo-data.demo_tables.populated_places',
+      data: vectorTableSource,
       pointRadiusMinPixels: 3,
       getFillColor: [200, 0, 80],
     })
