@@ -9,13 +9,6 @@ const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
 const connectionName = 'carto_dw';
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
-console.log(cartoConfig);
-
-const route = (document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div id="map"></div>
-  <canvas id="deck-canvas"></canvas>
-`);
-
 const INITIAL_VIEW_STATE = {
   latitude: 39.8097343,
   longitude: -98.5556199,
@@ -24,7 +17,7 @@ const INITIAL_VIEW_STATE = {
   pitch: 30
 };
 
-const data = vectorTableSource({
+const dataSource = vectorTableSource({
   ...cartoConfig,
   tableName: 'carto-demo-data.demo_tables.populated_places'
 });
