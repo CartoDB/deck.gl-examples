@@ -1,7 +1,7 @@
 import './style.css';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import {Deck} from '@deck.gl/core';
+import {Deck, FlyToInterpolator} from '@deck.gl/core';
 import {BASEMAP, vectorTilesetSource, VectorTileLayer} from '@deck.gl/carto';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -12,7 +12,7 @@ const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 const INITIAL_VIEW_STATE = {
   latitude: 40.7128,
   longitude: -74.0060,
-  zoom: 12,
+  zoom: 10,
   bearing: 0,
   pitch: 30
 };
@@ -49,3 +49,40 @@ deck.setProps({
     map.jumpTo({center: [longitude, latitude], ...rest});
   }
 });
+
+function moveToCity(city: string) {
+  let latlng: {latitude: string, longitude: number};
+
+  switch (city) {
+    case 'newyork':
+      latlng = {latitude: 40.7307343, longitude: -74.0056199};
+      break;
+    case 'tokyo':
+      latlng = {latitude: 35.6992343, longitude: 139.7203199};
+      break
+    case 'barcelona':
+      latlng = {latitude: 41.3974343, longitude: 2.1610199};
+      break;
+    default:
+      throw new Error('City not found');
+  }
+  
+  const viewState = {
+    latitude: latlng.latitude,
+    longitude: latlng.longitude,
+    zoom: 13,
+    bearing: 10,
+    pitch: 45,
+    transitionDuration: 5000,
+    transitionInterpolator: new FlyToInterpolator()
+  };
+
+  deck.setProps({
+    initialViewState: viewState
+  });
+}
+
+const cityButtonsList = document.querySelectorAll<HTMLButtonElement>('.city-button-group button');
+cityButtonsList.forEach((element) => {
+  element.addEventListener('click', () => moveToCity(element.value));
+})

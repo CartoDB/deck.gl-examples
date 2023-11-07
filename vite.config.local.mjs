@@ -3,13 +3,13 @@ import {defineConfig} from 'vite';
 import {getOcularConfig} from 'ocular-dev-tools';
 import {join} from 'path';
 
-const deckPath = join(__dirname, '../../deck.gl');
+const deckPath = join(__dirname, '../deck.gl');
 
 /** https://vitejs.dev/config/ */
 export default defineConfig(async () => {
   const {aliases} = await getOcularConfig({root: deckPath});
-  console.log(aliases)
-      return {
+
+  return {
     resolve: {
       alias: {
         ...aliases,

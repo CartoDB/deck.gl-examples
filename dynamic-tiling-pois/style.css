@@ -39,6 +39,10 @@ canvas {
   overflow: scroll;
 }
 
+.layer-controls {
+  margin-top: 2.25rem;
+}
+
 .overline {
   font-size: .625rem;
   font-weight: 600;
@@ -47,7 +51,7 @@ canvas {
   text-transform: uppercase;
 }
 
-select, button {
+select{
   margin-bottom: 0.6rem;
   border-radius: 4px;
   font-size: 0.8rem;
@@ -56,7 +60,7 @@ select, button {
   max-width: 100%;
 }
 
-select:hover, button:hover {
+select:hover {
   cursor: pointer;
 }
 

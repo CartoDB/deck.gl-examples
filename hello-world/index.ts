@@ -2,7 +2,7 @@ import './style.css';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import {Deck} from '@deck.gl/core';
-import {BASEMAP, vectorTableSource, VectorTileLayer} from '@deck.gl/carto';
+import {BASEMAP, vectorTableSource, VectorTileLayer, vectorTilesetSource} from '@deck.gl/carto';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;

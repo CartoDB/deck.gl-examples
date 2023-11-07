@@ -1,0 +1,8 @@
+{
+  "name": "deck-gl-examples",
+  "version": "1.0.0",
+  "devDependencies": {
+    "vite": "^4.5.0",
+    "ocular-dev-tools": "^2.0.0-alpha.15"
+  }
+}

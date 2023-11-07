@@ -26,6 +26,23 @@
     <div id="app">
       <div id="map"></div>
       <canvas id="deck-canvas"></canvas>
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>World buildings (481M polygons)</h2>
+        <p>This example visualize a tileset with all the buildings in the world (publicly available in 
+          <a href="https://console.cloud.google.com/marketplace/product/openstreetmap/geo-openstreetmap" rel="noopener noreferrer" target="_blank">OpenStreetMap</a>) in a performance and cost-effective way. 
+          This dataset has <strong>481M</strong> polygons and a size of <strong>119GB</strong>.</p>
+        <p>
+        <div class="layer-controls"> 
+          <p class="overline">Take me to...</p>
+          <div class="city-button-group">
+            <button id="tokyo" value="tokyo">🇯🇵 Tokyo</button>
+            <button id="newyork" value="newyork">🇺🇸 New York</button>
+            <button id="barcelona" value="barcelona">🇪🇸 Barcelona</button>
+          </div>
+        </div>
+        <p class="caption">Source: OpenStreetMap</p>
+      </div>
     </div>
     <script type="module" src="./index.ts"></script>
   </body>
