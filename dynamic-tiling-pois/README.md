@@ -1,9 +1,9 @@
 ## Example: 1.4M Points of Interest
-Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
 This visualization is using [Dynamic Tiling](https://carto.com/blog/dynamic-tiling-for-highly-performant-cloud-native-maps) to load millions of points of interest across the United States.
 
-CARTO drastically reduces development and maintenance times for geospatial applications. POIs for the selected category are highlighted on the map using CARTO + deck.gl properties.
+Uses [Vite](https://vitejs.dev/) to bundle and serve files.
+
 
 
 ## Usage

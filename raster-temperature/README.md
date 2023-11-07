@@ -1,9 +1,8 @@
-## Example: Accidents by state (via SQL Query)
-Uses [Vite](https://vitejs.dev/) to bundle and serve files.
-
-You can use SQL to query data directly from the app, including query parameters. This increased flexibility makes CARTO a great solution to build geospatial applications.
+## Example: Raster Temperature
 
 CARTO platform allows you to upload a [raster](https://docs.carto.com/data-and-analysis/analytics-toolbox-for-bigquery/sql-reference/raster) and visualize it in deck.gl using the RasterLayer.
+
+Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
 ## Usage
 
