@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://app.carto.com/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://app.carto.com/favicon/favicon-16x16.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CARTO for deck.gl - Choropleth Map </title>
+  <body>
+    <div id="app">
+      <div id="map"></div>
+      <canvas id="deck-canvas"></canvas>
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>Education level by county</h2>
+        <p>This example shows how to create a Choropleth Map using <a href="https://deck.gl/docs/api-reference/layers/geojson-layer#getfillcolor" rel="noopener noreferrer" target="_blank">getFillColor</a> and <a href="https://deck.gl/docs/api-reference/carto/styles" rel="noopener noreferrer" target="_blank">`colorBins`</a>(one of the CARTO colors helpers).</p>
+        <p>The educational level of each county is mapped with a color of the following legend:</p>
+        <div class="layer-selector">
+          Pallette:
+          <select id="palette" class="carto-colors">
+            <option value="BurgYl">BurgYl</option>
+            <option value="RedOr">RedOr</option>
+            <option value="OrYel">OrYel</option>
+            <option value="Peach">Peach</option>
+            <option value="PinkYl">PinkYl</option>
+            <option value="Mint">Mint</option>
+            <option value="BluGrn">BluGrn</option>
+            <option value="DarkMint">DarkMint</option>
+            <option value="Emrld">Emrld</option>
+            <option value="BluYl">BluYl</option>
+            <option value="Teal" selected>Teal</option>
+            <option value="TealGrn">TealGrn</option>
+            <option value="Purp">Purp</option>
+            <option value="PurpOr">PurpOr</option>
+          </select>
+          <div class="legend">
+            <div class="colors-wrapper">
+              <div id="colorBreaks" class="colors"></div>
+            </div>
+            <p class="labels">
+              <span>Lower</span>
+              <span class="right-align">Higher</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>
