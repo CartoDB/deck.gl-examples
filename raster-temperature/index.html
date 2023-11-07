@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://app.carto.com/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://app.carto.com/favicon/favicon-16x16.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CARTO for deck.gl - Dynamic Tiling 1.4M Points of Interest </title>
+  <body>
+    <div id="app">
+      <div id="map"></div>
+      <canvas id="deck-canvas"></canvas>
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>Temperature Raster in Prague (experimental)</h2>
+        <p>CARTO platform allows you to upload a <a href = "https://docs.carto.com/data-and-analysis/analytics-toolbox-for-bigquery/sql-reference/raster" rel="noopener noreferrer" target="_blank"> raster</a> and visualize it in deck.gl using the RasterLayer.</p>
+        <p>In this example, we can visualize the temperatur raster in Prague</p>
+       
+        <div class="layer-controls"> 
+          <!-- Add slider control -->
+          <p class="caption source">Source: <a href="https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC09_C02_T1_TOA">Landsat Surface Temperature</a></p>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>

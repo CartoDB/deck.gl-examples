@@ -17,7 +17,6 @@ const INITIAL_VIEW_STATE = {
   pitch: 0,
 };
 
-let selectedOsmCategory = 'Financial';
 
 const deck = new Deck({
   canvas: 'deck-canvas',
@@ -39,6 +38,7 @@ deck.setProps({
   }
 });
 
+let selectedOsmCategory = 'Financial';
 const osmCategorySelector = document.querySelector<HTMLSelectElement>('#osmCategorySelector');
 osmCategorySelector?.addEventListener('change', () => {
   selectedOsmCategory = osmCategorySelector.value;
