@@ -27,6 +27,19 @@ function loadScript(url) {
   });
 }
 
+function setTooltip({x, y, object}) {
+  const tooltip = document.getElementById('tooltip');
+  if (object && tooltip) {
+    tooltip.style.display = 'block';
+    tooltip.style.left = x + 'px';
+    tooltip.style.top = y + 'px';
+    tooltip.innerHTML = `Continent: ${object.properties.continent_name}</br>Country: ${object.properties.country_name}</br>Population: ${object.properties.pop_2015}`;
+    console.log(x, y, object);
+  } else if (tooltip) {
+    tooltip.style.display = 'none';
+  }
+}
+
 const SQL_QUERY = `SELECT geom, country_name, continent_name, pop_2015 FROM cartobq.public_account.world_population_2015 WHERE CAST(pop_2015 as INT64) between CAST(@min as INT64) and CAST(@max as INT64) ORDER BY pop_2015 DESC`;
 
 function getColorConfiguration() {
@@ -68,7 +81,8 @@ function render() {
       getLineColor: [0, 0, 0, 204],
       pointRadiusUnits: 'pixels',
       getPointRadius: getPointRadius,
-      lineWidthMinPixels: 1
+      lineWidthMinPixels: 1,
+      onHover: setTooltip
     })
   ];
 

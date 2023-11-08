@@ -15,6 +15,7 @@
   </head>
   <body>
     <div id="map"></div>
+    <div id="tooltip"></div>
     <div id="deck-canvas"></div>
     <div id="story-card">
       <p class="overline">✨👀 You're viewing</p>
@@ -22,9 +23,7 @@
       <h3>World population</h3>
       <p>You can use SQL to query data directly from the app, including query parameters.</p>
       <p>This increased flexibility makes CARTO a great solution to build geospatial applications.</p>
-      <div class="code-block">
-        <code>SELECT geom, country_name, continent_name, pop_2015 FROM cartobq.public_account.world_population_2015 WHERE pop_2015 between @min and @max ORDER BY pop_2015 DESC</code>
-      </div>
+     
       <p>More info for this integration:  
         (<a href="https://github.com/visgl/deck.gl/tree/8.9-release/examples/get-started/pure-js/google-maps" rel="noopener noreferrer" target="_blank">Use deck.gl with Google Maps</a>) 
       </p>

@@ -35,7 +35,7 @@ body {
   background: #fdfdfe;
   box-shadow: 4px 4px 8px #30303099;
   border-radius: 4px;
-  z-index:99;
+  z-index: 99;
   margin: 3.5rem 0.75rem;
   max-width: 480px;
   max-height: 100vh;
@@ -48,14 +48,15 @@ body {
 }
 
 .overline {
-  font-size: .625rem;
+  font-size: 0.625rem;
   font-weight: 600;
   line-height: 1.2;
-  letter-spacing: .125rem;
+  letter-spacing: 0.125rem;
   text-transform: uppercase;
 }
 
-select:hover, button:hover {
+select:hover,
+button:hover {
   cursor: pointer;
 }
 
@@ -79,10 +80,23 @@ button:hover {
   font-size: 0.8rem;
 }
 
-.city-button-group { 
+.city-button-group {
   display: flex;
 }
 
 .population-slider {
   width: 100%;
+}
+
+#tooltip {
+  position: absolute;
+  z-index: 1;
+  background: #000;
+  border-radius: 4px;
+  color: #fff;
+  font-family: sans-serif;
+  font-size: 12px;
+  padding: 4px;
+  padding: 8px;
+  pointer-events: none;
 }
