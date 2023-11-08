@@ -6,11 +6,11 @@ import {VectorTileLayer, vectorQuerySource} from '@deck.gl/carto';
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const GOOGLE_MAP_ID = '';
 const GOOGLE_MAPS_API_URL = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&v=beta&map_ids=${GOOGLE_MAP_ID}`;
-
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
 const connectionName = import.meta.env.VITE_API_CONNECTION_NAME;
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
+const SQL_QUERY = `SELECT geom, country_name, continent_name, pop_2015 FROM cartobq.public_account.world_population_2015 WHERE CAST(pop_2015 as INT64) between CAST(@min as INT64) and CAST(@max as INT64) ORDER BY pop_2015 DESC`;
 
 let map = null;
 let overlay = null;
@@ -39,8 +39,6 @@ function setTooltip({x, y, object}) {
     tooltip.style.display = 'none';
   }
 }
-
-const SQL_QUERY = `SELECT geom, country_name, continent_name, pop_2015 FROM cartobq.public_account.world_population_2015 WHERE CAST(pop_2015 as INT64) between CAST(@min as INT64) and CAST(@max as INT64) ORDER BY pop_2015 DESC`;
 
 function getColorConfiguration() {
   return colorCategories({
