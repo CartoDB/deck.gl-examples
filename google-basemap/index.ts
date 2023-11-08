@@ -33,7 +33,7 @@ function setTooltip({x, y, object}) {
     tooltip.style.display = 'block';
     tooltip.style.left = x + 'px';
     tooltip.style.top = y + 'px';
-    tooltip.innerHTML = `Continent: ${object.properties.continent_name}</br>Country: ${object.properties.country_name}</br>Population: ${object.properties.pop_2015}`;
+    tooltip.innerHTML = `<div style="padding: 8px">Continent: ${object.properties.continent_name}</br>Country: ${object.properties.country_name}</br>Population: ${object.properties.pop_2015}</div>`;
     console.log(x, y, object);
   } else if (tooltip) {
     tooltip.style.display = 'none';
