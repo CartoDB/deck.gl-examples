@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset='UTF-8' />
+    <title>deck.gl w/ Google Maps example</title>
+    <style>
+      #map {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="deck-canvas"></div>
+    <div id="story-card">
+      <p class="overline">✨👀 You're viewing</p>
+      <h2>Google Maps - World population</h2>
+      <p>You can use SQL to query data directly from the app, including query parameters.</p>
+      <p>This increased flexibility makes CARTO a great solution to build geospatial applications.</p>
+      <div class="code-block">
+        <code>SELECT geom, country_name, continent_name, pop_2015 FROM cartobq.public_account.world_population_2015 WHERE pop_2015 between @min and @max ORDER BY pop_2015 DESC</code>
+      </div>
+      <p>This example visualize a dataset of world population 
+        (<a href="https://console.cloud.google.com/marketplace/product/openstreetmap/geo-openstreetmap" rel="noopener noreferrer" target="_blank">OpenStreetMap</a>) 
+        in a performance and cost-effective way.
+      </p>
+      <p>
+      <div class="layer-controls"> 
+        <p class="overline">Filter by population</p>
+         <!-- Slider input element -->
+      <input type="range" id="population-slider" name="population" min="2000000" max="800000000" class="population-slider" value="800000000"> 
+      Population: <span id="slider-value">800000000</span>
+      
+      </div>
+      <p class="caption">Source: TODO</p>
+    </div>
+    <script type="module" src='./index.ts'></script>
+  </body>
+</html>
