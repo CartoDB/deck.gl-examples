@@ -1,4 +1,4 @@
-## Example: Basemaps deck.gl and CARTO
+## Example: Google maps deck.gl and CARTO
 Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
 ## Usage
