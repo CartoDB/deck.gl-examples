@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>deck.gl - Amazon locations example</title>
+  </head>
+  <body>
+    <div id="map"></div>
+    <canvas id="deck-canvas"></canvas>
+    <div id="story-card">
+      <p class="overline">✨👀 You're viewing</p>
+      <h2>Deck.gl with Amazon locations basemap</h2>
+      <h3>World population</h3>
+      <p>
+        More info for this integration: (<a
+          href="https://docs.aws.amazon.com/location/latest/developerguide/map-concepts.html"
+          rel="noopener noreferrer"
+          target="_blank"
+          >Use deck.gl with Amazon locations basemap</a
+        >)
+      </p>
+      <p></p>
+      <div class="layer-controls">
+        <p class="overline">Filter by population</p>
+        <!-- Slider input element -->
+        <input
+          type="range"
+          id="population-slider"
+          name="population"
+          min="2000000"
+          max="800000000"
+          class="population-slider"
+          value="800000000"
+        />
+        Population: <span id="slider-value">800000000</span>
+      </div>
+      <p class="caption">Source: TODO</p>
+    </div>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>
