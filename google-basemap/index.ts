@@ -12,7 +12,9 @@ const connectionName = import.meta.env.VITE_API_CONNECTION_NAME;
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
 let map = null;
-let overlay = null;
+const overlay = new DeckOverlay({
+  layers: []
+});
 
 function setTooltip({x, y, object}) {
   const tooltip = document.getElementById('tooltip');
@@ -69,12 +71,9 @@ function render() {
     })
   ];
 
-  if (overlay) {
-    // @ts-ignore
-    overlay.setProps({
-      layers: layers
-    });
-  }
+  overlay.setProps({
+    layers: layers
+  });
 }
 
 let selectedMaxPopulation = 800000000;
@@ -104,10 +103,7 @@ loader.load().then(async () => {
     zoom: 3,
     mapId: GOOGLE_MAP_ID
   });
-  overlay = new DeckOverlay({
-    layers: []
-  });
-  // @ts-ignore
+
   overlay.setMap(map);
 
   render();
