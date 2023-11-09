@@ -16,6 +16,12 @@ const overlay = new DeckOverlay({
   layers: []
 });
 
+const formatNumber = number =>
+  new Intl.NumberFormat('en-US', {
+    notation: 'compact',
+    compactDisplay: 'short'
+  }).format(number);
+
 function setTooltip({x, y, object}) {
   const tooltip = document.getElementById('tooltip');
   if (object && tooltip) {
@@ -79,16 +85,17 @@ function render() {
 let selectedMaxPopulation = 800000000;
 const selectedPopulationSelector = document.querySelector<HTMLSelectElement>('#population-slider');
 const populationLabel = document.getElementById('slider-value');
+populationLabel!.textContent = formatNumber(800000000);
 
 selectedPopulationSelector?.addEventListener('change', () => {
   selectedMaxPopulation = Number(selectedPopulationSelector.value);
-  populationLabel!.textContent = selectedMaxPopulation.toString();
+  populationLabel!.textContent = formatNumber(selectedMaxPopulation);
 
   render();
 });
 
 selectedPopulationSelector!.oninput = function () {
-  populationLabel!.textContent = (this as HTMLInputElement).value;
+  populationLabel!.textContent = formatNumber((this as HTMLInputElement).value);
 };
 
 const loader = new Loader({
