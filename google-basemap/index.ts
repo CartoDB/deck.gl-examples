@@ -2,6 +2,7 @@ import './style.css';
 import {GoogleMapsOverlay as DeckOverlay} from '@deck.gl/google-maps';
 import {colorCategories} from '@deck.gl/carto';
 import {VectorTileLayer, vectorQuerySource} from '@deck.gl/carto';
+import {Loader} from '@googlemaps/js-api-loader';
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const GOOGLE_MAP_ID = import.meta.env.VITE_GOOGLE_MAP_IDS;
@@ -59,7 +60,6 @@ function getPointRadius(d) {
 }
 
 function render() {
-
   const source = vectorQuerySource({
     ...cartoConfig,
     sqlQuery: `SELECT geom, country_name, continent_name, pop_2015 FROM cartobq.public_account.world_population_2015 WHERE pop_2015 between @min and @max ORDER BY pop_2015 DESC`,
@@ -112,22 +112,23 @@ if (selectedPopulationSelector) {
   };
 }
 
-function initializeGoogleMaps() {
-  loadScript(GOOGLE_MAPS_API_URL).then(() => {
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: 15, lng: 10},
-      zoom: 3,
-      mapId: GOOGLE_MAP_ID
-    });
+const loader = new Loader({
+  apiKey: GOOGLE_MAPS_API_KEY,
+  version: 'weekly'
+});
 
-    overlay = new DeckOverlay({
-      layers: []
-    });
-    // @ts-ignore
-    overlay.setMap(map);
-
-    render();
+loader.load().then(async () => {
+  const {Map} = (await google.maps.importLibrary('maps')) as google.maps.MapsLibrary;
+  map = new Map(document.getElementById('map') as HTMLElement, {
+    center: {lat: 15, lng: 10},
+    zoom: 3,
+    mapId: GOOGLE_MAP_ID
   });
-}
+  overlay = new DeckOverlay({
+    layers: []
+  });
+  // @ts-ignore
+  overlay.setMap(map);
 
-initializeGoogleMaps();
+  render();
+});
