@@ -11,74 +11,21 @@ const cartoConfig = {
   connectionName: import.meta.env.VITE_API_CONNECTION_NAME
 };
 
-const SQL_QUERY = `
-  SELECT geom, country_name, continent_name, pop_2015
-  FROM cartobq.public_account.world_population_2015
-  WHERE CAST(pop_2015 as INT64) between CAST(@min as INT64) and CAST(@max as INT64)
-  ORDER BY pop_2015 DESC
-`;
-
 const INITIAL_VIEW_STATE = { latitude: 15, longitude: 10, zoom: 2 };
 const MIN_POPULATION = 1;
 const MAX_POPULATION = 800000000;
 const POPULATION_RADIUS_SCALE = 30.0 / 27620.2642999664;
 
-let selectedMaxPopulation = MAX_POPULATION;
-const selectedPopulationSelector = document.getElementById('population-slider');
-const populationLabel = document.getElementById('slider-value');
-
-const getColorConfiguration = () => colorCategories({
-  attr: 'continent_name',
-  domain: ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America'],
-  colors: [
-    [117, 68, 92],
-    [175, 100, 88],
-    [213, 167, 91],
-    [115, 111, 76],
-    [91, 120, 142],
-    [76, 78, 143]
-  ]
-});
-
-const getPointRadius = d => (POPULATION_RADIUS_SCALE * Math.sqrt(d.properties.pop_2015));
-
-function initializeMap(apiKey, mapName, region) {
-  const map = new maplibregl.Map({
-    container: 'map',
-    style: `https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${mapName}/style-descriptor?key=${apiKey}`,
-    interactive: false
-  });
-
-  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
-  return map;
-}
-
-function setupEventHandlers(deckInstance, mapInstance) {
-  if (!selectedPopulationSelector || !populationLabel) {
-    throw new Error('Missing DOM elements');
-  }
-  selectedPopulationSelector.addEventListener('input', handlePopulationChange);
-  deckInstance.setProps({
-    onViewStateChange: ({ viewState }) => {
-      const { longitude, latitude, ...rest } = viewState;
-      mapInstance.jumpTo({ center: [longitude, latitude], ...rest });
-    }
-  });
-}
-
-function handlePopulationChange() {
-  if (!selectedPopulationSelector || !populationLabel) {
-    throw new Error('Missing DOM elements');
-  }
-  selectedMaxPopulation = Number(selectedPopulationSelector.value);
-  populationLabel.textContent = selectedMaxPopulation.toString();
-  render();
-}
+const formatNumber = number =>
+  new Intl.NumberFormat('en-US', {
+    notation: 'compact',
+    compactDisplay: 'short'
+  }).format(number);
 
 function render() {
   const source = vectorQuerySource({
     ...cartoConfig,
-    sqlQuery: SQL_QUERY,
+    sqlQuery: `SELECT geom, country_name, continent_name, pop_2015 FROM cartobq.public_account.world_population_2015 WHERE pop_2015 between @min and @max ORDER BY pop_2015 DESC`,
     queryParameters: { min: MIN_POPULATION, max: selectedMaxPopulation }
   });
 
@@ -88,10 +35,21 @@ function render() {
       data: source,
       opacity: 1,
       pickable: true,
-      getFillColor: getColorConfiguration(),
+      getFillColor: colorCategories({
+        attr: 'continent_name',
+        domain: ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America'],
+        colors: [
+          [117, 68, 92],
+          [175, 100, 88],
+          [213, 167, 91],
+          [115, 111, 76],
+          [91, 120, 142],
+          [76, 78, 143]
+        ]
+      }),
       getLineColor: [0, 0, 0, 204],
       pointRadiusUnits: 'pixels',
-      getPointRadius: getPointRadius,
+      getPointRadius: d => (POPULATION_RADIUS_SCALE * Math.sqrt(d.properties.pop_2015)),
       lineWidthMinPixels: 1
     })
   ];
@@ -99,8 +57,29 @@ function render() {
   deck.setProps({ layers });
 }
 
+let selectedMaxPopulation = MAX_POPULATION;
+const selectedPopulationSelector = document.querySelector<HTMLSelectElement>('#population-slider');
+const populationLabel = document.getElementById('slider-value');
+populationLabel!.textContent = formatNumber(selectedMaxPopulation);
+
+selectedPopulationSelector?.addEventListener('change', () => {
+  selectedMaxPopulation = Number(selectedPopulationSelector.value);
+  populationLabel!.textContent = formatNumber(selectedMaxPopulation);
+
+  render();
+});
+
+selectedPopulationSelector!.oninput = function () {
+  populationLabel!.textContent = formatNumber((this as HTMLInputElement).value);
+};
+
 // Main execution
-const map = initializeMap(import.meta.env.VITE_AMAZON_API_KEY, 'deck.gl-examples', 'us-east-1');
+const map = new maplibregl.Map({
+  container: 'map',
+  style: `https://maps.geo.us-east-1.amazonaws.com/maps/v0/maps/deck.gl-examples/style-descriptor?key=${import.meta.env.VITE_AMAZON_API_KEY}`,
+  interactive: false
+});
+
 const deck = new Deck({
   canvas: 'deck-canvas',
   initialViewState: INITIAL_VIEW_STATE,
@@ -111,5 +90,11 @@ const deck = new Deck({
   }
 });
 
-setupEventHandlers(deck, map);
+deck.setProps({
+  onViewStateChange: ({ viewState }) => {
+    const { longitude, latitude, ...rest } = viewState;
+    map.jumpTo({ center: [longitude, latitude], ...rest });
+  }
+});
+
 render();
