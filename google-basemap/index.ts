@@ -10,7 +10,6 @@ const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
 const connectionName = import.meta.env.VITE_API_CONNECTION_NAME;
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
-const SQL_QUERY = `SELECT geom, country_name, continent_name, pop_2015 FROM cartobq.public_account.world_population_2015 WHERE CAST(pop_2015 as INT64) between CAST(@min as INT64) and CAST(@max as INT64) ORDER BY pop_2015 DESC`;
 
 let map = null;
 let overlay = null;
@@ -60,9 +59,10 @@ function getPointRadius(d) {
 }
 
 function render() {
+
   const source = vectorQuerySource({
     ...cartoConfig,
-    sqlQuery: SQL_QUERY,
+    sqlQuery: `SELECT geom, country_name, continent_name, pop_2015 FROM cartobq.public_account.world_population_2015 WHERE pop_2015 between @min and @max ORDER BY pop_2015 DESC`,
     queryParameters: {
       min: Number(1),
       max: selectedMaxPopulation
