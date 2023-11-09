@@ -46,25 +46,6 @@ const cartoConfig = {
   connectionName: import.meta.env.VITE_API_CONNECTION_NAME
 };
 
-function initializeMap() {
-  const map = new maplibregl.Map({
-    container: 'map',
-    style: BASEMAP.DARK_MATTER,
-    interactive: false
-  });
-
-  return map;
-}
-
-function setupEventHandlers(deckInstance, mapInstance) {
-  deckInstance.setProps({
-    onViewStateChange: ({viewState}) => {
-      const {longitude, latitude, ...rest} = viewState;
-      mapInstance.jumpTo({center: [longitude, latitude], ...rest});
-    }
-  });
-}
-
 function render() {
   const source = h3QuerySource({
     ...cartoConfig,
@@ -89,9 +70,6 @@ function render() {
       lineWidthMinPixels: 0.5,
       getLineWidth: 0.5,
       getLineColor: [255, 255, 255, 100],
-      onDataLoad: d => {
-        console.log(d);
-      }
     })
   ];
 
@@ -104,12 +82,23 @@ function render() {
 }
 
 // Main execution
-const map = initializeMap();
+const map = new maplibregl.Map({
+  container: 'map',
+  style: BASEMAP.DARK_MATTER,
+  interactive: false
+});
+
 const deck = new Deck({
   canvas: 'deck-canvas',
   initialViewState: INITIAL_VIEW_STATE,
   controller: true,
 });
+deck.setProps({
+  onViewStateChange: ({viewState}) => {
+    const {longitude, latitude, ...rest} = viewState;
+    map
+    .jumpTo({center: [longitude, latitude], ...rest});
+  }
+});
 
-setupEventHandlers(deck, map);
 render();
