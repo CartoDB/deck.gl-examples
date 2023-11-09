@@ -69,7 +69,7 @@ function render() {
   const source = h3QuerySource({
     ...cartoConfig,
     aggregationExp: `SUM(${selectedVariable}) as value`,
-    aggregationResLevel: 4,
+    spatialDataColumn: 'h3:h3',
     sqlQuery: `SELECT * FROM cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2 WHERE ${selectedVariable} between @min and @max`,
     queryParameters: {min: from, max: to}
   });
