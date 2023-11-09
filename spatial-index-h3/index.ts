@@ -97,9 +97,8 @@ function render() {
 
   deck.setProps({
     layers,
-    getTooltip: ({object}) =>
-      object && {
-        html: `${selectedVariable.toUpperCase()}: ${parseInt(object.properties.value)}`
+    getTooltip: ({object}) =>  object && {
+        html: `Hex ID: ${object.id}</br>${selectedVariable.toUpperCase()}: ${parseInt(object.properties.value)}`
       }
   });
 }
@@ -110,7 +109,6 @@ const deck = new Deck({
   canvas: 'deck-canvas',
   initialViewState: INITIAL_VIEW_STATE,
   controller: true,
-  layers: []
 });
 
 setupEventHandlers(deck, map);
