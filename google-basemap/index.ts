@@ -4,7 +4,7 @@ import {colorCategories} from '@deck.gl/carto';
 import {VectorTileLayer, vectorQuerySource} from '@deck.gl/carto';
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
-const GOOGLE_MAP_ID = '';
+const GOOGLE_MAP_ID = import.meta.env.VITE_GOOGLE_MAP_IDS;
 const GOOGLE_MAPS_API_URL = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&v=beta&map_ids=${GOOGLE_MAP_ID}`;
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
