@@ -1,5 +1,5 @@
 {
-  "name": "carto-deckgl-example-basemaps",
+  "name": "carto-deckgl-example-google-maps",
   "version": "0.0.0",
   "private": true,
   "scripts": {
