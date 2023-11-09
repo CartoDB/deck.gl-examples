@@ -6,7 +6,6 @@ import {Loader} from '@googlemaps/js-api-loader';
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 const GOOGLE_MAP_ID = import.meta.env.VITE_GOOGLE_MAP_IDS;
-const GOOGLE_MAPS_API_URL = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&v=beta&map_ids=${GOOGLE_MAP_ID}`;
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
 const connectionName = import.meta.env.VITE_API_CONNECTION_NAME;
@@ -57,7 +56,7 @@ function render() {
 
   const layers = [
     new VectorTileLayer({
-      id: 'accidents_by_state',
+      id: 'population',
       data: source,
       opacity: 1,
       pickable: true,
@@ -84,19 +83,14 @@ const populationLabel = document.getElementById('slider-value');
 
 selectedPopulationSelector?.addEventListener('change', () => {
   selectedMaxPopulation = Number(selectedPopulationSelector.value);
-  if (populationLabel) {
-    populationLabel.textContent = selectedMaxPopulation.toString();
-  }
+  populationLabel!.textContent = selectedMaxPopulation.toString();
+
   render();
 });
 
-if (selectedPopulationSelector) {
-  selectedPopulationSelector.oninput = function () {
-    if (populationLabel) {
-      populationLabel.textContent = (this as HTMLInputElement).value;
-    }
-  };
-}
+selectedPopulationSelector!.oninput = function () {
+  populationLabel!.textContent = (this as HTMLInputElement).value;
+};
 
 const loader = new Loader({
   apiKey: GOOGLE_MAPS_API_KEY,
