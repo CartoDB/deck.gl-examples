@@ -3,7 +3,7 @@ Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
 ## Usage
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/CartoDB/deck.gl-examples/tree/master/basemaps?file=index.ts)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/CartoDB/deck.gl-examples/tree/master/google-maps?file=index.ts)
 
 Or run it locally:
 
