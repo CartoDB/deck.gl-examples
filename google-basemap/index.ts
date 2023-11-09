@@ -28,20 +28,18 @@ function setTooltip({x, y, object}) {
   }
 }
 
-function getColorConfiguration() {
-  return colorCategories({
-    attr: 'continent_name',
-    domain: ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America'],
-    colors: [
-      [117, 68, 92],
-      [175, 100, 88],
-      [213, 167, 91],
-      [115, 111, 76],
-      [91, 120, 142],
-      [76, 78, 143]
-    ]
-  });
-}
+const getFillColor = colorCategories({
+  attr: 'continent_name',
+  domain: ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America'],
+  colors: [
+    [117, 68, 92],
+    [175, 100, 88],
+    [213, 167, 91],
+    [115, 111, 76],
+    [91, 120, 142],
+    [76, 78, 143]
+  ]
+});
 
 function getPointRadius(d) {
   return (30.0 * Math.sqrt(d.properties.pop_2015)) / 27620.2642999664;
@@ -63,7 +61,7 @@ function render() {
       data: source,
       opacity: 1,
       pickable: true,
-      getFillColor: getColorConfiguration(),
+      getFillColor,
       getLineColor: [0, 0, 0, 204],
       pointRadiusUnits: 'pixels',
       getPointRadius: getPointRadius,
