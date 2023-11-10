@@ -11,7 +11,7 @@ const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
 const connectionName = import.meta.env.VITE_API_CONNECTION_NAME;
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
-let map = null;
+let map: google.maps.Map | null = null;
 const overlay = new DeckOverlay({
   layers: []
 });
@@ -35,23 +35,6 @@ function setTooltip({x, y, object}) {
   }
 }
 
-const getFillColor = colorCategories({
-  attr: 'continent_name',
-  domain: ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America'],
-  colors: [
-    [117, 68, 92],
-    [175, 100, 88],
-    [213, 167, 91],
-    [115, 111, 76],
-    [91, 120, 142],
-    [76, 78, 143]
-  ]
-});
-
-function getPointRadius(d) {
-  return (30.0 * Math.sqrt(d.properties.pop_2015)) / 27620.2642999664;
-}
-
 function render() {
   const source = vectorQuerySource({
     ...cartoConfig,
@@ -68,10 +51,21 @@ function render() {
       data: source,
       opacity: 1,
       pickable: true,
-      getFillColor,
+      getFillColor: colorCategories({
+        attr: 'continent_name',
+        domain: ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America'],
+        colors: [
+          [117, 68, 92],
+          [175, 100, 88],
+          [213, 167, 91],
+          [115, 111, 76],
+          [91, 120, 142],
+          [76, 78, 143]
+        ]
+      }),
       getLineColor: [0, 0, 0, 204],
       pointRadiusUnits: 'pixels',
-      getPointRadius: getPointRadius,
+      getPointRadius: d =>  (30.0 * Math.sqrt(d.properties.pop_2015)) / 27620.2642999664,
       lineWidthMinPixels: 1,
       onHover: setTooltip
     })
@@ -85,7 +79,7 @@ function render() {
 let selectedMaxPopulation = 800000000;
 const selectedPopulationSelector = document.querySelector<HTMLSelectElement>('#population-slider');
 const populationLabel = document.getElementById('slider-value');
-populationLabel!.textContent = formatNumber(800000000);
+populationLabel!.textContent = formatNumber(selectedMaxPopulation);
 
 selectedPopulationSelector?.addEventListener('change', () => {
   selectedMaxPopulation = Number(selectedPopulationSelector.value);
@@ -93,6 +87,28 @@ selectedPopulationSelector?.addEventListener('change', () => {
 
   render();
 });
+
+const roadmapButton = document.getElementById('roadmap');
+const terrainButton = document.getElementById('terrain');
+const satelliteButton = document.getElementById('satellite');
+const hybridButton = document.getElementById('hybrid');
+
+roadmapButton?.addEventListener('click', () => {
+  map.setMapTypeId('roadmap');
+});
+
+terrainButton?.addEventListener('click', () => {
+  map.setMapTypeId('terrain');
+});
+
+satelliteButton?.addEventListener('click', () => {
+  map.setMapTypeId('satellite');
+});
+
+hybridButton?.addEventListener('click', () => {
+  map.setMapTypeId('hybrid');
+});
+
 
 selectedPopulationSelector!.oninput = function () {
   populationLabel!.textContent = formatNumber((this as HTMLInputElement).value);
@@ -108,10 +124,14 @@ loader.load().then(async () => {
   map = new Map(document.getElementById('map') as HTMLElement, {
     center: {lat: 15, lng: 10},
     zoom: 3,
-    mapId: GOOGLE_MAP_ID
+    mapId: GOOGLE_MAP_ID,
+    mapTypeId: 'roadmap'
   });
 
-  overlay.setMap(map);
+  if (map) {
+    map.setMapTypeId('terrain');
+    overlay.setMap(map);
 
-  render();
+    render();
+  }
 });
