@@ -125,7 +125,8 @@ loader.load().then(async () => {
     center: {lat: 15, lng: 10},
     zoom: 3,
     mapId: GOOGLE_MAP_ID,
-    mapTypeId: 'roadmap'
+    mapTypeId: 'roadmap',
+    mapTypeControl: false,
   });
 
   if (map) {
