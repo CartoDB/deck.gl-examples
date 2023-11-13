@@ -1,0 +1,31 @@
+{
+  "name": "carto-deckgl-boundaries",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "dev-local": "vite --config ../vite.config.local.mjs",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^4.5.0",
+    "ocular-dev-tools": "^2.0.0-alpha.15"
+  },
+  "dependencies": {
+    "@deck.gl/aggregation-layers": "^8.0.0",
+    "@deck.gl/carto": "^8.9.32",
+    "@deck.gl/core": "^8.0.0",
+    "@deck.gl/extensions": "^8.0.0",
+    "@deck.gl/geo-layers": "^8.0.0",
+    "@deck.gl/layers": "^8.0.0",
+    "@deck.gl/mesh-layers": "^8.0.0",
+    "@loaders.gl/core": "4.0.1",
+    "@luma.gl/constants": "9.0.0-alpha.39",
+    "@luma.gl/core": "9.0.0-alpha.39",
+    "@math.gl/core": "^4.0.0",
+    "@math.gl/web-mercator": "^4.0.0",
+    "gl-matrix": "^3.0.0",
+    "maplibre-gl": "^3.5.2"
+  }
+}
