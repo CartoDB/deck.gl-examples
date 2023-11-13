@@ -51,7 +51,7 @@ function render() {
   const querySource = boundaryQuerySource({
     ...cartoConfig,
     boundaryId: 'usa_zip_code_v1',
-    sqlQuery: 'select geoid, total_pop from `carto-dev-data.public.demographics_sociodemographics_usa_zcta5_2015_yearly_2017`',
+    sqlQuery: 'select geoid, total_pop, households from `carto-dev-data.public.demographics_sociodemographics_usa_zcta5_2015_5yrs_20072011`',
     matchingColumn: 'geoid'
   });
 
