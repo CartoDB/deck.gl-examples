@@ -1,0 +1,21 @@
+{
+  "name": "carto-deckgl-example-labels",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "dev-local": "vite --config ../vite.config.local.mjs",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^4.5.0",
+    "ocular-dev-tools": "^2.0.0-alpha.15"
+  },
+  "dependencies": {
+    "@deck.gl/carto": "^9.0.0-alpha.3",
+    "@deck.gl/core": "^9.0.0-alpha.3",
+    "maplibre-gl": "^3.5.2",
+    "d3-scale": "^2.0.0"
+  }
+}
