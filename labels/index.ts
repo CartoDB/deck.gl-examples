@@ -28,10 +28,6 @@ const colorScale = scaleLinear()
     [199, 233, 180],
     [237, 248, 177]
   ]);
-  
-  const maskProps = {
-    maskId: 'mask'
-  };
 
 const MAP_STYLE = 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json';
 
@@ -63,7 +59,6 @@ osmCategorySelector?.addEventListener('change', () => {
 });
 
 async function render() {
-  // TODO: update to query source to filter by selected category
   const dataSource = vectorTableSource({
     ...cartoConfig,
     tableName: 'cartobq.public_account.cities_1000'
