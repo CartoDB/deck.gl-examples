@@ -68,9 +68,18 @@ function render() {
       id: 'boundary-query',
       data: querySource,
       pickable: true,
-      getFillColor: [18,147,154],
+      getFillColor: (d) => {
+        const avg_ticket = Number(d.properties.avg_ticket);
+        if (avg_ticket < 25) return [247, 254, 174];
+        if (avg_ticket < 50) return [183, 230, 165];
+        if (avg_ticket < 75) return [124, 203, 162];
+        if (avg_ticket < 100) return [70, 174, 160];
+        if (avg_ticket < 200) return [8, 144, 153]
+        return [0, 113, 139];
+      },
       getLineWidth: 1,
       lineWidthUnits: 'pixels',
+      
     })
   ]
   deck.setProps({layers});
