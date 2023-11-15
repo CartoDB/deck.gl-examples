@@ -58,8 +58,8 @@ function render() {
           group by geoid`,
     matchingColumn: 'geoid',
     queryParameters: {
-      start: '2022-06-01',
-      finish: '2023-12-31'
+      start: '2023-01-01',
+      finish: '2023-03-31'
     }
   });
 
