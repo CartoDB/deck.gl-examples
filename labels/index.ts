@@ -2,7 +2,7 @@ import './style.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import {Deck} from '@deck.gl/core';
 import maplibregl from 'maplibre-gl';
-import {vectorTableSource, VectorTileLayer} from '@deck.gl/carto';
+import {VectorTileLayer, vectorQuerySource} from '@deck.gl/carto';
 import {CollisionFilterExtension} from '@deck.gl/extensions';
 import {scaleLinear} from 'd3-scale';
 
@@ -29,6 +29,11 @@ const colorScale = scaleLinear()
     [199, 233, 180],
     [237, 248, 177]
   ]);
+
+  const fontSize = 24;
+  const scale = 16;
+  const sizeMaxPixels = (scale / 3) * fontSize;
+  const sizeMinPixels = Math.min(scale / 1000, 0.5) * fontSize;
 
 const MAP_STYLE = 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json';
 
@@ -60,9 +65,9 @@ osmCategorySelector?.addEventListener('change', () => {
 });
 
 async function render() {
-  const dataSource = vectorTableSource({
+  const dataSource = vectorQuerySource({
     ...cartoConfig,
-    tableName: 'cartobq.public_account.cities_1000'
+    sqlQuery: `select geom, population, name from cartobq.public_account.cities_1000 WHERE population > 0 ORDER BY population DESC`
   });
 
   const layers = [
@@ -77,22 +82,22 @@ async function render() {
         buffer: 8
       },
       getText: d => d.properties.name,
-      textSizeScale: 1,
-      getTextSize: 32,
+      textSizeScale: fontSize,
+      textSizeMaxPixels: sizeMaxPixels,
+      textSizeMinPixels: sizeMinPixels,
+      getTextSize: d => {
+        const size = Math.pow(d.properties.population, 0.25) / 20;
+        return size < 0.5 ? 0.7 : size;
+      },
       getTextAngle: 0,
       getTextColor: d => colorScale(Math.log10(d.properties.population)),
-      getTextAnchor: 'middle',
-      getTextAlignmentBaseline: 'center',
-      parameters: {depthTest: false},
-
-      // Enable collision detection
-      extensions: [new CollisionFilterExtension()],
-      collisionEnabled: true,
-      collisionGroup: 'def',
-      getCollisionPriority: 0,
+      getCollisionPriority: d => Math.log10(d.properties.population),
       collisionTestProps: {
-        sizeScale: 2 // Enlarge text to increase hit area
-      }
+        sizeScale: fontSize * 2,
+        sizeMaxPixels: sizeMaxPixels * 2,
+        sizeMinPixels: sizeMinPixels * 2,
+      },
+      extensions: [new CollisionFilterExtension()],
     })
   ];
 
