@@ -14,7 +14,8 @@ const INITIAL_VIEW_STATE = {
   longitude: -74.0060,
   zoom: 10,
   bearing: 0,
-  pitch: 30
+  pitch: 30,
+  minZoom: 8,
 };
 
 const deck = new Deck({
