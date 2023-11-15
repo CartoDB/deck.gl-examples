@@ -6,7 +6,7 @@ import {BASEMAP, boundaryQuerySource, VectorTileLayer} from '@deck.gl/carto';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
-const connectionName = 'carto_dw';
+const connectionName = 'bqconn';
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
 const INITIAL_VIEW_STATE = {
@@ -51,8 +51,16 @@ function render() {
   const querySource = boundaryQuerySource({
     ...cartoConfig,
     boundaryId: 'usa_zip_code_v1',
-    sqlQuery: 'select geoid, total_pop, households from `carto-dev-data.public.demographics_sociodemographics_usa_zcta5_2015_5yrs_20072011`',
-    matchingColumn: 'geoid'
+    sqlQuery: `SELECT geoid, AVG(avg_ticket) as avg_ticket
+        FROM carto-dev-data.mastercard.original_index_usa_uszc_2015_daily 
+          WHERE timeinstant between @start and @finish
+          and industry='ret' and segment='o' and geo_type='m'
+          group by geoid`,
+    matchingColumn: 'geoid',
+    queryParameters: {
+      start: '2022-06-01',
+      finish: '2023-12-31'
+    }
   });
 
   const layers = [
@@ -69,3 +77,5 @@ function render() {
 }
 
 render()
+
+
