@@ -1,6 +1,6 @@
 import './style.css';
-import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import maplibregl from 'maplibre-gl';
 import {Deck} from '@deck.gl/core';
 import {BASEMAP, vectorQuerySource, VectorTileLayer} from '@deck.gl/carto';
 import {CollisionFilterExtension} from '@deck.gl/extensions';
