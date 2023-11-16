@@ -33,21 +33,23 @@
         <p>CARTO drastically reduces development and maintenance times for geospatial applications. POIs for the selected category are highlighted on the map using CARTO + deck.gl properties.</p>
         <div class="layer-controls"> 
           <p class="overline">Highlight a category!</p>
-          <select name="osmCategorySelector" id="osmCategorySelector">
-            <option value="Financial">🏛️ Financial</option>
-            <option value="Tourism">🏖️ Tourism</option>
-            <option value="Sustenance">🍽️ Sustenance</option>
-            <option value="Education">📚 Education</option>
-            <option value="Transportation">🚈 Transportation</option>
-            <option value="Healthcare">🏥 Healthcare</option>
-            <option value="Civic amenities">🏫 Civic amenities</option>
-            <option value="Entertainment, Arts & Culture">🎭 Entertainment, Arts & Culture</option>
-            <option value="Others">❓ Others</option>
-          </select>
-        </div>
-        <p class="caption">Source: <a href="https://www.openstreetmap.org" rel="noopener noreferrer" target="_blank">OpenStreetMap</a></p>
-      </div>
-    </div>
-    <script type="module" src="./index.ts"></script>
-  </body>
-</html>
+          
+          <div class="layer-controls">
+            <p class="overline">Select a category:</p>
+            <div class="category-container">
+              <label for="financial">
+                <input type="checkbox" id="Financial" name="Financial" value="Financial" class="categories" checked>
+                <img src="./markers/bank.svg" alt="Financial"> Financial
+              </label>
+              <label for="tourism">
+                <input type="checkbox" id="Tourism" name="Tourism" value="Tourism" class="categories">
+                <img src="./markers/beach.svg" alt="Tourism"> Tourism
+              </label>
+            </div>
+          </div>
+          <p class="caption">Source: <a href="https://www.openstreetmap.org" rel="noopener noreferrer" target="_blank">OpenStreetMap</a></p>
+          </div>
+          </div>
+          <script type="module" src="./index.ts"></script>
+          </body>
+          </html>

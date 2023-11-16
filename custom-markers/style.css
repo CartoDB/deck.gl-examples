@@ -44,6 +44,19 @@ canvas {
   margin-top: 2.25rem;
 }
 
+img {
+  height: 24px;
+  align-items: center;
+}
+
+.category-container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin-bottom: 0.6rem;
+  justify-content: space-between;
+}
+
 .overline {
   font-size: .625rem;
   font-weight: 600;
