@@ -180,3 +180,33 @@ select {
   }
 }
 
+.tooltip-container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;;
+}
+
+.tooltip-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.3rem;
+}
+
+.tooltip-key {
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.001rem;
+  text-transform: uppercase;
+}
+
+.tooltip-value {
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.001rem;
+}
+

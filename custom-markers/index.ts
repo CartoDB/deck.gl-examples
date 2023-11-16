@@ -20,7 +20,7 @@ const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
 
-const connectionName = '' //. TODO: Add connection name here. Example: 'carto
+const connectionName = 'carto_dw' //. TODO: Add connection name here. Example: 'carto
 
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
@@ -137,7 +137,7 @@ async function render() {
     queryParameters: {
       groupName: selectedCategories
     },
-    sqlQuery: `select geom, group_name from carto-demo-data.demo_tables.osm_pois_usa where group_name IN UNNEST(@groupName)`
+    sqlQuery: `select * from carto-demo-data.demo_tables.osm_pois_usa where group_name IN UNNEST(@groupName)`
   });
 
   const layers = [
@@ -174,7 +174,33 @@ async function render() {
   ];
 
   deck.setProps({
-    layers: layers
+    layers: layers,
+    getTooltip: ({object}) =>  object && {
+      html: `
+      <div class="tooltip-container">
+        <div class="tooltip-row">
+          <div class="tooltip-key">Name</div>
+          <div class="tooltip-value">${object.properties.name}</div>
+        </div>
+        <div class="tooltip-row">
+          <div class="tooltip-key">OSM ID</div>
+          <div class="tooltip-value">${object.properties.osm_id}</div>
+        </div>
+        <div class="tooltip-row">
+          <div class="tooltip-key">Address</div>
+          <div class="tooltip-value">${object.properties.address}</div>
+        </div>
+        <div class="tooltip-row">
+          <div class="tooltip-key">Group</div>
+          <div class="tooltip-value">${object.properties.group_name}</div>
+        </div>
+        <div class="tooltip-row">
+          <div class="tooltip-key">Sub Group</div>
+          <div class="tooltip-value">${object.properties.subgroup_name}</div>
+        </div>
+      </div>
+      `
+    }
   });
 }
 
