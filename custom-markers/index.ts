@@ -106,7 +106,6 @@ function updateSelectedCategories() {
   render();
 }
 
-
 function handleCheckboxChange(checkbox: HTMLInputElement) {
   const value = checkbox.value;
   lastSelectedCategory = checkbox.checked ? value : null;
