@@ -4,13 +4,27 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import {Deck} from '@deck.gl/core';
 import {BASEMAP, vectorQuerySource, VectorTileLayer} from '@deck.gl/carto';
 import {CollisionFilterExtension} from '@deck.gl/extensions';
-import Financial from './markers/bank.svg';
-import Tourism from './markers/beach.svg';
+import Financial from './markers/Financial.svg';
+import Tourism from './markers/Tourism.svg';
+import Sustenance from './markers/Sustenance.svg';
+import Commercial from './markers/Commercial.svg';
+import Education from './markers/Education.svg';
+import Entertainment from './markers/Entertainment.svg';
+import Transportation from './markers/Transportation.svg';
+import Healthcare from './markers/Healthcare.svg';
+import Civic from './markers/Civic.svg';
+import Star from './markers/Others.svg';
+import Otehers from './markers/Others.svg';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
-const connectionName = 'carto_dw';
+
+const connectionName = '' //. TODO: Add connection name here. Example: 'carto
+
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
+
+const iconWidth = 15;
 
 const ICON_MAPPING = {
   Financial: {
@@ -20,6 +34,42 @@ const ICON_MAPPING = {
   Tourism: {
     icon: Tourism,
     priority: 0
+  },
+  Sustenance: {
+    icon: Sustenance,
+    priority: 2
+  },
+  Commercial: {
+    icon: Commercial,
+    priority: 3
+  },
+  Education: {
+    icon: Education,
+    priority: 4
+  },
+  "Entertainment, Arts & Culture": {
+    icon: Entertainment,
+    priority: 5
+  },
+  Transportation: {
+    icon: Transportation,
+    priority: 6
+  },
+  Healthcare: {
+    icon: Healthcare,
+    priority: 7
+  },
+  'Civic amenities': {
+    icon: Civic,
+    priority: 8
+  },
+  Star: {
+    icon: Star,
+    priority: 9
+  },
+  Others: {
+    icon: Otehers,
+    priority: 10
   }
 };
 
@@ -37,7 +87,37 @@ const deck = new Deck({
   controller: true
 });
 
-// Add basemap
+let selectedCategories = [];
+let lastSelectedCategory = null;
+const loader = document.querySelector('#loader');
+
+function updateSelectedCategories() {
+  const checkboxes = Array.from(document.querySelectorAll('.category-container .categories'));
+  const selectedValues = checkboxes
+    .filter((checkbox: HTMLInputElement) => checkbox.checked)
+    .map((checkbox: HTMLInputElement) => checkbox.value);
+
+  selectedCategories = selectedValues.sort((a, b) => {
+    if (a === lastSelectedCategory) return 1;
+    if (b === lastSelectedCategory) return -1;
+    return 0;
+  });
+
+  render();
+}
+
+
+function handleCheckboxChange(checkbox: HTMLInputElement) {
+  const value = checkbox.value;
+  lastSelectedCategory = checkbox.checked ? value : null;
+  updateSelectedCategories();
+}
+
+const checkboxes = document.querySelectorAll('.category-container .categories');
+checkboxes.forEach(checkbox => {
+  checkbox.addEventListener('change', () => handleCheckboxChange(checkbox as HTMLInputElement));
+});
+
 const map = new maplibregl.Map({
   container: 'map',
   style: BASEMAP.DARK_MATTER,
@@ -51,27 +131,8 @@ deck.setProps({
   }
 });
 
-let selectedCategories = [];
-
-function updateSelectedCategories() {
-  selectedCategories = [];
-  const checkboxes = document.querySelectorAll('.category-container .categories');
-  
-  checkboxes.forEach(checkbox => {
-      if ((checkbox as HTMLInputElement).checked) {
-          selectedCategories.push(checkbox.id);
-      }
-  });
-
-  render();
-}
-
-// Agregar el evento listener a cada checkbox
-document.querySelectorAll('.category-container .categories').forEach(checkbox => {
-  checkbox.addEventListener('change', updateSelectedCategories);
-});
-
 async function render() {
+  loader.classList.remove('hidden');
   const dataSource = vectorQuerySource({
     ...cartoConfig,
     queryParameters: {
@@ -89,18 +150,27 @@ async function render() {
       getIcon: d => {
         return {
           url: ICON_MAPPING[d.properties.group_name].icon,
-          width: 128,
-          height: 128,
-          anchorY: 64
+          width: iconWidth,
+          height: iconWidth,
+          anchorY: iconWidth / 2
         };
       },
-      getIconSize: d => 32,
-      getIconColor: d => [255, 0, 0],
+      getIconSize: d => 15,
+      iconSizeUnits: 'pixels',
+      iconSizeScale: 2,
+      iconBillboard: true,
       // Enable collision detection
       extensions: [new CollisionFilterExtension()],
       collisionEnabled: true,
-      getCollisionPriority: d => ICON_MAPPING[d.properties.group_name].priority,
-      collisionTestProps: {radiusScale: 150}
+      getCollisionPriority: d => Object.keys(selectedCategories).indexOf(d.properties.group_name),
+      collisionTestProps: {
+        sizeScale: iconWidth * 4,
+        sizeMaxPixels: iconWidth * 4,
+        sizeMinPixels: iconWidth * 4,
+      },
+      onDataLoad: () => {
+        loader.classList.add('hidden');
+      }
     })
   ];
 
@@ -111,4 +181,3 @@ async function render() {
 
 updateSelectedCategories();
 render();
-
