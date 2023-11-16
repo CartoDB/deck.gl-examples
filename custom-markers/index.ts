@@ -20,7 +20,7 @@ const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
 
-const connectionName = 'carto_dw' //. TODO: Add connection name here. Example: 'carto
+const connectionName = '' //. TODO: Add connection name here. Example: 'carto
 
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
