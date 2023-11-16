@@ -1,0 +1,25 @@
+{
+  "name": "carto-deckgl-example-custom-markers",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "dev-local": "vite --config ../vite.config.local.mjs",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^4.5.0",
+    "ocular-dev-tools": "^2.0.0-alpha.15"
+  },
+  "dependencies": {
+    "@deck.gl/aggregation-layers": "^9.0.0-alpha.3",
+    "@deck.gl/carto": "^9.0.0-alpha.3",
+    "@deck.gl/core": "^9.0.0-alpha.3",
+    "@deck.gl/extensions": "^9.0.0-alpha.3",
+    "@deck.gl/geo-layers": "^9.0.0-alpha.3",
+    "@deck.gl/layers": "^9.0.0-alpha.3",
+    "@deck.gl/mesh-layers": "^9.0.0-alpha.3",
+    "maplibre-gl": "^3.5.2"
+  }
+}

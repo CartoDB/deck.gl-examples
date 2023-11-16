@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://app.carto.com/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://app.carto.com/favicon/favicon-16x16.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CARTO for deck.gl - Dynamic Tiling 1.4M Points of Interest </title>
+  <body>
+    <div id="app">
+      <div id="map"></div>
+      <canvas id="deck-canvas"></canvas>
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>1.4M Points of Interest</h2>
+        <p>This visualization is using <a href="https://carto.com/blog/dynamic-tiling-for-highly-performant-cloud-native-maps" rel="noopener noreferrer" target="_blank">Dynamic Tiling</a> to load millions of points of interest across the United States.</p>
+        <p>CARTO drastically reduces development and maintenance times for geospatial applications. POIs for the selected category are highlighted on the map using CARTO + deck.gl properties.</p>
+        <div class="layer-controls"> 
+          <p class="overline">Highlight a category!</p>
+          <select name="osmCategorySelector" id="osmCategorySelector">
+            <option value="Financial">🏛️ Financial</option>
+            <option value="Tourism">🏖️ Tourism</option>
+            <option value="Sustenance">🍽️ Sustenance</option>
+            <option value="Education">📚 Education</option>
+            <option value="Transportation">🚈 Transportation</option>
+            <option value="Healthcare">🏥 Healthcare</option>
+            <option value="Civic amenities">🏫 Civic amenities</option>
+            <option value="Entertainment, Arts & Culture">🎭 Entertainment, Arts & Culture</option>
+            <option value="Others">❓ Others</option>
+          </select>
+        </div>
+        <p class="caption">Source: <a href="https://www.openstreetmap.org" rel="noopener noreferrer" target="_blank">OpenStreetMap</a></p>
+      </div>
+    </div>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>
