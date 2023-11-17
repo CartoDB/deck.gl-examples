@@ -4,11 +4,10 @@ import {colorCategories} from '@deck.gl/carto';
 import {VectorTileLayer, vectorQuerySource} from '@deck.gl/carto';
 import {Loader} from '@googlemaps/js-api-loader';
 
-const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
-const GOOGLE_MAP_ID = import.meta.env.VITE_GOOGLE_MAP_IDS;
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
-const connectionName = import.meta.env.VITE_API_CONNECTION_NAME;
+const connectionName = '';
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
 let map: google.maps.Map | null = null;
@@ -35,6 +34,21 @@ function setTooltip({x, y, object}) {
   }
 }
 
+function getColorForContinent() {
+  return colorCategories({
+    attr: 'continent_name',
+    domain: ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America'],
+    colors: [
+      [117, 68, 92],
+      [175, 100, 88],
+      [213, 167, 91],
+      [115, 111, 76],
+      [91, 120, 142],
+      [76, 78, 143]
+    ]
+  });
+}
+
 function render() {
   const source = vectorQuerySource({
     ...cartoConfig,
@@ -51,21 +65,10 @@ function render() {
       data: source,
       opacity: 1,
       pickable: true,
-      getFillColor: colorCategories({
-        attr: 'continent_name',
-        domain: ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America'],
-        colors: [
-          [117, 68, 92],
-          [175, 100, 88],
-          [213, 167, 91],
-          [115, 111, 76],
-          [91, 120, 142],
-          [76, 78, 143]
-        ]
-      }),
+      getFillColor: getColorForContinent(),
       getLineColor: [0, 0, 0, 204],
       pointRadiusUnits: 'pixels',
-      getPointRadius: d =>  (30.0 * Math.sqrt(d.properties.pop_2015)) / 27620.2642999664,
+      getPointRadius: d => (30.0 * Math.sqrt(d.properties.pop_2015)) / 27620.2642999664,
       lineWidthMinPixels: 1,
       onHover: setTooltip
     })
@@ -88,27 +91,17 @@ selectedPopulationSelector?.addEventListener('change', () => {
   render();
 });
 
-const roadmapButton = document.getElementById('roadmap');
-const terrainButton = document.getElementById('terrain');
-const satelliteButton = document.getElementById('satellite');
-const hybridButton = document.getElementById('hybrid');
+const basemapSelectorButtons = document.querySelectorAll('.basemap-button');
 
-roadmapButton?.addEventListener('click', () => {
-  map.setMapTypeId('roadmap');
+basemapSelectorButtons!.forEach(button => {
+  button.addEventListener('click', () => {
+    basemapSelectorButtons!.forEach(button => {
+      button.classList.remove('selected');
+    });
+    map.setMapTypeId(button.getAttribute('id'));
+    button.classList.add('selected');
+  });
 });
-
-terrainButton?.addEventListener('click', () => {
-  map.setMapTypeId('terrain');
-});
-
-satelliteButton?.addEventListener('click', () => {
-  map.setMapTypeId('satellite');
-});
-
-hybridButton?.addEventListener('click', () => {
-  map.setMapTypeId('hybrid');
-});
-
 
 selectedPopulationSelector!.oninput = function () {
   populationLabel!.textContent = formatNumber((this as HTMLInputElement).value);
@@ -124,15 +117,12 @@ loader.load().then(async () => {
   map = new Map(document.getElementById('map') as HTMLElement, {
     center: {lat: 15, lng: 10},
     zoom: 3,
-    mapId: GOOGLE_MAP_ID,
     mapTypeId: 'roadmap',
     mapTypeControl: false,
+    streetViewControl: false,
   });
 
-  if (map) {
-    map.setMapTypeId('terrain');
-    overlay.setMap(map);
+  overlay.setMap(map);
 
-    render();
-  }
+  render();
 });
