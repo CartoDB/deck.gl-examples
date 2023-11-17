@@ -104,7 +104,8 @@ button:hover {
 .basemap-selector {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: start;
+  gap: 1.5rem;
 }
 
 .basemap-selector img {
@@ -112,9 +113,14 @@ button:hover {
   box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1), 0 0 0 2px rgb(255, 255, 255),
     0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
   transition: all 0.2s ease-in-out;
+  height: 64px;
 }
 
 .basemap-selector img:hover {
   transform: scale(1.1);
   cursor: pointer;
+}
+
+.selected {
+  transform: scale(1.1);
 }
