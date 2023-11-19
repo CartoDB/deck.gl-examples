@@ -12,6 +12,6 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "baseUrl": "../spatial-features-h3"
+    "baseUrl": "."
   }
 }

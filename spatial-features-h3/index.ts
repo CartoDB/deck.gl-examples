@@ -4,6 +4,12 @@ import maplibregl from 'maplibre-gl';
 import {Deck} from '@deck.gl/core';
 import {H3TileLayer, h3QuerySource, BASEMAP, colorBins} from '@deck.gl/carto';
 
+const cartoConfig = {
+  apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
+  accessToken: import.meta.env.VITE_API_ACCESS_TOKEN,
+  connectionName: 'carto_dw'
+};
+
 const INITIAL_VIEW_STATE = {
   latitude: 40.7128, // Aproximado para Nueva York
   longitude: -74.006, // Aproximado para Nueva York
@@ -40,19 +46,12 @@ applyButton?.addEventListener('click', () => {
   render();
 });
 
-const cartoConfig = {
-  apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
-  accessToken: import.meta.env.VITE_API_ACCESS_TOKEN,
-  connectionName: import.meta.env.VITE_API_CONNECTION_NAME
-};
-
 function render() {
   const source = h3QuerySource({
     ...cartoConfig,
     aggregationExp: `SUM(${selectedVariable}) as value`,
-    spatialDataColumn: 'h3:h3',
-    sqlQuery: `SELECT * FROM cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2 WHERE ${selectedVariable} between @min and @max`,
-    queryParameters: {min: from, max: to}
+    sqlQuery: `SELECT * FROM cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2 WHERE ${selectedVariable} between @from and @to`,
+    queryParameters: {from, to}
   });
 
   const layers = [
