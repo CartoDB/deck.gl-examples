@@ -8,6 +8,10 @@ import {query} from '@deck.gl/carto';
 
 const LOOP_LENGTH = 1800;
 const ANIMATION_SPEED = 0.4;
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
+const connectionName =  'carto_dw';
+const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
 async function initialize() {
   const map = new maplibregl.Map({
@@ -36,8 +40,7 @@ async function initialize() {
   });
 
   const data = await query({
-    accessToken: import.meta.env.VITE_API_ACCESS_TOKEN,
-    connectionName: import.meta.env.VITE_API_CONNECTION_NAME,
+    ...cartoConfig,
     sqlQuery:
       'SELECT geom, vendor, TO_JSON_STRING(timestamps) AS timestamps FROM cartobq.public_account.new_york_trips',
     
