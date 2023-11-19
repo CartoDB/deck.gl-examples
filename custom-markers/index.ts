@@ -20,7 +20,7 @@ const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
 
-const connectionName = '' //. TODO: Add connection name here. Example: 'carto
+const connectionName = ''
 
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
@@ -29,47 +29,36 @@ const iconWidth = 15;
 const ICON_MAPPING = {
   Financial: {
     icon: Financial,
-    priority: 1
   },
   Tourism: {
     icon: Tourism,
-    priority: 0
   },
   Sustenance: {
     icon: Sustenance,
-    priority: 2
   },
   Commercial: {
     icon: Commercial,
-    priority: 3
   },
   Education: {
     icon: Education,
-    priority: 4
   },
   "Entertainment, Arts & Culture": {
     icon: Entertainment,
-    priority: 5
   },
   Transportation: {
     icon: Transportation,
-    priority: 6
   },
   Healthcare: {
     icon: Healthcare,
-    priority: 7
   },
   'Civic amenities': {
     icon: Civic,
-    priority: 8
   },
   Star: {
     icon: Star,
-    priority: 9
   },
   Others: {
     icon: Otehers,
-    priority: 10
   }
 };
 
