@@ -95,10 +95,24 @@ const basemapSelectorButtons = document.querySelectorAll('.basemap-button');
 
 basemapSelectorButtons!.forEach(button => {
   button.addEventListener('click', () => {
+    const id=button.getAttribute('data-map-id');
+    const type=button.getAttribute('data-type');
+
     basemapSelectorButtons!.forEach(button => {
       button.classList.remove('selected');
     });
-    map.setMapTypeId(button.getAttribute('id'));
+
+    if (type==='google') {
+      map.setMapTypeId(id);
+    } else {
+      overlay.setProps({
+        options: {
+          mapId: id
+        },
+        type: 'gmaps'
+      });
+    }
+
     button.classList.add('selected');
   });
 });
