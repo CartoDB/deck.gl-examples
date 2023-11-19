@@ -7,7 +7,7 @@ import {H3TileLayer, h3QuerySource, BASEMAP, colorBins} from '@deck.gl/carto';
 const cartoConfig = {
   apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
   accessToken: import.meta.env.VITE_API_ACCESS_TOKEN,
-  connectionName: 'carto_dw'
+  connectionName: ''
 };
 
 const INITIAL_VIEW_STATE = {
