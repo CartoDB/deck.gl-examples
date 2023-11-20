@@ -6,7 +6,7 @@ import {BASEMAP, boundaryQuerySource, VectorTileLayer} from '@deck.gl/carto';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
-const connectionName = 'carto_dw';
+const connectionName = 'bqconn';
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
 const INITIAL_VIEW_STATE = {
