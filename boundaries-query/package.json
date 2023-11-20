@@ -1,5 +1,5 @@
 {
-  "name": "carto-deckgl-example-hello-world",
+  "name": "carto-deckgl-boundaries",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,6 @@
     "preview": "vite preview",
     "link-deck": "yarn link @deck.gl/core && yarn link @deck.gl/layers && yarn link @deck.gl/geo-layers && yarn link @deck.gl/mesh-layers && yarn link @deck.gl/aggregation-layers && yarn link @deck.gl/carto && yarn link @deck.gl/extensions",
     "unlink-deck": "yarn unlink @deck.gl/core && yarn link @deck.gl/layers && yarn link @deck.gl/geo-layers && yarn link @deck.gl/mesh-layers && yarn link @deck.gl/aggregation-layers && yarn link @deck.gl/carto && yarn link @deck.gl/extensions"
- 
   },
   "devDependencies": {
     "vite": "^4.5.0"
@@ -22,8 +21,6 @@
     "@deck.gl/geo-layers": "^9.0.0-alpha.5",
     "@deck.gl/layers": "^9.0.0-alpha.5",
     "@deck.gl/mesh-layers": "^9.0.0-alpha.5",
-    "@types/react": "^18.2.37",
-    "maplibre-gl": "^3.5.2",
-    "react": "^18.2.0"
+    "maplibre-gl": "^3.5.2"
   }
 }

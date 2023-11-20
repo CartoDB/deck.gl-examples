@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://app.carto.com/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://app.carto.com/favicon/favicon-16x16.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CARTO for deck.gl - Boundaries</title>
+  <body>
+    <div id="app">
+      <div id="map"></div>
+      <canvas id="deck-canvas"></canvas>
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>A boundaries explorer</h2>
+        <p>CARTO platforms provides a setof boundaries that you can visualize in your apps.</p>
+        <div class="layer-controls"> 
+          <p class="overline">Select a boundary</p>
+          <select name="boundarySelect" id="boundarySelector">
+            <option value="usa_zip_code_v1">US Zip Code 5 digits</option>
+          </select>
+        </div>
+      </div>
+    </div>
+   
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>
