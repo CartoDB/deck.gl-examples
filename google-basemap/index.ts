@@ -7,7 +7,7 @@ import {Loader} from '@googlemaps/js-api-loader';
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
-const connectionName = '';
+const connectionName = 'carto_dw';
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
 let map: google.maps.Map | null = null;
@@ -28,7 +28,6 @@ function setTooltip({x, y, object}) {
     tooltip.style.left = x + 'px';
     tooltip.style.top = y + 'px';
     tooltip.innerHTML = `<div style="padding: 8px">Continent: ${object.properties.continent_name}</br>Country: ${object.properties.country_name}</br>Population: ${object.properties.pop_2015}</div>`;
-    console.log(x, y, object);
   } else if (tooltip) {
     tooltip.style.display = 'none';
   }
