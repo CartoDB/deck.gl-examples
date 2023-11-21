@@ -11,9 +11,10 @@ const connectionName = 'carto_dw';
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
 let map: google.maps.Map | null = null;
-const overlay = new DeckOverlay({
+let overlay = new DeckOverlay({
   layers: []
 });
+
 
 const formatNumber = number =>
   new Intl.NumberFormat('en-US', {
@@ -93,23 +94,32 @@ selectedPopulationSelector?.addEventListener('change', () => {
 const basemapSelectorButtons = document.querySelectorAll('.basemap-button');
 
 basemapSelectorButtons!.forEach(button => {
-  button.addEventListener('click', () => {
-    const id=button.getAttribute('data-map-id');
-    const type=button.getAttribute('data-type');
+  button.addEventListener('click', async () => {
+    const id = button.getAttribute('data-map-id');
+    const type = button.getAttribute('data-type');
 
     basemapSelectorButtons!.forEach(button => {
       button.classList.remove('selected');
     });
 
-    if (type==='google') {
+    if (type === 'google') {
       map.setMapTypeId(id);
     } else {
-      overlay.setProps({
-        options: {
-          mapId: id
-        },
-        type: 'gmaps'
+      const _map = map;
+      const {Map} = (await google.maps.importLibrary('maps')) as google.maps.MapsLibrary;
+      map = new Map(document.getElementById('map') as HTMLElement, {
+        center: {lat: _map.center.lat(), lng: _map.center.lng()},
+        zoom: _map.zoom,
+        mapId: id,
+        mapType: 'gmaps',
+        mapTypeControl: false,
+        streetViewControl: false,
+        disableDefaultUI: true
       });
+      
+      
+      // This breaks the map
+      overlay.setMap(map);
     }
 
     button.classList.add('selected');
@@ -130,9 +140,10 @@ loader.load().then(async () => {
   map = new Map(document.getElementById('map') as HTMLElement, {
     center: {lat: 15, lng: 10},
     zoom: 3,
-    mapTypeId: 'roadmap',
+    mapTypeId: 'roadmap', 
     mapTypeControl: false,
     streetViewControl: false,
+    disableDefaultUI: true
   });
 
   overlay.setMap(map);
