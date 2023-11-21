@@ -57,13 +57,6 @@ deck.setProps({
   }
 });
 
-let selectedOsmCategory = 'Financial';
-const osmCategorySelector = document.querySelector<HTMLSelectElement>('#osmCategorySelector');
-osmCategorySelector?.addEventListener('change', () => {
-  selectedOsmCategory = osmCategorySelector.value;
-  render();
-});
-
 async function render() {
   const dataSource = vectorQuerySource({
     ...cartoConfig,
