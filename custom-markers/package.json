@@ -13,13 +13,14 @@
     "ocular-dev-tools": "^2.0.0-alpha.15"
   },
   "dependencies": {
-    "@deck.gl/aggregation-layers": "^9.0.0-alpha.3",
-    "@deck.gl/carto": "^9.0.0-alpha.3",
-    "@deck.gl/core": "^9.0.0-alpha.3",
-    "@deck.gl/extensions": "^9.0.0-alpha.3",
-    "@deck.gl/geo-layers": "^9.0.0-alpha.3",
-    "@deck.gl/layers": "^9.0.0-alpha.3",
-    "@deck.gl/mesh-layers": "^9.0.0-alpha.3",
+    "@deck.gl/google-maps": "^9.0.0-alpha.5",
+    "@deck.gl/aggregation-layers": "^9.0.0-alpha.5",
+    "@deck.gl/carto": "^9.0.0-alpha.5",
+    "@deck.gl/core": "^9.0.0-alpha.5",
+    "@deck.gl/extensions": "^9.0.0-alpha.5",
+    "@deck.gl/geo-layers": "^9.0.0-alpha.5",
+    "@deck.gl/layers": "^9.0.0-alpha.5",
+    "@deck.gl/mesh-layers": "^9.0.0-alpha.5",
     "maplibre-gl": "^3.5.2"
   }
 }
