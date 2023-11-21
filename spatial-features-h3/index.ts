@@ -31,27 +31,11 @@ variableSelector?.addEventListener('change', () => {
   render();
 });
 
-const fromSelector = document.getElementById('from') as HTMLSelectElement;
-fromSelector?.addEventListener('change', () => {
-  from = parseInt(fromSelector.value);
-});
-
-const toSelector = document.getElementById('to') as HTMLSelectElement;
-toSelector?.addEventListener('change', () => {
-  to = parseInt(toSelector.value);
-});
-
-const applyButton = document.getElementById('apply-filters') as HTMLButtonElement;
-applyButton?.addEventListener('click', () => {
-  render();
-});
-
 function render() {
   const source = h3QuerySource({
     ...cartoConfig,
     aggregationExp: `SUM(${selectedVariable}) as value`,
-    sqlQuery: `SELECT * FROM cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2 WHERE ${selectedVariable} between @from and @to`,
-    queryParameters: {from, to}
+    sqlQuery: `SELECT * FROM cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2`,
   });
 
   const layers = [
@@ -63,12 +47,15 @@ function render() {
       extruded: false,
       getFillColor: colorBins({
         attr: 'value',
-        domain: [0, 0.34, 1.98, 2.26, 10, 43303],
+        domain: [0, 666, 1333, 2000, 3333, 4000],
         colors: 'PinkYl'
       }),
       lineWidthMinPixels: 0.5,
       getLineWidth: 0.5,
       getLineColor: [255, 255, 255, 100],
+      onDataLoad() {
+        console.log('Data loaded');
+      }
     })
   ];
 
