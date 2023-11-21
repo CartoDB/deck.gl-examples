@@ -60,7 +60,10 @@ deck.setProps({
 async function render() {
   const dataSource = vectorQuerySource({
     ...cartoConfig,
-    sqlQuery: `select geom, population, name from cartobq.public_account.cities_1000 WHERE population > 0 ORDER BY population DESC`
+    sqlQuery: `SELECT geom, population, name 
+      FROM cartobq.public_account.cities_1000 
+        WHERE population > 0
+        ORDER BY population DESC`
   });
 
   const layers = [
