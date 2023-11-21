@@ -8,7 +8,7 @@ import {scaleLinear} from 'd3-scale';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
-const connectionName = import.meta.env.VITE_API_CONNECTION_NAME;
+const connectionName = 'carto_dw';
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
 const INITIAL_VIEW_STATE = {
