@@ -1,14 +1,17 @@
 import './style.css';
-import {GoogleMapsOverlay as DeckOverlay} from '@deck.gl/google-maps';
-import {colorCategories} from '@deck.gl/carto';
-import {VectorTileLayer, vectorQuerySource} from '@deck.gl/carto';
+import {GoogleMapsOverlay as DeckOverlay} from '@deck.gl/google-maps/typed';
+import {CartoLayer, colorCategories, setDefaultCredentials, MAP_TYPES} from '@deck.gl/carto/typed';
 import {Loader} from '@googlemaps/js-api-loader';
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
 const connectionName = 'carto_dw';
-const cartoConfig = {apiBaseUrl, accessToken, connectionName};
+
+setDefaultCredentials({
+  apiBaseUrl,
+  accessToken
+})
 
 let googleMapsLib: google.maps.MapsLibrary
 let map: google.maps.Map;
@@ -48,19 +51,16 @@ function getColorForContinent() {
 }
 
 function render() {
-  const source = vectorQuerySource({
-    ...cartoConfig,
-    sqlQuery: `SELECT geom, country_name, continent_name, pop_2015 FROM cartobq.public_account.world_population_2015 WHERE pop_2015 between @min and @max ORDER BY pop_2015 DESC`,
-    queryParameters: {
-      min: Number(1),
-      max: selectedMaxPopulation
-    }
-  });
-
   const layers = [
-    new VectorTileLayer({
+    new CartoLayer({
       id: 'population',
-      data: source,
+      connection: connectionName,
+      type: MAP_TYPES.QUERY,
+      data: `SELECT geom, country_name, continent_name, pop_2015 FROM cartobq.public_account.world_population_2015 WHERE pop_2015 between @min and @max ORDER BY pop_2015 DESC`,
+      queryParameters: {
+        min: Number(1),
+        max: selectedMaxPopulation
+      },
       opacity: 1,
       pickable: true,
       getFillColor: getColorForContinent(),
@@ -100,6 +100,8 @@ basemapSelectorButtons!.forEach(button => {
       button.classList.remove('selected');
     });
 
+    console.log(mapId, mapTypeId)
+
     setBasemap(mapTypeId, mapId);
     render();
 
@@ -115,15 +117,15 @@ function setBasemap(mapTypeId: string | null, mapId: string | null ) {
   
   const center = map ? map.getCenter() : {lat: 15, lng: 10};
   const zoom = map ? map.getZoom() : 3;
+  const mapOpts = mapId ? {mapId} : {mapTypeId};
 
   map = new googleMapsLib.Map(document.getElementById('map') as HTMLElement, {
     center,
     zoom,
-    mapId,
-    mapTypeId,
     mapTypeControl: false,
     streetViewControl: false,
-    disableDefaultUI: true
+    disableDefaultUI: true,
+    ...mapOpts
   });
 
   if (overlay)  {
