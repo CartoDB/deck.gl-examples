@@ -8,7 +8,7 @@ import { colorCategories, vectorQuerySource } from '@deck.gl/carto';
 const cartoConfig = {
   apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
   accessToken: import.meta.env.VITE_API_ACCESS_TOKEN,
-  connectionName: import.meta.env.VITE_API_CONNECTION_NAME
+  connectionName: 'carto_dw'
 };
 
 const INITIAL_VIEW_STATE = { latitude: 15, longitude: 10, zoom: 2 };
