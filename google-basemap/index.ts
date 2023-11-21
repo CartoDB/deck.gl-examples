@@ -10,11 +10,9 @@ const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
 const connectionName = 'carto_dw';
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
-let map: google.maps.Map | null = null;
-let overlay = new DeckOverlay({
-  layers: []
-});
-
+let googleMapsLib: google.maps.MapsLibrary
+let map: google.maps.Map;
+let overlay = new DeckOverlay({ interleaved: true });
 
 const formatNumber = number =>
   new Intl.NumberFormat('en-US', {
@@ -95,32 +93,15 @@ const basemapSelectorButtons = document.querySelectorAll('.basemap-button');
 
 basemapSelectorButtons!.forEach(button => {
   button.addEventListener('click', async () => {
-    const id = button.getAttribute('data-map-id');
-    const type = button.getAttribute('data-type');
+    const mapId = button.getAttribute('data-map-id');
+    const mapTypeId = button.getAttribute('data-map-type-id');
 
     basemapSelectorButtons!.forEach(button => {
       button.classList.remove('selected');
     });
 
-    if (type === 'google') {
-      map.setMapTypeId(id);
-    } else {
-      const _map = map;
-      const {Map} = (await google.maps.importLibrary('maps')) as google.maps.MapsLibrary;
-      map = new Map(document.getElementById('map') as HTMLElement, {
-        center: {lat: _map.center.lat(), lng: _map.center.lng()},
-        zoom: _map.zoom,
-        mapId: id,
-        mapType: 'gmaps',
-        mapTypeControl: false,
-        streetViewControl: false,
-        disableDefaultUI: true
-      });
-      
-      
-      // This breaks the map
-      overlay.setMap(map);
-    }
+    setBasemap(mapTypeId, mapId);
+    render();
 
     button.classList.add('selected');
   });
@@ -130,23 +111,36 @@ selectedPopulationSelector!.oninput = function () {
   populationLabel!.textContent = formatNumber((this as HTMLInputElement).value);
 };
 
+function setBasemap(mapTypeId: string | null, mapId: string | null ) {
+  
+  const center = map ? map.getCenter() : {lat: 15, lng: 10};
+  const zoom = map ? map.getZoom() : 3;
+
+  map = new googleMapsLib.Map(document.getElementById('map') as HTMLElement, {
+    center,
+    zoom,
+    mapId,
+    mapTypeId,
+    mapTypeControl: false,
+    streetViewControl: false,
+    disableDefaultUI: true
+  });
+
+  if (overlay)  {
+    overlay.finalize();
+  }
+  overlay.setMap(map);
+}
+
 const loader = new Loader({
   apiKey: GOOGLE_MAPS_API_KEY,
   version: 'weekly'
 });
 
 loader.load().then(async () => {
-  const {Map} = (await google.maps.importLibrary('maps')) as google.maps.MapsLibrary;
-  map = new Map(document.getElementById('map') as HTMLElement, {
-    center: {lat: 15, lng: 10},
-    zoom: 3,
-    mapTypeId: 'roadmap', 
-    mapTypeControl: false,
-    streetViewControl: false,
-    disableDefaultUI: true
-  });
-
-  overlay.setMap(map);
-
+  googleMapsLib = (await google.maps.importLibrary('maps')) as google.maps.MapsLibrary;
+  const mapTypeId = 'roadmap';
+  const mapId = '3754c817b510f791'; // use map id to force vector
+  setBasemap(mapTypeId, mapId)
   render();
 });
