@@ -2,7 +2,7 @@ import './style.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import {Deck} from '@deck.gl/core';
 import maplibregl from 'maplibre-gl';
-import {VectorTileLayer, vectorQuerySource} from '@deck.gl/carto';
+import {VectorTileLayer, vectorQuerySource, BASEMAP} from '@deck.gl/carto';
 import {CollisionFilterExtension} from '@deck.gl/extensions';
 import {scaleLinear} from 'd3-scale';
 
@@ -30,12 +30,10 @@ const colorScale = scaleLinear()
     [237, 248, 177]
   ]);
 
-  const fontSize = 24;
-  const scale = 16;
-  const sizeMaxPixels = (scale / 3) * fontSize;
-  const sizeMinPixels = Math.min(scale / 1000, 0.5) * fontSize;
-
-const MAP_STYLE = 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json';
+const fontSize = 24;
+const scale = 16;
+const sizeMaxPixels = (scale / 3) * fontSize;
+const sizeMinPixels = Math.min(scale / 1000, 0.5) * fontSize;
 
 const deck = new Deck({
   canvas: 'deck-canvas',
@@ -46,7 +44,7 @@ const deck = new Deck({
 // Add basemap
 const map = new maplibregl.Map({
   container: 'map',
-  style: MAP_STYLE,
+  style: BASEMAP.DARK_MATTER,
   interactive: false
 });
 
@@ -91,9 +89,9 @@ async function render() {
       collisionTestProps: {
         sizeScale: fontSize * 2,
         sizeMaxPixels: sizeMaxPixels * 2,
-        sizeMinPixels: sizeMinPixels * 2,
+        sizeMinPixels: sizeMinPixels * 2
       },
-      extensions: [new CollisionFilterExtension()],
+      extensions: [new CollisionFilterExtension()]
     })
   ];
 
