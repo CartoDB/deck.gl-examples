@@ -66,10 +66,7 @@ function render() {
       }),
       lineWidthMinPixels: 0.5,
       getLineWidth: 0.5,
-      getLineColor: [255, 255, 255, 100],
-      onDataLoad(data) {
-        console.log('Data loaded', data);
-      }
+      getLineColor: [255, 255, 255, 100]
     })
   ];
 
