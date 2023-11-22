@@ -13,7 +13,7 @@ const cartoConfig = {
 const INITIAL_VIEW_STATE = {
   latitude: 40.7128, // Aproximado para Nueva York
   longitude: -74.006, // Aproximado para Nueva York
-  zoom: 10,
+  zoom: 7,
   pitch: 0,
   bearing: 0,
   minZoom: 3.5,
@@ -22,8 +22,6 @@ const INITIAL_VIEW_STATE = {
 
 // Selectors
 let selectedVariable = 'population';
-let from = 0;
-let to = 100000;
 
 const variableSelector = document.getElementById('variable') as HTMLSelectElement;
 variableSelector?.addEventListener('change', () => {
@@ -31,11 +29,27 @@ variableSelector?.addEventListener('change', () => {
   render();
 });
 
+function initSelectors() {
+  const variableSelector = document.getElementById('variable') as HTMLSelectElement;
+  fetch(
+    'https://public.carto.com/api/v4/data/observatory/metadata/datasets/cdb_spatial_fea_94e6b1f/variables?minimal=true'
+  )
+    .then(response => response.json())
+    .then(data => {
+      const options = data
+        .filter(variable => variable.db_type === 'FLOAT')
+        .map((variable: any) => {
+          return `<option value="${variable.column_name}">${variable.name}</option>`;
+        });
+      variableSelector.innerHTML = options.join('');
+    });
+}
+
 function render() {
   const source = h3QuerySource({
     ...cartoConfig,
     aggregationExp: `SUM(${selectedVariable}) as value`,
-    sqlQuery: `SELECT * FROM cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2`,
+    sqlQuery: `SELECT * FROM cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2`
   });
 
   const layers = [
@@ -47,22 +61,25 @@ function render() {
       extruded: false,
       getFillColor: colorBins({
         attr: 'value',
-        domain: [0, 666, 1333, 2000, 3333, 4000],
+        domain: [0, 100, 1000, 2000, 3000, 4000, 5000, 6000],
         colors: 'PinkYl'
       }),
       lineWidthMinPixels: 0.5,
       getLineWidth: 0.5,
       getLineColor: [255, 255, 255, 100],
-      onDataLoad() {
-        console.log('Data loaded');
+      onDataLoad(data) {
+        console.log('Data loaded', data);
       }
     })
   ];
 
   deck.setProps({
     layers,
-    getTooltip: ({object}) =>  object && {
-        html: `Hex ID: ${object.id}</br>${selectedVariable.toUpperCase()}: ${parseInt(object.properties.value)}`
+    getTooltip: ({object}) =>
+      object && {
+        html: `Hex ID: ${object.id}</br>${selectedVariable.toUpperCase()}: ${parseInt(
+          object.properties.value
+        )}`
       }
   });
 }
@@ -77,14 +94,15 @@ const map = new maplibregl.Map({
 const deck = new Deck({
   canvas: 'deck-canvas',
   initialViewState: INITIAL_VIEW_STATE,
-  controller: true,
+  controller: true
 });
 deck.setProps({
   onViewStateChange: ({viewState}) => {
     const {longitude, latitude, ...rest} = viewState;
-    map
-    .jumpTo({center: [longitude, latitude], ...rest});
+    map.jumpTo({center: [longitude, latitude], ...rest});
   }
 });
+
+initSelectors();
 
 render();
