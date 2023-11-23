@@ -1,9 +1,16 @@
+type DbType = 'FLOAT' | 'STRING' | 'DATE'; 
+interface Variable {
+    column_name: string;
+    name: string;
+    db_type: DbType;
+}
+
 export async function initSelectors() {
     const variableSelector = document.getElementById('variable') as HTMLSelectElement;
     const data = await getVariables();
     const options = data
-        .filter((variable: any) => variable.db_type === 'FLOAT')
-        .map((variable: any) => {
+        .filter((variable: Variable) => variable.db_type === 'FLOAT')
+        .map((variable: Variable) => {
             return `<option value="${variable.column_name}">${variable.name}</option>`;
         });
     variableSelector.innerHTML = options.join('');
