@@ -70,7 +70,7 @@ deck.setProps({
 });
 
 async function render() {
-  loader.classList.remove('hidden');
+  loader!.classList.remove('hidden');
   const dataSource = vectorQuerySource({
     ...cartoConfig,   
     sqlQuery: `SELECT geom, osm_id, name, address, group_name, subgroup_name  FROM carto-demo-data.demo_tables.osm_pois_usa WHERE group_name IN UNNEST(@groupName)`,
@@ -107,7 +107,7 @@ async function render() {
         sizeMinPixels: ICON_WIDTH * 4,
       },
       onDataLoad: () => {
-        loader.classList.add('hidden');
+        loader!.classList.add('hidden');
       }
     })
   ];
