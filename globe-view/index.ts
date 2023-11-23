@@ -120,15 +120,13 @@ async function initialize() {
 
   let currentTime = 0;
 
-  setInterval(() => {
+  function animate() {
     deck.setProps({
       layers: [
         ...backgroundLayers,
         new AnimatedArcLayer({
           id: "flights-layer",
           data: flightsSource.rows,
-          visible:
-            MIN_TIME < currentTime && MAX_TIME > currentTime + TIME_WINDOW,
           getSourcePosition: (d) => [d.lon1, d.lat1, d.alt1],
           getTargetPosition: (d) => [d.lon2, d.lat2, d.alt2],
           getSourceTimestamp: (d) => d.time1,
@@ -149,7 +147,11 @@ async function initialize() {
     }
 
     sunLight.timestamp = getDate(currentTime).getTime();
-  }, 50);
+
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
 }
 
 initialize();
