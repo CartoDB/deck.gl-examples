@@ -23,21 +23,21 @@ Initialize deck.gl
 cd deck.gl
 yarn 
 yarn bootstrap
+# yarn build to refresh in the future
+```
+
+Link all
+```bash
+cd modules/<module>
+yarn link
 ```
 
 Initialize deck.gl-examples 
 ```bash
 cd deck.gl-examples
-yarn
-```
-
-Link types:
-```bash
-cd deck.gl
-yarn build
-cd ../deck.gl-examples
-cd ../<examples>/node_modules/@types
-ln -s ../../../../deck.gl/modules/carto/typed deck.gl__carto
+yarn 
+yarn link-deck
+# yarn unlink-deck
 ```
 
 Execute the environment:
