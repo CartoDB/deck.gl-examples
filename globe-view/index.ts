@@ -2,8 +2,8 @@ import './style.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import maplibregl from 'maplibre-gl';
 import {query} from '@deck.gl/carto';
-import {GeoJsonLayer} from '@deck.gl/layers'
-import {SimpleMeshLayer} from '@deck.gl/mesh-layers'
+import {GeoJsonLayer} from '@deck.gl/layers';
+import {SimpleMeshLayer} from '@deck.gl/mesh-layers';
 import {SphereGeometry} from '@luma.gl/engine';
 import {
   Deck,
@@ -44,12 +44,11 @@ const sunLight = new SunLight({
 });
 
 // create lighting effect with light sources
-const lightingEffect = new LightingEffect({ ambientLight, sunLight });
+const lightingEffect = new LightingEffect({ambientLight, sunLight});
 
 // Look up the real date time from our artifical timestamp
 function getDate(t) {
-  const timestamp =
-    new Date("2020-01-14T00:00:00Z").getTime() + (t % SEC_PER_DAY) * 1000;
+  const timestamp = new Date('2020-01-14T00:00:00Z').getTime() + (t % SEC_PER_DAY) * 1000;
   return new Date(timestamp);
 }
 
@@ -65,14 +64,14 @@ const deck = new Deck({
 // Add basemap
 const map = new maplibregl.Map({
   container: 'map',
-  style:  {
+  style: {
     version: 8,
     sources: {},
     layers: [
       {
-        id: "background",
-        type: "background",
-        paint: { "background-color": "#000" }
+        id: 'background',
+        type: 'background',
+        paint: {'background-color': '#000'}
       }
     ]
   },
@@ -93,15 +92,14 @@ async function initialize() {
     sqlQuery: `SELECT time1, time2, lat1, lat2, lon1, lon2, alt1, alt2 FROM cartobq.public_account.animated_deckgl_layer_flights`
   });
 
-  const worldLandQuery = "SELECT the_geom FROM ne_50m_land_world";
-  const worldLandUrl = `https://public.carto.com/api/v2/sql?q=${worldLandQuery}&format=geojson`;
-  const geoJsonWorldLandData = await fetch(worldLandUrl).then((response) =>
-    response.json()
-  );
+  const geoJsonWorldLandData = await query({
+    ...cartoConfig,
+    sqlQuery: `SELECT * FROM cartobq.public_account.ne_50m_land_world`
+  });
 
   const backgroundLayers = [
     new SimpleMeshLayer({
-      id: "earth-sphere",
+      id: 'earth-sphere',
       data: [0],
       mesh: new SphereGeometry({radius: EARTH_RADIUS_METERS, nlat: 18, nlong: 36}),
       coordinateSystem: COORDINATE_SYSTEM.CARTESIAN,
@@ -109,8 +107,9 @@ async function initialize() {
       getColor: [255, 255, 255]
     }),
     new GeoJsonLayer({
-      id: "earth-land-layer",
-      data: geoJsonWorldLandData.features,
+      id: 'earth-land-layer',
+      data: geoJsonWorldLandData,
+      dataTransform: d => d.rows.filter(row => row.geom).map(row => ({ type: 'Feature', geometry: row.geom })),
       stroked: false,
       filled: true,
       opacity: 0.1,
@@ -125,12 +124,12 @@ async function initialize() {
       layers: [
         ...backgroundLayers,
         new AnimatedArcLayer({
-          id: "flights-layer",
+          id: 'flights-layer',
           data: flightsSource.rows,
-          getSourcePosition: (d) => [d.lon1, d.lat1, d.alt1],
-          getTargetPosition: (d) => [d.lon2, d.lat2, d.alt2],
-          getSourceTimestamp: (d) => d.time1,
-          getTargetTimestamp: (d) => d.time2,
+          getSourcePosition: d => [d.lon1, d.lat1, d.alt1],
+          getTargetPosition: d => [d.lon2, d.lat2, d.alt2],
+          getSourceTimestamp: d => d.time1,
+          getTargetTimestamp: d => d.time2,
           getHeight: 0.5,
           getWidth: 1,
           timeRange: [currentTime, currentTime + TIME_WINDOW],
