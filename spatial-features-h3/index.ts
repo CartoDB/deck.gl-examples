@@ -46,7 +46,7 @@ function render() {
       extruded: false,
       getFillColor: colorBins({
         attr: 'value',
-        domain: [0, 100, 1000, 2000, 3000, 4000, 5000, 6000],
+        domain: [0, 100, 1000, 10000, 100000, 1000000],
         colors: 'PinkYl'
       }),
       lineWidthMinPixels: 0.5,
