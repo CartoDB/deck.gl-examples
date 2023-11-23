@@ -21,16 +21,16 @@
       rel="stylesheet"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CARTO for deck.gl - Dynamic Tiling 1.4M Points of Interest </title>
+    <title>CARTO for deck.gl - Dynamic Tiling 1.4M Custom Markers </title>
   <body>
     <div id="app">
       <div id="map"></div>
       <canvas id="deck-canvas"></canvas>
       <div id="story-card">
         <p class="overline">✨👀 You're viewing</p>
-        <h2>1.4M Points of Interest</h2>
-        <p>This visualization is using <a href="https://carto.com/blog/dynamic-tiling-for-highly-performant-cloud-native-maps" rel="noopener noreferrer" target="_blank">Dynamic Tiling</a> to load millions of points of interest across the United States.</p>
-        <p>CARTO drastically reduces development and maintenance times for geospatial applications. POIs for the selected category are filtered in the server by query paremeters.</p>
+        <h2>1.4M Custom Markers</h2>
+        <p>This visualization uses <a href="https://carto.com/blog/dynamic-tiling-for-highly-performant-cloud-native-maps" rel="noopener noreferrer" target="_blank">Dynamic Tiling</a> to load millions of points of interest represented by custom markers across the United States.</p>
+        <p>Custom markers for the selected category are filtered in the server by query parameters and uses a deck.gl CollisionFilterExtension to hide markers that overlap with other markers.</p>
         <div class="layer-controls">
           <p class="overline">Select a category:</p>
           <div class="container">

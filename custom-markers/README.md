@@ -1,6 +1,6 @@
-## Example: 1.4M Points of Interest
+## Example: 1.4M Custom Markers
 
-This visualization is using [Dynamic Tiling](https://carto.com/blog/dynamic-tiling-for-highly-performant-cloud-native-maps) to load millions of points of interest across the United States.
+This visualization is using [Dynamic Tiling](https://carto.com/blog/dynamic-tiling-for-highly-performant-cloud-native-maps) to load millions of points of interest represented with custom markers across the United States. Custom markers for the selected category are filtered in the server by query parameters and uses a deck.gl CollisionFilterExtension to hide markers that overlap with other markers.
 
 Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
@@ -8,7 +8,7 @@ Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
 ## Usage
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/CartoDB/deck.gl-examples/tree/master/dynamic-tiling-pois?file=index.ts)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/CartoDB/deck.gl-examples/tree/master/custom-markers?file=index.ts)
 
 Or run it locally:
 

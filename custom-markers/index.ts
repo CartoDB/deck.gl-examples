@@ -4,76 +4,26 @@ import maplibregl from 'maplibre-gl';
 import {Deck} from '@deck.gl/core';
 import {BASEMAP, vectorQuerySource, VectorTileLayer} from '@deck.gl/carto';
 import {CollisionFilterExtension} from '@deck.gl/extensions';
-import Financial from './markers/Financial.svg';
-import Tourism from './markers/Tourism.svg';
-import Sustenance from './markers/Sustenance.svg';
-import Commercial from './markers/Commercial.svg';
-import Education from './markers/Education.svg';
-import Entertainment from './markers/Entertainment.svg';
-import Transportation from './markers/Transportation.svg';
-import Healthcare from './markers/Healthcare.svg';
-import Civic from './markers/Civic.svg';
-import Star from './markers/Others.svg';
-import Otehers from './markers/Others.svg';
+import { ICON_MAPPING, ICON_WIDTH } from './iconUtils';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
-
 const connectionName = 'carto_dw'
-
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
-const iconWidth = 15;
-
-const ICON_MAPPING = {
-  Financial: {
-    icon: Financial,
-  },
-  Tourism: {
-    icon: Tourism,
-  },
-  Sustenance: {
-    icon: Sustenance,
-  },
-  Commercial: {
-    icon: Commercial,
-  },
-  Education: {
-    icon: Education,
-  },
-  "Entertainment, Arts & Culture": {
-    icon: Entertainment,
-  },
-  Transportation: {
-    icon: Transportation,
-  },
-  Healthcare: {
-    icon: Healthcare,
-  },
-  'Civic amenities': {
-    icon: Civic,
-  },
-  Star: {
-    icon: Star,
-  },
-  Others: {
-    icon: Otehers,
-  }
-};
-
 const INITIAL_VIEW_STATE = {
-  latitude: 41.8097343,
-  longitude: -110.5556199,
-  zoom: 3,
+  latitude: 40.730610,
+  longitude: -74.0256284,
+  zoom: 11,
   bearing: 0,
-  pitch: 0
+  pitch: 0,
+  minZoom: 10,
 };
 
 const deck = new Deck({
   canvas: 'deck-canvas',
   initialViewState: INITIAL_VIEW_STATE,
-  controller: true
+  controller: true,
 });
 
 let selectedCategories = [];
@@ -116,17 +66,17 @@ deck.setProps({
   onViewStateChange: ({viewState}) => {
     const {longitude, latitude, ...rest} = viewState;
     map.jumpTo({center: [longitude, latitude], ...rest});
-  }
+  },
 });
 
 async function render() {
   loader.classList.remove('hidden');
   const dataSource = vectorQuerySource({
-    ...cartoConfig,
+    ...cartoConfig,   
+    sqlQuery: `SELECT geom, osm_id, name, address, group_name, subgroup_name  FROM carto-demo-data.demo_tables.osm_pois_usa WHERE group_name IN UNNEST(@groupName)`,
     queryParameters: {
       groupName: selectedCategories
-    },
-    sqlQuery: `select * from carto-demo-data.demo_tables.osm_pois_usa where group_name IN UNNEST(@groupName)`
+    }
   });
 
   const layers = [
@@ -138,9 +88,9 @@ async function render() {
       getIcon: d => {
         return {
           url: ICON_MAPPING[d.properties.group_name].icon,
-          width: iconWidth,
-          height: iconWidth,
-          anchorY: iconWidth / 2
+          width: ICON_WIDTH,
+          height: ICON_WIDTH,
+          anchorY: ICON_WIDTH / 2
         };
       },
       getIconSize: d => 15,
@@ -152,9 +102,9 @@ async function render() {
       collisionEnabled: true,
       getCollisionPriority: d => Object.keys(selectedCategories).indexOf(d.properties.group_name),
       collisionTestProps: {
-        sizeScale: iconWidth * 4,
-        sizeMaxPixels: iconWidth * 4,
-        sizeMinPixels: iconWidth * 4,
+        sizeScale: ICON_WIDTH * 4,
+        sizeMaxPixels: ICON_WIDTH * 4,
+        sizeMinPixels: ICON_WIDTH * 4,
       },
       onDataLoad: () => {
         loader.classList.add('hidden');
