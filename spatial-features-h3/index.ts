@@ -3,6 +3,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import maplibregl from 'maplibre-gl';
 import {Deck} from '@deck.gl/core';
 import {H3TileLayer, h3QuerySource, BASEMAP, colorBins} from '@deck.gl/carto';
+import { initSelectors } from './selectorUtils';
 
 const cartoConfig = {
   apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
@@ -28,22 +29,6 @@ variableSelector?.addEventListener('change', () => {
   selectedVariable = variableSelector.value;
   render();
 });
-
-function initSelectors() {
-  const variableSelector = document.getElementById('variable') as HTMLSelectElement;
-  fetch(
-    'https://public.carto.com/api/v4/data/observatory/metadata/datasets/cdb_spatial_fea_94e6b1f/variables?minimal=true'
-  )
-    .then(response => response.json())
-    .then(data => {
-      const options = data
-        .filter(variable => variable.db_type === 'FLOAT')
-        .map((variable: any) => {
-          return `<option value="${variable.column_name}">${variable.name}</option>`;
-        });
-      variableSelector.innerHTML = options.join('');
-    });
-}
 
 function render() {
   const source = h3QuerySource({
@@ -101,5 +86,4 @@ deck.setProps({
 });
 
 initSelectors();
-
 render();
