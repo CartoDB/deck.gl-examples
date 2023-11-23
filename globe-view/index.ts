@@ -154,7 +154,7 @@ async function initialize() {
     }
 
     sunLight.timestamp = getDate(currentTime).getTime();
-  }, 100);
+  }, 50);
 }
 
 initialize();

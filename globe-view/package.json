@@ -1,5 +1,5 @@
 {
-  "name": "carto-deckgl-boundaries",
+  "name": "carto-deckgl-globe-view", 
   "version": "0.0.0",
   "private": true,
   "scripts": {
