@@ -1,19 +1,19 @@
 import './style.css';
-import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import {Deck} from '@deck.gl/core';
+import maplibregl from 'maplibre-gl';
 import {query} from '@deck.gl/carto';
 import {GeoJsonLayer} from '@deck.gl/layers'
 import {SimpleMeshLayer} from '@deck.gl/mesh-layers'
-import AnimatedArcLayer from './AnimatedArcLayer';
 import {SphereGeometry} from '@luma.gl/engine';
 import {
+  Deck,
   COORDINATE_SYSTEM,
   _GlobeView as GlobeView,
   LightingEffect,
   AmbientLight,
   _SunLight as SunLight
 } from '@deck.gl/core';
+import AnimatedArcLayer from './AnimatedArcLayer';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
@@ -92,11 +92,6 @@ async function initialize() {
     ...cartoConfig,
     sqlQuery: `SELECT time1, time2, lat1, lat2, lon1, lon2, alt1, alt2 FROM cartobq.public_account.animated_deckgl_layer_flights`
   });
-
-  // const flightsSource = await query({
-  //   ...cartoConfig,
-  //   sqlQuery: `SELECT time1, time2, lat1, lat2, lon1, lon2, alt1, alt2 FROM cartobq.public_account.animated_deckgl_layer_flights`
-  // });
 
   const worldLandQuery = "SELECT the_geom FROM ne_50m_land_world";
   const worldLandUrl = `https://public.carto.com/api/v2/sql?q=${worldLandQuery}&format=geojson`;
