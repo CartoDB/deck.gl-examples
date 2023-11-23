@@ -1,5 +1,5 @@
 {
-  "name": "carto-deckgl-boundaries",
+  "name": "carto-deckgl-example-labels",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -21,6 +21,7 @@
     "@deck.gl/geo-layers": "^9.0.0-alpha.5",
     "@deck.gl/layers": "^9.0.0-alpha.5",
     "@deck.gl/mesh-layers": "^9.0.0-alpha.5",
-    "maplibre-gl": "^3.5.2"
+    "maplibre-gl": "^3.5.2",
+    "d3-scale": "^2.0.0"
   }
 }

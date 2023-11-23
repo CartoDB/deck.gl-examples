@@ -51,8 +51,8 @@ function render() {
 
   const querySource = boundaryQuerySource({
     ...cartoConfig,
-    boundaryId: 'usa_zip_code_v1',
-    sqlQuery: `SELECT geoid, AVG(avg_ticket) as avg_ticket
+    tilesetTableName: 'carto-boundaries.us.usa_zip_code_v1',
+    propertiesSqlQuery: `SELECT geoid, AVG(avg_ticket) as avg_ticket
         FROM carto-dev-data.mastercard.original_index_usa_uszc_2015_daily 
           WHERE timeinstant between @start and @finish
           and industry='ret' and segment='o' and geo_type='m'

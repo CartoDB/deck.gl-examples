@@ -1,8 +1,8 @@
 import './style.css';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import {Deck, FlyToInterpolator} from '@deck.gl/core';
-import {BASEMAP, boundaryTilesetSource, boundaryQuerySource, VectorTileLayer} from '@deck.gl/carto';
+import {Deck} from '@deck.gl/core';
+import {BASEMAP, vectorTilesetSource, VectorTileLayer} from '@deck.gl/carto';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
@@ -47,15 +47,15 @@ deck.setProps({
 
 const boundarySelector = document.querySelector<HTMLSelectElement>('#boundarySelector');
 boundarySelector?.addEventListener('change', () => {
-  const selectedBoundary = boundarySelector.value;
-  render(selectedBoundary);
+  const selectedTilesetTableName = boundarySelector.value;
+  render(selectedTilesetTableName);
 });
 
-function render(boundaryId: string) {
+function render(tilesetTableName: string) {
 
-  const boundarySource = boundaryTilesetSource({
+  const boundarySource = vectorTilesetSource({
     ...cartoConfig,
-    boundaryId
+    tableName: tilesetTableName
   });
 
   const layers = [
