@@ -84,10 +84,6 @@ button:hover {
   display: flex;
 }
 
-.population-slider {
-  width: 100%;
-}
-
 #tooltip {
   position: absolute;
   z-index: 1;
