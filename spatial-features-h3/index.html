@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>CARTO for deck.gl - H3 Spatial Index 12M rows</title>
+  </head>
+  <body>
+    <div id="map"></div>
+    <canvas id="deck-canvas"></canvas>
+    <div id="story-card">
+      <p class="overline">✨👀 You're viewing</p>
+      <h2>CARTO Spatial Features datasets in H3 (12M rows).</h2>
+      <p>
+        More info about
+        <a
+          href=" https://carto.com/blog/carto-spatial-features-urbanity-climatology-elevation"
+          rel="noopener noreferrer"
+          target="_blank"
+          >H3 Spatial Index</a
+        >
+      </p>
+
+      <div class="layer-controls">
+        <p class="overline">Variable</p>
+        <select name="variable" id="variable" class="select">
+          
+        </select>
+        <div>
+          <img
+            class="legend"
+            src="./images/scale.jpg"
+            alt="legend"
+          />
+          <div class="label-container">
+            <div>0</div>
+            <div>4K</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Source: <a href="https://carto.com/spatial-data-catalog/browser/dataset/cdb_spatial_fea_94e6b1f/" rel="noopener noreferrer" target="_blank">Spatial Features - United States of America (H3 Resolution 8)</a></p>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>
