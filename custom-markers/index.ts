@@ -90,7 +90,6 @@ async function render() {
           url: ICON_MAPPING[d.properties.group_name].icon,
           width: ICON_WIDTH,
           height: ICON_WIDTH,
-          anchorY: ICON_WIDTH / 2
         };
       },
       getIconSize: d => 15,
@@ -103,9 +102,9 @@ async function render() {
       collisionEnabled: true,
       getCollisionPriority: d => Object.keys(selectedCategories).indexOf(d.properties.group_name),
       collisionTestProps: {
-        sizeScale: ICON_WIDTH * 4,
-        sizeMaxPixels: ICON_WIDTH * 4,
-        sizeMinPixels: ICON_WIDTH * 4,
+        sizeScale: ICON_WIDTH * 1.2,
+        sizeMaxPixels: ICON_WIDTH * 1.2,
+        sizeMinPixels: ICON_WIDTH * 1.2,
       },
       onDataLoad: () => {
         loader!.classList.add('hidden');

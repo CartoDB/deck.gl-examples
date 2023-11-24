@@ -10,7 +10,7 @@ import Civic from './markers/Civic.svg';
 import Star from './markers/Others.svg';
 import Otehers from './markers/Others.svg';
 
-export const ICON_WIDTH = 15;
+export const ICON_WIDTH = 60;
 export const ICON_MAPPING = {
   Financial: {
     icon: Financial
