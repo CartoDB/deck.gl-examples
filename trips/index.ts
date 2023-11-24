@@ -110,14 +110,10 @@ async function initialize() {
       height: f.numfloors
     }));
 
-  let time = 0;
+  let time = 300;
 
   function animate() {
     time = (time + ANIMATION_SPEED) % LOOP_LENGTH;
-    window.requestAnimationFrame(animate);
-  }
-
-  setInterval(() => {
     deck.setProps({
       effects: DEFAULT_THEME.effects,
       layers: [
@@ -136,7 +132,7 @@ async function initialize() {
           getTimestamps: d => d.timestamps,
           getColor: d => (d.vendor === 0 ? DEFAULT_THEME.trailColor0 : DEFAULT_THEME.trailColor1),
           opacity: 0.3,
-          widthMinPixels: 2,
+          widthMinPixels: 4,
           jointRounded: true,
           trailLength: 180,
           currentTime: time,
@@ -149,13 +145,14 @@ async function initialize() {
           wireframe: false,
           opacity: 0.5,
           getPolygon: f => f.polygon,
-          getElevation: f => f.height * 4,
+          getElevation: f => f.height * 6,
           getFillColor: DEFAULT_THEME.buildingColor as any,
           material: DEFAULT_THEME.material as any
         })
       ]
     });
-  }, ANIMATION_SPEED);
+    window.requestAnimationFrame(animate);
+  }
 
   window.requestAnimationFrame(animate);
 }
