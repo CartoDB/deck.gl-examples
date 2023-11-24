@@ -30,12 +30,12 @@ const aggMethodLabel = document.getElementById('agg-method') as HTMLSelectElemen
 
 aggMethodLabel.innerText = aggregationExp;
 variableSelector?.addEventListener('change', () => {
-  // get by data-agg-method attributer
   const aggMethod = variableSelector.selectedOptions[0].dataset.aggMethod || 'SUM';
-  console.log(aggMethod);
+  
   selectedVariable = variableSelector.value;
   aggregationExp = `${aggMethod}(${selectedVariable})`;
   aggMethodLabel.innerText = aggregationExp;
+  
   render();
 });
 
