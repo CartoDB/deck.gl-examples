@@ -23,17 +23,26 @@ const INITIAL_VIEW_STATE = {
 
 // Selectors
 let selectedVariable = 'population';
+let aggregationExp = `SUM(${selectedVariable})`
 
 const variableSelector = document.getElementById('variable') as HTMLSelectElement;
+const aggMethodLabel = document.getElementById('agg-method') as HTMLSelectElement;
+
+aggMethodLabel.innerText = aggregationExp;
 variableSelector?.addEventListener('change', () => {
+  // get by data-agg-method attributer
+  const aggMethod = variableSelector.selectedOptions[0].dataset.aggMethod || 'SUM';
+  console.log(aggMethod);
   selectedVariable = variableSelector.value;
+  aggregationExp = `${aggMethod}(${selectedVariable})`;
+  aggMethodLabel.innerText = aggregationExp;
   render();
 });
 
 function render() {
   const source = h3QuerySource({
     ...cartoConfig,
-    aggregationExp: `SUM(${selectedVariable}) as value`,
+    aggregationExp: `${aggregationExp} as value`,
     sqlQuery: `SELECT * FROM cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2`
   });
 
