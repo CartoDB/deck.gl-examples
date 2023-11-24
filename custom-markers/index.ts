@@ -14,10 +14,10 @@ const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 const INITIAL_VIEW_STATE = {
   latitude: 40.730610,
   longitude: -74.0256284,
-  zoom: 11,
+  zoom: 12,
   bearing: 0,
   pitch: 45,
-  minZoom: 10,
+  minZoom: 12,
 };
 
 const deck = new Deck({
@@ -97,6 +97,7 @@ async function render() {
       iconSizeUnits: 'pixels',
       iconSizeScale: 2,
       iconBillboard: true,
+      iconAlphaCutoff: -1,
       // Enable collision detection
       extensions: [new CollisionFilterExtension()],
       collisionEnabled: true,
