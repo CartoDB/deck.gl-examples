@@ -80,8 +80,7 @@ async function initialize() {
 
   const data = await query({
     ...cartoConfig,
-    sqlQuery:
-      'SELECT geom, vendor, TO_JSON_STRING(timestamps) AS timestamps FROM cartobq.public_account.new_york_trips'
+    sqlQuery: 'SELECT geom, vendor, TO_JSON_STRING(timestamps) AS timestamps FROM cartobq.public_account.new_york_trips'
   });
 
   const buildings = await query({
@@ -156,7 +155,7 @@ async function initialize() {
         })
       ]
     });
-  }, 50);
+  }, ANIMATION_SPEED);
 
   window.requestAnimationFrame(animate);
 }
