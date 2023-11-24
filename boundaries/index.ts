@@ -55,12 +55,13 @@ function render() {
     propertiesSqlQuery: `SELECT geoid, AVG(avg_ticket) as avg_ticket
         FROM carto-dev-data.mastercard.original_index_usa_uszc_2015_daily 
           WHERE timeinstant between @start and @finish
-          and industry='ret' and segment='o' and geo_type='m'
+          and industry=@industry and segment='o' and geo_type='m'
           group by geoid`,
     matchingColumn: 'geoid',
     queryParameters: {
       start: '2023-01-01',
-      finish: '2023-03-31'
+      finish: '2023-03-31',
+      industry: 'ret'
     }
   });
 
