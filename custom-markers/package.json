@@ -1,5 +1,5 @@
 {
-  "name": "carto-deckgl-example-carto-colors",
+  "name": "carto-deckgl-example-custom-markers",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -14,13 +14,14 @@
     "vite": "^4.5.0"
   },
   "dependencies": {
-    "@deck.gl/aggregation-layers": "^9.0.0-alpha.6",
-    "@deck.gl/carto": "^9.0.0-alpha.6",
-    "@deck.gl/core": "^9.0.0-alpha.6",
-    "@deck.gl/extensions": "^9.0.0-alpha.6",
-    "@deck.gl/geo-layers": "^9.0.0-alpha.6",
-    "@deck.gl/layers": "^9.0.0-alpha.6",
-    "@deck.gl/mesh-layers": "^9.0.0-alpha.6",
+    "@deck.gl/google-maps": "^9.0.0-alpha.5",
+    "@deck.gl/aggregation-layers": "^9.0.0-alpha.5",
+    "@deck.gl/carto": "^9.0.0-alpha.5",
+    "@deck.gl/core": "^9.0.0-alpha.5",
+    "@deck.gl/extensions": "^9.0.0-alpha.5",
+    "@deck.gl/geo-layers": "^9.0.0-alpha.5",
+    "@deck.gl/layers": "^9.0.0-alpha.5",
+    "@deck.gl/mesh-layers": "^9.0.0-alpha.5",
     "maplibre-gl": "^3.5.2"
   }
 }

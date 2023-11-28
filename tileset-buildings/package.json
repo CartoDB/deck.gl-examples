@@ -6,26 +6,21 @@
     "dev": "vite",
     "dev-local": "vite --config ../vite.config.local.mjs",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "link-deck": "yarn link @deck.gl/core && yarn link @deck.gl/layers && yarn link @deck.gl/geo-layers && yarn link @deck.gl/mesh-layers && yarn link @deck.gl/aggregation-layers && yarn link @deck.gl/carto && yarn link @deck.gl/extensions",
+    "unlink-deck": "yarn unlink @deck.gl/core && yarn link @deck.gl/layers && yarn link @deck.gl/geo-layers && yarn link @deck.gl/mesh-layers && yarn link @deck.gl/aggregation-layers && yarn link @deck.gl/carto && yarn link @deck.gl/extensions"
   },
   "devDependencies": {
-    "vite": "^4.5.0",
-    "ocular-dev-tools": "^2.0.0-alpha.15"
+    "vite": "^4.5.0"
   },
   "dependencies": {
-    "@deck.gl/aggregation-layers": "^8.0.0",
-    "@deck.gl/carto": "^8.9.32",
-    "@deck.gl/core": "^8.0.0",
-    "@deck.gl/extensions": "^8.0.0",
-    "@deck.gl/geo-layers": "^8.0.0",
-    "@deck.gl/layers": "^8.0.0",
-    "@deck.gl/mesh-layers": "^8.0.0",
-    "@loaders.gl/core": "4.0.1",
-    "@luma.gl/constants": "9.0.0-alpha.39",
-    "@luma.gl/core": "9.0.0-alpha.39",
-    "@math.gl/core": "^4.0.0",
-    "@math.gl/web-mercator": "^4.0.0",
-    "gl-matrix": "^3.0.0",
+    "@deck.gl/aggregation-layers": "^9.0.0-alpha.6",
+    "@deck.gl/carto": "^9.0.0-alpha.6",
+    "@deck.gl/core": "^9.0.0-alpha.6",
+    "@deck.gl/extensions": "^9.0.0-alpha.6",
+    "@deck.gl/geo-layers": "^9.0.0-alpha.6",
+    "@deck.gl/layers": "^9.0.0-alpha.6",
+    "@deck.gl/mesh-layers": "^9.0.0-alpha.6",
     "maplibre-gl": "^3.5.2"
   }
 }

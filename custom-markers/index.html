@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://app.carto.com/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://app.carto.com/favicon/favicon-16x16.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CARTO for deck.gl - Dynamic Tiling 1.4M Custom Markers </title>
+  <body>
+    <div id="app">
+      <div id="map"></div>
+      <canvas id="deck-canvas"></canvas>
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>1.4M Custom Markers</h2>
+        <p>This visualization uses <a href="https://carto.com/blog/dynamic-tiling-for-highly-performant-cloud-native-maps" rel="noopener noreferrer" target="_blank">Dynamic Tiling</a> to load millions of points of interest represented by custom markers across the United States.</p>
+        <p>Custom markers for the selected category are filtered in the server by query parameters and uses a deck.gl CollisionFilterExtension to hide markers that overlap with other markers.</p>
+        <div class="layer-controls">
+          <p class="overline">Select a category:</p>
+          <div class="container">
+            <div>
+              <div class="category-container">
+                <label for="financial">
+                  <input type="checkbox" id="financial" value="Financial" class="categories" checked>
+                  <img src="./markers/Financial.svg" alt="Financial"> Financial
+                </label>
+                <label for="sustenance">
+                  <input type="checkbox" id="sustenance" value="Sustenance" class="categories">
+                  <img src="./markers/Sustenance.svg" alt="Sustenance"> Sustenance
+                </label>
+                <label for="tourism">
+                  <input type="checkbox" id="tourism" value="Tourism" class="categories">
+                  <img src="./markers/Tourism.svg" alt="Tourism"> Tourism
+                </label>
+                <label for="commercial">
+                  <input type="checkbox" id="commercial" value="Commercial" class="categories">
+                  <img src="./markers/Commercial.svg" alt="Commercial"> Commercial
+                </label>
+                <label for="education">
+                  <input type="checkbox" id="education" value="Education" class="categories">
+                  <img src="./markers/Education.svg" alt="Education"> Education
+                </label>
+              </div>
+            </div>
+            <div>
+              <div class="category-container">
+                <label for="entertainment">
+                  <input type="checkbox" id="entertainment"  value="Entertainment, Arts & Culture" class="categories">
+                  <img src="./markers/Entertainment.svg" alt="Entertainment, Arts & Culture"> Entertainment, Arts & Culture
+                </label>
+                <label for="transportation">
+                  <input type="checkbox" id="transportation" value="Transportation" class="categories">
+                  <img src="./markers/Transportation.svg" alt="Transportation"> Transportation
+                </label>
+                <label for="ealthcare">
+                  <input type="checkbox" id="ealthcare" value="Healthcare" class="categories">
+                  <img src="./markers/Healthcare.svg" alt="Healthcare"> Healthcare
+                </label>
+                <label for="amenities">
+                  <input type="checkbox" id="amenities" value="Civic amenities" class="categories">
+                  <img src="./markers/Civic.svg" alt="Civic amenities"> Civic amenities
+                </label>
+                <label for="others">
+                  <input type="checkbox" id="others" value="Others" class="categories">
+                  <img src="./markers/Others.svg" alt="Others"> Others
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="progress-container">
+          <progress class="pure-material-progress-linear" id="loader"/>
+        </div>
+        <p class="caption">Source: <a href="https://www.openstreetmap.org" rel="noopener noreferrer" target="_blank">OpenStreetMap</a></p>
+      </div>
+    </div>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>

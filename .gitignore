@@ -21,6 +21,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+.env.local
+
 # Don't lock libraries in exampless
 yarn.lock
 package-json.lock
