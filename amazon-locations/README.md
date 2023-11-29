@@ -11,7 +11,7 @@ HTML
 
 Markdown
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/CartoDB/deck.gl-examples/tree/master/amazon-locations?file=index.ts)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/CartoDB/deck.gl-examples/tree/master/amazon-locations?file=index.ts){:target="_blank" rel="noopener"}
 
 Or run it locally:
 
