@@ -3,6 +3,14 @@ Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
 ## Usage
 
+HTML
+
+<a href="https://stackblitz.com/github/CartoDB/deck.gl-examples/tree/master/amazon-locations?file=index.ts" target="_blank">
+  <img alt="Open in Stackblitz" src="https://developer.stackblitz.com/img/open_in_stackblitz.svg">
+</a>
+
+Markdown
+
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/CartoDB/deck.gl-examples/tree/master/amazon-locations?file=index.ts)
 
 Or run it locally:
