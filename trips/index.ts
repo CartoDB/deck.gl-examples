@@ -5,7 +5,7 @@ import {Deck} from '@deck.gl/core';
 import {TripsLayer} from '@deck.gl/geo-layers';
 import {PolygonLayer} from '@deck.gl/layers';
 import {BASEMAP} from '@deck.gl/carto';
-import {query} from '@deck.gl/carto';
+import {query, vectorQuerySource, VectorTileLayer} from '@deck.gl/carto';
 import {AmbientLight, PointLight, LightingEffect} from '@deck.gl/core';
 
 const LOOP_LENGTH = 1800;
@@ -83,12 +83,12 @@ async function initialize() {
     sqlQuery: 'SELECT geom, vendor, TO_JSON_STRING(timestamps) AS timestamps FROM cartobq.public_account.new_york_trips'
   });
 
-  const buildings = await query({
-    ...cartoConfig,
+  const buildingsSource = vectorQuerySource({
+    ...cartoConfig,   
     sqlQuery: `SELECT geom, numfloors 
-      FROM carto-demo-data.demo_tables.manhattan_pluto_data 
-        WHERE geom is not null 
-        AND numfloors > 0`
+    FROM carto-demo-data.demo_tables.manhattan_pluto_data 
+      WHERE geom is not null 
+      AND numfloors > 20`,
   });
 
   // TripsLayer needs data in the following format
@@ -97,18 +97,6 @@ async function initialize() {
     timestamps: JSON.parse(f.timestamps),
     path: f.geom.coordinates
   }));
-
-  const buildingData = buildings.rows
-    .filter(
-      building =>
-        building.geom.coordinates !== undefined &&
-        // The PolygonLayer does not support MultiPolygon
-        building.geom.coordinates.length === 1
-    )
-    .map(f => ({
-      polygon: f.geom.coordinates,
-      height: f.numfloors
-    }));
 
   let time = 300;
 
@@ -138,17 +126,14 @@ async function initialize() {
           currentTime: time,
           shadowEnabled: false
         }),
-        new PolygonLayer({
-          id: 'buildings',
-          data: buildingData,
+        new VectorTileLayer({
+          id: 'tileset',
+          data: buildingsSource,
           extruded: true,
-          wireframe: false,
-          opacity: 0.5,
-          getPolygon: f => f.polygon,
-          getElevation: f => f.height * 6,
-          getFillColor: DEFAULT_THEME.buildingColor as any,
-          material: DEFAULT_THEME.material as any
-        })
+          getElevation: d => d.properties.numfloors * 6,
+          getFillColor: DEFAULT_THEME.buildingColor,
+          material: DEFAULT_THEME.material
+        }),
       ]
     });
     window.requestAnimationFrame(animate);
