@@ -68,9 +68,11 @@ function render() {
     layers,
     getTooltip: ({object}) =>
       object && {
-        html: `Hex ID: ${object.id}</br>${selectedVariable.toUpperCase()}: ${parseInt(
+        html: `Hex ID: ${object.id}</br>
+        ${selectedVariable.toUpperCase()}: ${parseInt(
           object.properties.value
-        )}`
+        )}</br>
+        Aggregation Expression: ${aggregationExp}`
       }
   });
 }
