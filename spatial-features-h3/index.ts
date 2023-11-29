@@ -23,17 +23,26 @@ const INITIAL_VIEW_STATE = {
 
 // Selectors
 let selectedVariable = 'population';
+let aggregationExp = `SUM(${selectedVariable})`
 
 const variableSelector = document.getElementById('variable') as HTMLSelectElement;
+const aggMethodLabel = document.getElementById('agg-method') as HTMLSelectElement;
+
+aggMethodLabel.innerText = aggregationExp;
 variableSelector?.addEventListener('change', () => {
+  const aggMethod = variableSelector.selectedOptions[0].dataset.aggMethod || 'SUM';
+  
   selectedVariable = variableSelector.value;
+  aggregationExp = `${aggMethod}(${selectedVariable})`;
+  aggMethodLabel.innerText = aggregationExp;
+  
   render();
 });
 
 function render() {
   const source = h3QuerySource({
     ...cartoConfig,
-    aggregationExp: `SUM(${selectedVariable}) as value`,
+    aggregationExp: `${aggregationExp} as value`,
     sqlQuery: `SELECT * FROM cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2`
   });
 
@@ -59,9 +68,11 @@ function render() {
     layers,
     getTooltip: ({object}) =>
       object && {
-        html: `Hex ID: ${object.id}</br>${selectedVariable.toUpperCase()}: ${parseInt(
+        html: `Hex ID: ${object.id}</br>
+        ${selectedVariable.toUpperCase()}: ${parseInt(
           object.properties.value
-        )}`
+        )}</br>
+        Aggregation Expression: ${aggregationExp}`
       }
   });
 }
