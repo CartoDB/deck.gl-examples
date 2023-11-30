@@ -61,7 +61,6 @@ const deck = new Deck({
   layers: []
 });
 
-// Add basemap
 const map = new maplibregl.Map({
   container: 'map',
   style: {
@@ -94,7 +93,7 @@ async function initialize() {
 
   const geoJsonWorldLandData = await query({
     ...cartoConfig,
-    sqlQuery: `SELECT * FROM cartobq.public_account.ne_50m_land_world`
+    sqlQuery: `SELECT geom FROM cartobq.public_account.ne_50m_land_world`
   });
 
   const backgroundLayers = [
