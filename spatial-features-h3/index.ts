@@ -12,8 +12,8 @@ const cartoConfig = {
 };
 
 const INITIAL_VIEW_STATE = {
-  latitude: 40.7128, // Aproximado para Nueva York
-  longitude: -74.006, // Aproximado para Nueva York
+  latitude: 40.7128, // New York
+  longitude: -74.006, // New York
   zoom: 7,
   pitch: 0,
   bearing: 0,
