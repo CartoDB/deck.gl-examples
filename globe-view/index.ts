@@ -28,61 +28,7 @@ const INITIAL_VIEW_STATE = {
 
 const TIME_WINDOW = 900; // 15 minutes
 const EARTH_RADIUS_METERS = 6.3e6;
-const MIN_TIME = 5;
 const MAX_TIME = 103289;
-const SEC_PER_DAY = 60 * 60 * 24;
-
-const ambientLight = new AmbientLight({
-  color: [255, 255, 255],
-  intensity: 0.5
-});
-
-const sunLight = new SunLight({
-  color: [255, 255, 255],
-  intensity: 2.0,
-  timestamp: 0
-});
-
-// create lighting effect with light sources
-const lightingEffect = new LightingEffect({ambientLight, sunLight});
-
-// Look up the real date time from our artifical timestamp
-function getDate(t) {
-  const timestamp = new Date('2020-01-14T00:00:00Z').getTime() + (t % SEC_PER_DAY) * 1000;
-  return new Date(timestamp);
-}
-
-const deck = new Deck({
-  canvas: 'deck-canvas',
-  initialViewState: INITIAL_VIEW_STATE,
-  controller: true,
-  views: new GlobeView(),
-  effects: [lightingEffect],
-  layers: []
-});
-
-const map = new maplibregl.Map({
-  container: 'map',
-  style: {
-    version: 8,
-    sources: {},
-    layers: [
-      {
-        id: 'background',
-        type: 'background',
-        paint: {'background-color': '#000'}
-      }
-    ]
-  },
-  interactive: false
-});
-
-deck.setProps({
-  onViewStateChange: ({viewState}) => {
-    const {longitude, latitude, ...rest} = viewState;
-    map.jumpTo({center: [longitude, latitude], ...rest});
-  }
-});
 
 async function initialize() {
   // Fetch Data from CARTO
@@ -151,5 +97,58 @@ async function initialize() {
 
   requestAnimationFrame(animate);
 }
+
+const SEC_PER_DAY = 60 * 60 * 24;
+
+const ambientLight = new AmbientLight({
+  color: [255, 255, 255],
+  intensity: 0.5
+});
+
+const sunLight = new SunLight({
+  color: [255, 255, 255],
+  intensity: 2.0,
+  timestamp: 0
+});
+
+const lightingEffect = new LightingEffect({ambientLight, sunLight});
+
+// Look up the real date time from our artifical timestamp
+function getDate(t) {
+  const timestamp = new Date('2020-01-14T00:00:00Z').getTime() + (t % SEC_PER_DAY) * 1000;
+  return new Date(timestamp);
+}
+
+const deck = new Deck({
+  canvas: 'deck-canvas',
+  initialViewState: INITIAL_VIEW_STATE,
+  controller: true,
+  views: new GlobeView(),
+  effects: [lightingEffect],
+  layers: []
+});
+
+const map = new maplibregl.Map({
+  container: 'map',
+  style: {
+    version: 8,
+    sources: {},
+    layers: [
+      {
+        id: 'background',
+        type: 'background',
+        paint: {'background-color': '#000'}
+      }
+    ]
+  },
+  interactive: false
+});
+
+deck.setProps({
+  onViewStateChange: ({viewState}) => {
+    const {longitude, latitude, ...rest} = viewState;
+    map.jumpTo({center: [longitude, latitude], ...rest});
+  }
+});
 
 initialize();
