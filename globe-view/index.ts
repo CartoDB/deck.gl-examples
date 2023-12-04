@@ -1,6 +1,5 @@
 import './style.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import maplibregl from 'maplibre-gl';
 import {query} from '@deck.gl/carto';
 import {GeoJsonLayer} from '@deck.gl/layers';
 import {SimpleMeshLayer} from '@deck.gl/mesh-layers';
@@ -126,29 +125,6 @@ const deck = new Deck({
   views: new GlobeView(),
   effects: [lightingEffect],
   layers: []
-});
-
-const map = new maplibregl.Map({
-  container: 'map',
-  style: {
-    version: 8,
-    sources: {},
-    layers: [
-      {
-        id: 'background',
-        type: 'background',
-        paint: {'background-color': '#000'}
-      }
-    ]
-  },
-  interactive: false
-});
-
-deck.setProps({
-  onViewStateChange: ({viewState}) => {
-    const {longitude, latitude, ...rest} = viewState;
-    map.jumpTo({center: [longitude, latitude], ...rest});
-  }
 });
 
 initialize();
