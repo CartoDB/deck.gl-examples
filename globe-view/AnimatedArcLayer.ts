@@ -1,3 +1,5 @@
+// Based on deck.gl website example: Globe View https://github.com/visgl/deck.gl/blob/8.9-release/examples/website/globe/animated-arc-layer.js
+
 import {ArcLayer} from '@deck.gl/layers';
 
 export default class AnimatedArcLayer extends ArcLayer {
