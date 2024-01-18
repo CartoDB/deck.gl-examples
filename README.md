@@ -1,7 +1,5 @@
 # CARTO + deck.gl examples
 
-:art:
-
 This is a collection of examples tailored by the CARTO team to showcase different possibilities when developing with [CARTO](https://carto.com) and [deck.gl](https://deck.gl). 
 
 ## About CARTO + deck.gl
