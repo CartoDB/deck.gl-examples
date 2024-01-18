@@ -16,8 +16,8 @@ const INITIAL_VIEW_STATE = {
   latitude: 39.3262345,
   longitude: -4.8380649,
   zoom: 5,
-  pitch: 0,
-  bearing: 0,
+  pitch: 45,
+  bearing: -20,
   minZoom: 3.5,
   maxZoom: 15
 };
@@ -44,6 +44,7 @@ function render() {
   const source = quadbinQuerySource({
     ...cartoConfig,
     aggregationExp: `${aggregationExp} as value`,
+    aggregationResLevel: 8,
     sqlQuery: `SELECT * FROM cartobq.public_account.derived_spatialfeatures_esp_quadbin15_v1_yearly_v2`
   });
 
@@ -53,12 +54,15 @@ function render() {
       data: source,
       opacity: 0.8,
       pickable: true,
-      extruded: false,
+      extruded: true,
       getFillColor: colorBins({
         attr: 'value',
         domain: [0, 100, 1000, 10000, 100000, 1000000],
         colors: 'PinkYl'
       }),
+      getElevation: d => {
+        return d.properties.value
+      },
       lineWidthMinPixels: 0.5,
       getLineWidth: 0.5,
       getLineColor: [255, 255, 255, 100]

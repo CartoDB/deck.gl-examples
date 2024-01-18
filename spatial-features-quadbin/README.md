@@ -14,5 +14,5 @@ yarn
 ```
 
 Commands:
-* `npm dev` is the development target, to serve the app and hot reload.
+* `npm run dev` is the development target, to serve the app and hot reload.
 * `npm run build` is the production target, to create the final bundle and write to disk.
