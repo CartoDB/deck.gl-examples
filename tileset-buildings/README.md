@@ -1,5 +1,6 @@
-## Example: Tileset Buildings deck.gl and CARTO
-This example visualize a tileset with all the buildings in the world (publicly available in [OpenStreetMap](https://console.cloud.google.com/marketplace/product/openstreetmap/geo-openstreetmap) in a performance and cost-effective way. This dataset has **481M** polygons and a size of **119GB**.
+## Example: 481M Buildings Tileset
+
+This example visualizes a pre-generated tileset with all the buildings in the world (publicly available in [OpenStreetMap](https://console.cloud.google.com/marketplace/product/openstreetmap/geo-openstreetmap) in a performant and cost-effective way. This dataset has **481M** polygons and a size of **119GB**.
 
 Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 

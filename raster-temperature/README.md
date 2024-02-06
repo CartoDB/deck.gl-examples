@@ -1,6 +1,6 @@
-## Example: Raster Temperature
+## Example: Temperature Raster
 
-CARTO platform allows you to upload a [raster](https://docs.carto.com/data-and-analysis/analytics-toolbox-for-bigquery/sql-reference/raster) and visualize it in deck.gl using the RasterLayer.
+The CARTO platform allows you to upload a [raster](https://docs.carto.com/data-and-analysis/analytics-toolbox-for-bigquery/sql-reference/raster) dataset to your data warehouse (Google BigQuery, Snowflake...). It also enables you to visualize, query and style it directly in deck.gl using the Raster Layer from the CARTO module.
 
 Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 

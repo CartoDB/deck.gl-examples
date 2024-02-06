@@ -1,4 +1,4 @@
-## Example: 1.4M Custom Markers
+## Example: Custom Markers
 
 This visualization is using [Dynamic Tiling](https://carto.com/blog/dynamic-tiling-for-highly-performant-cloud-native-maps) to load millions of points of interest represented with custom markers across the United States. Custom markers for the selected category are filtered in the server by query parameters and uses a deck.gl CollisionFilterExtension to hide markers that overlap with other markers.
 

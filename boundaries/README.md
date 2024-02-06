@@ -1,5 +1,9 @@
 ## Example: Boundaries
 
+This example showcases how you can use CARTO + deck.gl to create highly-performant visualizations that combine large datasets and custom or known boundaries, such as zip codes or block groups.
+
+A set of known boundaries is made available for free by CARTO. You can explore them at [https://boundaries-explorer.carto.com](https://boundaries-explorer.carto.com)
+
 Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
 ## Usage

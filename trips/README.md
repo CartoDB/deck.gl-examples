@@ -1,4 +1,7 @@
-## Example: deck.gl Trips layer and CARTO
+## Example: Trips
+
+CARTO + deck.gl also offer support for line layers, that can be used to represent trips, routes, and other movements across the globe.
+
 Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
 ## Usage

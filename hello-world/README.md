@@ -1,4 +1,7 @@
-## Example: Hello World deck.gl and CARTO
+## Example: Hello World CARTO + deck.gl
+
+A simple point-based layer on top of a CARTO basemap, to get things started. All examples, including our Hello World, are using live data coming from a data warehouse (Google BigQuery, Snowflake, Amazon Redshift...)
+
 Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
 ## Usage

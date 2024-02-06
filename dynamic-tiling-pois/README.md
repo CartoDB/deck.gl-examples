@@ -1,4 +1,4 @@
-## Example: 1.4M Points of Interest
+## Example: 1.4M Points of Interest using Dynamic Tiling
 
 This visualization is using [Dynamic Tiling](https://carto.com/blog/dynamic-tiling-for-highly-performant-cloud-native-maps) to load millions of points of interest across the United States.
 
