@@ -19,7 +19,7 @@ const INITIAL_VIEW_STATE = {
 
 const dataSource = rasterSource({
   ...cartoConfig,
-  tableName: 'cartobq.public_account.temperature_raster_int8',
+  tableName: 'cartobq.public_account.temperature_raster_int8_new',
 });
 
 const deck = new Deck({
