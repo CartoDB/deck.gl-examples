@@ -6,7 +6,7 @@ Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
 ## Usage
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/CartoDB/deck.gl-examples/tree/master/spatial-index-quadbin?file=index.ts)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/CartoDB/deck.gl-examples/tree/master/spatial-features-quadbin?file=index.ts)
 
 Or run it locally:
 
