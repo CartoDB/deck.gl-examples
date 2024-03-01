@@ -1,9 +1,12 @@
 ## Example: Google maps deck.gl and CARTO
+
+This example showcases how to combine a CARTO + deck.gl visualization with a Google Maps basemap, leveraging the existing methods in the CARTO module in deck.gl.
+
 Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
 ## Usage
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/CartoDB/deck.gl-examples/tree/master/google-maps?file=index.ts)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/CartoDB/deck.gl-examples/tree/master/google-basemap?file=index.ts)
 
 Or run it locally:
 

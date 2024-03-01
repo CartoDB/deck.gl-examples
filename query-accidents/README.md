@@ -1,4 +1,4 @@
-## Example: Accidents by state (via SQL Query)
+## Example: Accidents by state (via SQL Query + SQL Parameters)
 
 You can use SQL to query data directly from the app, including query parameters. This increased flexibility makes CARTO a great solution to build geospatial applications.
 

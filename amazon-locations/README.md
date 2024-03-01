@@ -1,4 +1,7 @@
-## Example: Amazon locations deck.gl and CARTO
+## Example: Amazon Location Services basemap with CARTO + deck.gl
+
+This example uses a basemap from Amazon Location Services in combination with layers from the CARTO module in deck.gl. 
+
 Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
 ## Usage

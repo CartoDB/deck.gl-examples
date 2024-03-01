@@ -1,9 +1,12 @@
-## Example:deck.gl and CARTO Spatial Index H3
+## Example: Spatial indexes (Quadbin)
+
+This is a great example on how performant spatial indexes are to visualize and operate with large geospatial datasets. In this case we're using a dataset based in a square grid (Quadbin), from our CARTO Data Observatory. This datasets includes demographic, financial, and environmental variables across Spain. CARTO + deck.gl offer native support for spatial indexes. If you want to learn more about spatial indexes, we recommend you to check our [Spatial Indexes 101 guide](https://go.carto.com/report-spatial-indexes-101).  
+
 Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
 ## Usage
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/CartoDB/deck.gl-examples/tree/master/spatial-index-quadbin?file=index.ts)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/CartoDB/deck.gl-examples/tree/master/spatial-features-quadbin?file=index.ts)
 
 Or run it locally:
 

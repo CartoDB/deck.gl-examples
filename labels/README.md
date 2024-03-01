@@ -1,4 +1,4 @@
-## Example: 1.4M Points of Interest
+## Example: Labels
 
 This visualization is using [TextLayer](https://deck.gl/docs/api-reference/layers/text-layer) to render labels.
 
