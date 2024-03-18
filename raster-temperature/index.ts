@@ -14,12 +14,12 @@ const INITIAL_VIEW_STATE = {
   longitude: 14.4378,
   zoom: 12,
   bearing: 0,
-  pitch: 0,
+  pitch: 0
 };
 
 const dataSource = rasterSource({
   ...cartoConfig,
-  tableName: 'cartobq.public_account.temperature_raster_int8_new',
+  tableName: 'cartobq.public_account.temperature_raster_int8_new'
 });
 
 const deck = new Deck({
@@ -30,9 +30,7 @@ const deck = new Deck({
     new RasterTileLayer({
       id: 'temperature',
       data: dataSource,
-      // getFillColor: [255, 0, 0],
       getFillColor: d => {
-        console.log(d.properties)
         const {band_1} = d.properties;
         return [10 * (band_1 - 20), 0, 300 - 5 * band_1];
       }
