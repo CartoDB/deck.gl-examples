@@ -5,8 +5,39 @@
     <title>deck.gl Globe View - CARTO Source Example</title>
   </head>
   <body>
-    <div id="map"></div>
-    <canvas id="deck-canvas"></canvas>
+    <div id="app">
+      <div id="map"></div>
+      <canvas id="deck-canvas"></canvas>
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>GlobeView from CARTO data</h2>
+        <p>
+          You can easily use data from CARTO in other deck.gl layers and views such as         
+          <a
+            href="https://deck.gl/docs/api-reference/core/globe-view"
+            rel="noopener noreferrer"
+            target="_blank">
+            GlobeView</a>
+          to create advanced visualizations.
+        </p>
+        <div class="code-block">
+          <code>
+            import {query} from '@deck.gl/carto';
+          </code>
+        </div>
+        <p>
+          Just use the <i>query</i> method from the 
+          <a
+            href="https://deck.gl/docs/api-reference/carto/overview"
+            rel="noopener noreferrer"
+            target="_blank">
+            CARTO module</a>, 
+          and use it as the data in your deck.gl layers.
+        </p>
+
+      </div>
+    </div>
+    
     <script type="module" src='./index.ts'></script>
   </body>
 </html>

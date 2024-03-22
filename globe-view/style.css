@@ -20,3 +20,71 @@ canvas {
   max-height: 100%;
   background-color: #000;
 }
+
+#app {
+  flex: 1 1 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#story-card {
+  padding: 1.75rem;
+  background: #fdfdfe;
+  box-shadow: 4px 4px 8px #30303099;
+  border-radius: 4px;
+  z-index:1;
+  margin: 1.5rem;
+  max-width: 480px;
+  max-height: 100vh;
+  z-index: 10;
+}
+
+.layer-controls {
+  margin-top: 2.25rem;
+}
+
+.overline {
+  font-size: .625rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: .125rem;
+  text-transform: uppercase;
+}
+
+select{
+  margin-bottom: 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  line-height: 1.50;
+  letter-spacing: 0.001rem;
+  max-width: 100%;
+}
+
+select:hover {
+  cursor: pointer;
+}
+
+select {
+  padding: 0.6rem;
+  width: 360px;
+}
+
+.caption {
+  margin-top: 2.25rem;
+  margin-bottom: 0px;
+  font-size: 0.8rem;
+}
+
+.code-block {
+  background: #2C3032;
+  padding: 0.75rem;
+  border-radius: 4px;
+}
+
+.code-block code {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: white;
+  line-height: 1.25;
+}
