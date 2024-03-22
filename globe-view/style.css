@@ -40,40 +40,12 @@ canvas {
   z-index: 10;
 }
 
-.layer-controls {
-  margin-top: 2.25rem;
-}
-
 .overline {
   font-size: .625rem;
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: .125rem;
   text-transform: uppercase;
-}
-
-select{
-  margin-bottom: 0.6rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  line-height: 1.50;
-  letter-spacing: 0.001rem;
-  max-width: 100%;
-}
-
-select:hover {
-  cursor: pointer;
-}
-
-select {
-  padding: 0.6rem;
-  width: 360px;
-}
-
-.caption {
-  margin-top: 2.25rem;
-  margin-bottom: 0px;
-  font-size: 0.8rem;
 }
 
 .code-block {
