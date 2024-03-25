@@ -1,5 +1,7 @@
 ## Example: Globe View
 
+Data from CARTO can be used as the source for any deck.gl layer or view. In this example, we use flights data from a SQL query to CARTO to animate the flight paths in a 3D visualization using the GlobeView from deck.gl.
+
 Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
 ## Usage
@@ -15,5 +17,5 @@ yarn
 ```
 
 Commands:
-* `npm dev` is the development target, to serve the app and hot reload.
+* `npm run dev` is the development target, to serve the app and hot reload.
 * `npm run build` is the production target, to create the final bundle and write to disk.
