@@ -66,7 +66,7 @@ function render() {
     tableName: 'carto-demo-data.demo_tables.fires_worldwide',
     spatialDataColumn: 'geom',
     aggregationExp: 'COUNT(*) AS fires',
-    aggregationResLevel: 6
+    aggregationResLevel: 7
   });
 
   const layers = [

@@ -1,6 +1,6 @@
-## Example: Dynamic Heatmap using a 587k points worldwide fires dataset
+## Example: Heatmap using dynamic tiling over a 587k points worldwide fires dataset
 
-This visualization showcases how easy it is with CARTO to build a heatmap from large point datasets directly from your cloud data warehouse, such as BigQuery, Snowflake, Redshift, Databricks... As an example, it uses a 587k rows dataset of fires worldwide from NASA.
+This visualization showcases how easy it is with CARTO to build a heatmap from large point datasets directly from your cloud data warehouse, such as BigQuery, Snowflake, Redshift or Databricks with no preprocessing thanks to CARTO dynamic tiling. As an example, it uses a 587k rows dataset of fires worldwide from NASA.
 
 The process uses two steps:
 
