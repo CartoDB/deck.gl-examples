@@ -34,10 +34,20 @@
         <p>As an example, we're using a 567k rows dataset of worldwide fires from NASA's Fire Information for Resource Management System (FIRMS).</p>
         <div class="heatmap-legend">
           <div class="heatmap-legend-value-scale">
-            <span class="min">Less fires</span>
-            <span class="max">More fires</span>
+            <span>Less fires</span>
+            <span>More fires</span>
           </div>
           <div class="heatmap-legend-color-scale"></div>
+        </div>
+        <div class="heatmap-slider-group">
+          <div class="slider">
+            <p>Intensity: <span id="intensity-label">10</span></p>
+            <input type="range" id="intensity" value="10" min="0.25" max="30" step="0.25">
+          </div>
+          <div class="slider">
+            <p>Blur Radius: <span id="blur-radius-label">30</span></p>
+            <input type="range" id="blur-radius" value="30" min="10" max="80" step="1">
+          </div>
         </div>
         <p class="caption">Source: <a href="https://www.earthdata.nasa.gov/learn/find-data/near-real-time/firms" rel="noopener noreferrer" target="_blank">NASA EarthData</a></p>
       </div>
