@@ -49,6 +49,8 @@ deck.setProps({
 
 function render() {
 
+  // For a boundaryQuerySource to work, both the tileset and the properties must contain a column called "geoid" that links both datasets. 
+  // In this example, we use zip codes as our geoid column
   const querySource = boundaryQuerySource({
     ...cartoConfig,
     tilesetTableName: 'carto-boundaries.us.tileset_usa_zipcode_v1',
@@ -57,7 +59,6 @@ function render() {
           WHERE timeinstant between @start and @finish
           and industry=@industry and segment='o' and geo_type='m'
           group by geoid`,
-    matchingColumn: 'geoid',
     queryParameters: {
       start: '2023-01-01',
       finish: '2023-03-31',
