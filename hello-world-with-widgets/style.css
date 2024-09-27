@@ -94,9 +94,20 @@ code {
 
 .echarts-categories {
   width: 100%;
-  height: 300px;
+  height: 200px;
 }
 
 .small {
   font-size: 0.9rem;
+}
+
+/* Hide scrollbars while maintaining scroll functionality */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+/* WebKit browsers (Chrome, Safari) */
+*::-webkit-scrollbar {
+  display: none;
 }

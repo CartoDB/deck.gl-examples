@@ -51,7 +51,7 @@ deck.setProps({
     map.jumpTo({center: [longitude, latitude], ...rest});
     currentViewStatePolygon = createViewStatePolygon(viewState);
     formulaWidget.innerHTML = 'Loading...';
-    categoryWidgetChart.showLoading();
+    histogramWidgetChart.showLoading();
     debouncedRenderWidgets();
   }
 });
@@ -78,7 +78,7 @@ countrySelector?.addEventListener('change', () => {
   }
   selectedCountry = countrySelector.value;
   formulaWidget.innerHTML = 'Loading...';
-  categoryWidgetChart.showLoading();
+  histogramWidgetChart.showLoading();
   initialize();
 });
 
@@ -86,10 +86,10 @@ countrySelector?.addEventListener('change', () => {
 
 const formulaWidget = document.querySelector<HTMLSelectElement>('#widget1');
 
-const categoriesWidget = document.querySelector<HTMLSelectElement>('#widget2');
+const histogramWidget = document.querySelector<HTMLSelectElement>('#widget2');
 
-var chartDom = categoriesWidget;
-var categoryWidgetChart = echarts.init(chartDom);
+var chartDom = histogramWidget;
+var histogramWidgetChart = echarts.init(chartDom);
 
 // define source
 
@@ -143,6 +143,13 @@ async function renderWidgets() {
         type: 'shadow'
       }
     },
+    grid: {
+      left: 30,
+      right: 30,
+      top: 10,
+      width: 'auto',
+      height: 'auto'
+    },
     xAxis: {
       type: 'category',
       data: histogramLabels,
@@ -169,8 +176,8 @@ async function renderWidgets() {
   // render widgets!
 
   formulaWidget.innerHTML = formula.value;
-  option && categoryWidgetChart.setOption(option);
-  categoryWidgetChart.hideLoading();
+  option && histogramWidgetChart.setOption(option);
+  histogramWidgetChart.hideLoading();
 }
 
 // render Layers function
