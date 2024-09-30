@@ -1,10 +1,6 @@
-## Example: Hello World, now with Widgets
+## Example: Formula widget
 
-This is an evolution of our [Hello World](https://github.com/CartoDB/deck.gl-examples/tree/master/hello-world) example, with a few interesting additions such as charts and filters.
-
-It showcases how to use [Widget models in CARTO](https://todo.com) to easily build interactive data visualizations that stay synchronized with the map, with added interactions such as filtering with inputs or by clicking in the charts.
-
-The UI for the charts is built using [Apache eCharts](https://echarts.apache.org) but developers can plug their own charting or data visualization library.
+A simple example that showcases how to build a scalable [Formula widget](http://todo.com) using CARTO + deck.gl that stays synchronized with the map, using large-scale data coming from the same cloud data warehouse as your maps.
 
 Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
