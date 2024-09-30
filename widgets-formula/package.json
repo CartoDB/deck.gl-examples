@@ -1,5 +1,5 @@
 {
-  "name": "carto-deckgl-example-dynamic-tiling-pois",
+  "name": "carto-deckgl-example-widgets-formula",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -22,7 +22,6 @@
     "@deck.gl/layers": "^9.0.17",
     "@deck.gl/mesh-layers": "^9.0.17",
     "@carto/api-client": "^0.1.1",
-    "echarts": "^5.5.1",
     "maplibre-gl": "^3.5.2"
   }
 }
