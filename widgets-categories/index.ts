@@ -71,20 +71,21 @@ async function initSource() {
 // SPATIAL FILTER
 // prepare a function to get the new viewport state, that we'll pass debounced to our widgets to minimize requests
 
-const debouncedRenderWidgets = debounce(renderWidgets, 500);
+let viewportSpatialFilter;
+
+const debouncedUpdateSpatialFilter = debounce(viewState => {
+  const viewport = new WebMercatorViewport(viewState);
+  viewportSpatialFilter = createViewportSpatialFilter(viewport.getBounds());
+  renderWidgets();
+}, 300);
 
 // sync deckgl map after user interaction, obtain new viewport after
-
-let viewportSpatialFilter;
 
 deck.setProps({
   onViewStateChange: ({viewState}) => {
     const {longitude, latitude, ...rest} = viewState;
     map.jumpTo({center: [longitude, latitude], ...rest});
-    const viewport = new WebMercatorViewport(viewState);
-    viewportSpatialFilter = createViewportSpatialFilter(viewport.getBounds());
-    categoryWidgetChart.showLoading();
-    debouncedRenderWidgets();
+    debouncedUpdateSpatialFilter(viewState);
   }
 });
 
@@ -131,6 +132,8 @@ function clearCategoryFilter() {
 // render Widgets function
 
 async function renderWidgets() {
+  categoryWidgetChart.showLoading();
+
   // configure widgets
 
   const categories = await dataSource.widgetSource.getCategories({
@@ -232,7 +235,6 @@ async function renderLayers() {
 // render everything!
 
 async function initialize() {
-  categoryWidgetChart.showLoading();
   await initSource();
   renderWidgets();
   renderLayers();

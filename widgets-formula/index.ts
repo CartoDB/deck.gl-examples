@@ -53,20 +53,21 @@ async function initSource() {
 // SPATIAL FILTER
 // prepare a function to get the new viewport state, that we'll pass debounced to our widgets to minimize requests
 
-const debouncedRenderWidgets = debounce(renderWidgets, 500);
+let viewportSpatialFilter;
+
+const debouncedUpdateSpatialFilter = debounce(viewState => {
+  const viewport = new WebMercatorViewport(viewState);
+  viewportSpatialFilter = createViewportSpatialFilter(viewport.getBounds());
+  renderWidgets();
+}, 300);
 
 // sync deckgl map after user interaction, obtain new viewport after
-
-let viewportSpatialFilter;
 
 deck.setProps({
   onViewStateChange: ({viewState}) => {
     const {longitude, latitude, ...rest} = viewState;
     map.jumpTo({center: [longitude, latitude], ...rest});
-    const viewport = new WebMercatorViewport(viewState);
-    viewportSpatialFilter = createViewportSpatialFilter(viewport.getBounds());
-    formulaWidget.innerHTML = 'Loading...';
-    debouncedRenderWidgets();
+    debouncedUpdateSpatialFilter(viewState);
   }
 });
 
@@ -74,6 +75,8 @@ deck.setProps({
 // render Widgets function
 
 async function renderWidgets() {
+  formulaWidget.innerHTML = 'Loading...';
+
   // configure widgets
 
   const formula = await dataSource.widgetSource.getFormula({
@@ -114,7 +117,6 @@ async function renderLayers() {
 // render everything!
 
 async function initialize() {
-  formulaWidget.innerHTML = 'Loading...';
   await initSource();
   renderWidgets();
   renderLayers();

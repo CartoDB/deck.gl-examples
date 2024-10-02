@@ -66,11 +66,8 @@ noUiSlider.create(rangeWidget, {
   }
 });
 
-rangeWidget.noUiSlider.disable();
-
 // add click filter interaction
 
-// rangeWidget.noUiSlider?.on('set', filterViaRange(this.get(true)));
 rangeWidget.noUiSlider?.on('set', function () {
   filterViaRange(this.get(true));
 });
@@ -90,19 +87,21 @@ async function initSource() {
 // SPATIAL FILTER
 // prepare a function to get the new viewport state, that we'll pass debounced to our widgets to minimize requests
 
-const debouncedRenderWidgets = debounce(renderWidgets, 500);
+let viewportSpatialFilter;
+
+const debouncedUpdateSpatialFilter = debounce(viewState => {
+  const viewport = new WebMercatorViewport(viewState);
+  viewportSpatialFilter = createViewportSpatialFilter(viewport.getBounds());
+  renderWidgets();
+}, 300);
 
 // sync deckgl map after user interaction, obtain new viewport after
-
-let viewportSpatialFilter;
 
 deck.setProps({
   onViewStateChange: ({viewState}) => {
     const {longitude, latitude, ...rest} = viewState;
     map.jumpTo({center: [longitude, latitude], ...rest});
-    const viewport = new WebMercatorViewport(viewState);
-    viewportSpatialFilter = createViewportSpatialFilter(viewport.getBounds());
-    debouncedRenderWidgets();
+    debouncedUpdateSpatialFilter(viewState);
   }
 });
 
@@ -128,6 +127,8 @@ function filterViaRange(rangeValues) {
 // render Widgets function
 
 async function renderWidgets() {
+  rangeWidget.noUiSlider.disable();
+
   // configure widgets
 
   const range = await dataSource.widgetSource.getRange({
@@ -184,7 +185,6 @@ async function renderLayers() {
 // render everything!
 
 async function initialize() {
-  rangeWidget.noUiSlider.disable();
   await initSource();
   renderWidgets();
   renderLayers();

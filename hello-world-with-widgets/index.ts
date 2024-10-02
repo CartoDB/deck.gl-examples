@@ -97,7 +97,7 @@ const debouncedUpdateSpatialFilter = debounce(viewState => {
   const viewport = new WebMercatorViewport(viewState);
   viewportSpatialFilter = createViewportSpatialFilter(viewport.getBounds());
   renderWidgets();
-}, 500);
+}, 300);
 
 // sync deckgl map after user interaction, obtain new viewport after
 
