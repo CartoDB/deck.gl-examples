@@ -62,7 +62,7 @@ noUiSlider.create(rangeWidget, {
   step: 1,
   range: {
     min: 0,
-    max: 600
+    max: 1300
   }
 });
 
