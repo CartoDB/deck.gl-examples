@@ -91,21 +91,21 @@ const histogramLabels = {
 // SPATIAL FILTER
 // prepare a function to get the new viewport state, that we'll pass debounced to our widgets to minimize requests
 
-const debouncedRenderWidgets = debounce(renderWidgets, 500);
+let viewportSpatialFilter;
+
+const debouncedUpdateSpatialFilter = debounce(viewState => {
+  const viewport = new WebMercatorViewport(viewState);
+  viewportSpatialFilter = createViewportSpatialFilter(viewport.getBounds());
+  renderWidgets();
+}, 500);
 
 // sync deckgl map after user interaction, obtain new viewport after
-
-let viewportSpatialFilter;
 
 deck.setProps({
   onViewStateChange: ({viewState}) => {
     const {longitude, latitude, ...rest} = viewState;
     map.jumpTo({center: [longitude, latitude], ...rest});
-    const viewport = new WebMercatorViewport(viewState);
-    viewportSpatialFilter = createViewportSpatialFilter(viewport.getBounds());
-    formulaWidget.innerHTML = 'Loading...';
-    histogramWidgetChart.showLoading();
-    debouncedRenderWidgets();
+    debouncedUpdateSpatialFilter(viewState);
   }
 });
 
@@ -116,7 +116,7 @@ let filters = {};
 
 // listen to inputs from HTML
 
-let selectedCountry = 'All';
+let selectedCountry;
 const countrySelector = document.querySelector<HTMLSelectElement>('#osmCategorySelector');
 
 countrySelector?.addEventListener('change', () => {
@@ -186,6 +186,9 @@ function clearHistogramFilter() {
 // render Widgets function
 
 async function renderWidgets() {
+  formulaWidget.innerHTML = 'Loading...';
+  histogramWidgetChart.showLoading();
+
   // configure widgets
 
   const formula = await dataSource.widgetSource.getFormula({
@@ -240,8 +243,7 @@ async function renderWidgets() {
   // render widgets!
 
   formulaWidget.innerHTML = formula.value;
-  option && histogramWidgetChart.setOption(option);
-
+  histogramWidgetChart.setOption(option);
   histogramWidgetChart.hideLoading();
 }
 
@@ -277,8 +279,6 @@ async function renderLayers() {
 // render everything!
 
 async function initialize() {
-  formulaWidget.innerHTML = 'Loading...';
-  histogramWidgetChart.showLoading();
   await initSource();
   renderWidgets();
   renderLayers();
