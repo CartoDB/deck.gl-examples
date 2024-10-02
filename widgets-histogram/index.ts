@@ -195,8 +195,7 @@ async function renderWidgets() {
 
   // render widgets!
 
-  option && histogramWidgetChart.setOption(option);
-
+  histogramWidgetChart.setOption(option);
   histogramWidgetChart.hideLoading();
 }
 
