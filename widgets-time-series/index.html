@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://app.carto.com/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://app.carto.com/favicon/favicon-16x16.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CARTO + deck.gl - Time series widget</title>
+  <body>
+    <div id="app">
+      <div id="map"></div>
+      <canvas id="deck-canvas"></canvas>
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>Time series widget</h2>
+        <p>This is an example of a scalable, performant <a href="https://carto.com/blog/dynamic-tiling-for-highly-performant-cloud-native-maps" rel="noopener noreferrer" target="_blank">Time Series Widget</a> using CARTO + deck.gl for blue whales tracking events in the eastern Pacific.</p>
+        <p class="small">This time series widget showcases the evolution of a variable over time, with client-side GPU-powered filtering, plus synchronization with the map via <code>spatialFilter</code>. Learn more about <a href="https://docs.carto.com/carto-for-developers">building charts and widgets with CARTO</a>.</p>
+        <hr>
+        <div class="widget-wrapper">
+          <p class="widget-title overline">Blue whale signals over time (Time series widget)</p>
+          <div class="echarts-time-series" id="time-series-widget">
+        </div>
+        <hr>
+        <p class="caption">Source: <a href="https://www.movebank.org/cms/webapp?gwt_fragment=page%3Dstudies%2Cpath%3Dstudy650188969" target="_blank">Movebank</a></p>
+      </div>
+
+    </div>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>
