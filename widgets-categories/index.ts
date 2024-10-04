@@ -202,8 +202,7 @@ async function renderWidgets() {
 
   // render widgets!
 
-  option && categoryWidgetChart.setOption(option);
-
+  categoryWidgetChart.setOption(option);
   categoryWidgetChart.hideLoading();
 }
 

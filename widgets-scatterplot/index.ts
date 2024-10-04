@@ -119,8 +119,7 @@ async function renderWidgets() {
 
   // render widgets!
 
-  option && scatterplotWidgetChart.setOption(option);
-
+  scatterplotWidgetChart.setOption(option);
   scatterplotWidgetChart.hideLoading();
 }
 
