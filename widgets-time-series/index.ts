@@ -75,7 +75,7 @@ timeSeriesWidgetChart.on('dataZoom', function (params) {
 
 // define source
 
-let dataSource = initSource();
+let dataSource;
 
 async function initSource() {
   return (dataSource = await vectorTableSource({
@@ -120,6 +120,11 @@ function filterViaTimeSeries(startDate, endDate) {
 // render Widgets function
 
 async function renderWidgets() {
+  // Exit if dataSource is not ready
+  if (!dataSource) {
+    return;
+  }
+
   timeSeriesWidgetChart.showLoading();
 
   // configure widgets
@@ -168,14 +173,18 @@ async function renderWidgets() {
 
   // render widgets!
 
-  option && timeSeriesWidgetChart.setOption(option);
-
+  timeSeriesWidgetChart.setOption(option);
   timeSeriesWidgetChart.hideLoading();
 }
 
 // render Layers function
 
 async function renderLayers() {
+  // Exit if dataSource is not ready
+  if (!dataSource) {
+    return;
+  }
+
   // now for the layers
 
   const layers = [

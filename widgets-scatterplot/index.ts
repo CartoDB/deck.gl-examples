@@ -79,6 +79,11 @@ deck.setProps({
 // render Widgets function
 
 async function renderWidgets() {
+  // Exit if dataSource is not ready
+  if (!dataSource) {
+    return;
+  }
+
   scatterplotWidgetChart.showLoading();
 
   // configure widgets
@@ -126,6 +131,11 @@ async function renderWidgets() {
 // render Layers function
 
 async function renderLayers() {
+  // Exit if dataSource is not ready
+  if (!dataSource) {
+    return;
+  }
+
   // now for the layers
 
   const layers = [

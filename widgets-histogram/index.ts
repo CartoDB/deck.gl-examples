@@ -72,20 +72,21 @@ async function initSource() {
 // SPATIAL FILTER
 // prepare a function to get the new viewport state, that we'll pass debounced to our widgets to minimize requests
 
-const debouncedRenderWidgets = debounce(renderWidgets, 500);
+let viewportSpatialFilter;
+
+const debouncedUpdateSpatialFilter = debounce(viewState => {
+  const viewport = new WebMercatorViewport(viewState);
+  viewportSpatialFilter = createViewportSpatialFilter(viewport.getBounds());
+  renderWidgets();
+}, 300);
 
 // sync deckgl map after user interaction, obtain new viewport after
-
-let viewportSpatialFilter;
 
 deck.setProps({
   onViewStateChange: ({viewState}) => {
     const {longitude, latitude, ...rest} = viewState;
     map.jumpTo({center: [longitude, latitude], ...rest});
-    const viewport = new WebMercatorViewport(viewState);
-    viewportSpatialFilter = createViewportSpatialFilter(viewport.getBounds());
-    histogramWidgetChart.showLoading();
-    debouncedRenderWidgets();
+    debouncedUpdateSpatialFilter(viewState);
   }
 });
 
@@ -151,6 +152,13 @@ const histogramTicks = [
 // render Widgets function
 
 async function renderWidgets() {
+  // Exit if dataSource is not ready
+  if (!dataSource) {
+    return;
+  }
+
+  histogramWidgetChart.showLoading();
+
   // configure widgets
 
   const histogram = await dataSource.widgetSource.getHistogram({
@@ -202,6 +210,11 @@ async function renderWidgets() {
 // render Layers function
 
 async function renderLayers() {
+  // Exit if dataSource is not ready
+  if (!dataSource) {
+    return;
+  }
+
   // now for the layers
 
   const layers = [
@@ -230,7 +243,6 @@ async function renderLayers() {
 // render everything!
 
 async function initialize() {
-  histogramWidgetChart.showLoading();
   await initSource();
   renderWidgets();
   renderLayers();
