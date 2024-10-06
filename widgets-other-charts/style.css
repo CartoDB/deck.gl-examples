@@ -107,17 +107,6 @@ code {
   font-size: 0.9rem;
 }
 
-.widget-clear-filter {
-  display: none;
-  font-size: 12px;
-  text-align: right;
-  position: absolute;
-  right: 25px;
-  top: -4px;
-  color: #30303099;
-  cursor: pointer;
-}
-
 /* Hide scrollbars while maintaining scroll functionality */
 * {
   scrollbar-width: none; /* Firefox */
