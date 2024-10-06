@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://app.carto.com/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://app.carto.com/favicon/favicon-16x16.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CARTO + deck.gl - Other charts </title>
+  <body>
+    <div id="app">
+      <div id="map"></div>
+      <canvas id="deck-canvas"></canvas>
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>Other charts</h2>
+        <p>Did you know you can use the existing <a href="https://carto.com/blog/dynamic-tiling-for-highly-performant-cloud-native-maps" rel="noopener noreferrer" target="_blank"></a>CARTO Widget models</a> to build any type of custom chart? This example showcases that, using 3.6M of Citi Bike trips in Manhattan.</p>
+        <p class="small">Our two custom charts (Sankey and Radar) are powered by models like <code>getCategories</code> or <code>getTable</code>. Both widgets are filtered by the current map state using <code>spatialFilter</code>. Learn more about <a href="https://docs.carto.com/carto-for-developers">building charts and widgets with CARTO</a>.</p>
+        <hr>
+        <div class="widget-wrapper">
+          <p class="widget-title overline">Trips by day of week</p>
+          <div class="echarts-radar" id="radar-widget">
+        </div>
+        <div class="widget-wrapper">
+          <p class="widget-title overline">Top 15 trips by neighborhood</p>
+          <div class="echarts-sankey" id="sankey-widget">
+        </div>
+        <hr>
+        <p class="caption">Source: <a href="https://console.cloud.google.com/marketplace/product/city-of-new-york/nyc-citi-bike" rel="noopener noreferrer" target="_blank">Citi Bike</a></p>
+      </div>
+
+    </div>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>
