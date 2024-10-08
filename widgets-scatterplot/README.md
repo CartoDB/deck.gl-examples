@@ -1,6 +1,6 @@
 ## Example: Scatterplot widget
 
-A simple example that showcases how to build a scalable [Scatterplot widget](https://docs.carto.com/carto-for-developers/reference/carto-widgets-reference/models/getrange) using CARTO + deck.gl that stays synchronized with the map, using large-scale data coming from the same cloud data warehouse as your maps.
+A simple example that showcases how to build a scalable [Scatterplot widget](https://docs.carto.com/carto-for-developers/reference/carto-widgets-reference/models/getscatter) using CARTO + deck.gl that stays synchronized with the map, using large-scale data coming from the same cloud data warehouse as your maps.
 
 The UI for the chart is built using [Apache eCharts](https://echarts.apache.org) but developers can plug their own charting or data visualization library.
 

@@ -1,6 +1,6 @@
 ## Example: Scatterplot widget
 
-A simple example that showcases how to build a scalable [Time series widget](https://docs.carto.com/carto-for-developers/reference/carto-widgets-reference/models/getrange) using CARTO + deck.gl that stays synchronized with the map, using large-scale data coming from the same cloud data warehouse as your maps.
+A simple example that showcases how to build a scalable [Time series widget](https://docs.carto.com/carto-for-developers/reference/carto-widgets-reference/models/gettimeseries) using CARTO + deck.gl that stays synchronized with the map, using large-scale data coming from the same cloud data warehouse as your maps.
 
 It also allows you to filter the data using GPU-based client-side filtering thanks to the [DataFilterExtension](https://deck.gl/docs/api-reference/extensions/data-filter-extension) from deck.gl.
 
