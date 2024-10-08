@@ -5,7 +5,6 @@ import {WebMercatorViewport, Deck} from '@deck.gl/core';
 import {
   vectorTableSource,
   addFilter,
-  removeFilter,
   createViewportSpatialFilter,
   FilterType
 } from '@carto/api-client';
