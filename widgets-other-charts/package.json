@@ -14,14 +14,14 @@
     "vite": "^4.5.0"
   },
   "dependencies": {
-    "@deck.gl/aggregation-layers": "9.0.30",
-    "@deck.gl/carto": "9.0.30",
-    "@deck.gl/core": "9.0.30",
-    "@deck.gl/extensions": "9.0.30",
-    "@deck.gl/geo-layers": "9.0.30",
-    "@deck.gl/layers": "9.0.30",
-    "@deck.gl/mesh-layers": "9.0.30",
-    "@carto/api-client": "^0.2.2",
+    "@deck.gl/aggregation-layers": "^9.0.32",
+    "@deck.gl/carto": "^9.0.32",
+    "@deck.gl/core": "^9.0.32",
+    "@deck.gl/extensions": "^9.0.32",
+    "@deck.gl/geo-layers": "^9.0.32",
+    "@deck.gl/layers": "^9.0.32",
+    "@deck.gl/mesh-layers": "^9.0.32",
+    "@carto/api-client": "^0.3.0",
     "echarts": "^5.5.1",
     "maplibre-gl": "^3.5.2"
   }

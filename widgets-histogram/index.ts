@@ -167,14 +167,20 @@ async function renderWidgets() {
     operation: 'count'
   });
 
-  console.log(histogram);
-
   const option = {
     tooltip: {
       trigger: 'axis',
       axisPointer: {
         type: 'shadow'
       }
+    },
+    grid: {
+      left: 60,
+      right: 30,
+      top: 20,
+      bottom: 20,
+      width: 'auto',
+      height: 'auto'
     },
     xAxis: {
       type: 'category',
