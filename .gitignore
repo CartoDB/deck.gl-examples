@@ -23,6 +23,6 @@ dist
 
 .env.local
 
-# Don't lock libraries in exampless
+# Don't lock libraries in examples
 yarn.lock
-package-json.lock
+package-lock.json

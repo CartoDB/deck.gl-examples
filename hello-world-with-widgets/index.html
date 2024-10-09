@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://app.carto.com/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://app.carto.com/favicon/favicon-16x16.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CARTO + deck.gl - Hello world with Widgets </title>
+  <body>
+    <div id="app">
+      <div id="map"></div>
+      <canvas id="deck-canvas"></canvas>
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>Hello world with Widgets</h2>
+        <p>This is an evolution of our <a href="https://carto.com/blog/dynamic-tiling-for-highly-performant-cloud-native-maps" rel="noopener noreferrer" target="_blank">Hello World</a> example where we load a simple dataset of populated places.</p>
+        <p class="small">We've added two widgets powered by CARTO: a simple scorecard using the <code>getFormula</code> model, and a population histogram using the <code>getHistogram</code> model. Both widgets are filtered by the current map state using <code>spatialFilter</code>, plus a simple country column-based <code>filter</code>.</p>
+        <p class="small">Learn more about <a href="https://docs.carto.com/carto-for-developers/charts-and-widgets" rel="noopener noreferrer" target="_blank">building charts and widgets with CARTO</a>.</p>
+        <div class="layer-controls"> 
+          <p class="overline">Filter by country</p>
+          <select name="osmCategorySelector" id="osmCategorySelector">
+            <option value="All">All countries</option>
+            <option value="USA">🇺🇸 USA</option>
+            <option value="JPN">🇨🇳 Japan</option>
+            <option value="FRA">🇫🇷 France</option>
+            <option value="BRA">🇧🇷 Brasil</option>
+          </select>
+        </div>
+        <hr>
+        <div class="widget-wrapper">
+          <p class="widget-title overline">Total places (formula widget)</p>
+          <p class="widget-value" id="widget1">...</p>
+        </div>
+        <div class="widget-wrapper">
+          <p class="widget-title overline">Places by population (histogram widget)</p>
+          <span id="clearHistogramFilter" class="widget-clear-filter">Clear filter</span>
+          <div class="echarts-categories" id="widget2">
+        </div>
+        <hr>
+        <p class="caption">Source: <a href="https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-populated-places/" rel="noopener noreferrer" target="_blank">Natural Earth</a></p>
+      </div>
+
+    </div>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>

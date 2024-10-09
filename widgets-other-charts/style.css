@@ -1,0 +1,119 @@
+body,
+html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+#map,
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+}
+
+#app {
+  flex: 1 1 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#story-card {
+  padding: 1.75rem;
+  background: #fdfdfe;
+  box-shadow: 4px 4px 8px #30303099;
+  border-radius: 4px;
+  z-index: 1;
+  margin: 1.5rem;
+  max-width: 480px;
+  max-height: 87vh;
+  z-index: 10;
+  overflow: scroll;
+}
+
+.layer-controls {
+  margin-top: 2.25rem;
+}
+
+.overline {
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.125rem;
+  text-transform: uppercase;
+}
+
+hr {
+  border: 1px solid #eee;
+  margin: 10px 0px;
+}
+
+select {
+  margin-bottom: 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  letter-spacing: 0.001rem;
+  max-width: 100%;
+}
+
+select:hover {
+  cursor: pointer;
+}
+
+select {
+  padding: 0.6rem;
+  width: 360px;
+}
+
+code {
+  padding: 2px 5px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+}
+
+.caption {
+  margin-top: 2.25rem;
+  margin-bottom: 0px;
+  font-size: 0.8rem;
+}
+
+.widget-wrapper {
+  position: relative;
+  margin: 10px 0px;
+}
+
+.echarts-radar {
+  width: 100%;
+  height: 200px;
+}
+
+.echarts-sankey {
+  width: 100%;
+  height: 200px;
+}
+
+.small {
+  font-size: 0.9rem;
+}
+
+/* Hide scrollbars while maintaining scroll functionality */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+/* WebKit browsers (Chrome, Safari) */
+*::-webkit-scrollbar {
+  display: none;
+}
