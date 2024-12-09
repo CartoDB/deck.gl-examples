@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://app.carto.com/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://app.carto.com/favicon/favicon-16x16.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CARTO + deck.gl - Using Named Sources to prevent exposing SQL queries </title>
+  <body>
+    <div id="app">
+      <div id="map"></div>
+      <canvas id="deck-canvas"></canvas>
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>SQL Named Sources</h2>
+        <p>This application still uses SQL queries under the hood, but they are not exposed thanks to Named Sources.</p>
+        <p>Named sources provide a mechanism to completely remove SQL queries from your application code and from all API requests, using references instead.</p>
+        <p>Learn more about <a href="https://docs.carto.com/carto-user-manual/developers/named-sources">Named sources in the CARTO documentation</a>.</p>
+        <div class="layer-controls"> 
+          <p class="overline">Choose a year to filter accidents</p>
+          <select id="yearSelector">
+            <option value="2010">2010</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option value="2013" selected>2013</option>
+          </select>
+          <p class="caption source">Source: U.S. DOT Federal Railway Administration</p>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>
