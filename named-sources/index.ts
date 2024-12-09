@@ -61,7 +61,6 @@ function render() {
     new VectorTileLayer({
       id: 'accidents_by_state',
       data: accidentsByState,
-      pickable: true,
       opacity: 0.8,
       getFillColor: colorBins({
         attr: 'count',
