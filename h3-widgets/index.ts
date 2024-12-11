@@ -5,7 +5,7 @@ import {Deck, MapViewState} from '@deck.gl/core';
 import {H3TileLayer, BASEMAP, colorBins} from '@deck.gl/carto';
 import { initSelectors } from './selectorUtils';
 import { debounce, getSpatialFilterFromViewState } from './utils';
-import { h3QuerySource, WidgetSource } from '@carto/api-client'
+import { h3TableSource, WidgetSource } from '@carto/api-client';
 import Chart from 'chart.js/auto';
 
 const cartoConfig = {
@@ -27,7 +27,7 @@ const INITIAL_VIEW_STATE: MapViewState = {
   maxZoom: 15
 }
 
-type Source = ReturnType<typeof h3QuerySource>;
+type Source = ReturnType<typeof h3TableSource>;
 
 // Selectors variables
 let selectedVariable = 'population';
@@ -56,10 +56,10 @@ variableSelector?.addEventListener('change', () => {
 });
 
 function render() {
-  source = h3QuerySource({
+  source = h3TableSource({
     ...cartoConfig,
     aggregationExp: `${aggregationExp} as value`,
-    sqlQuery: `SELECT * FROM carto-demo-data.demo_tables.derived_spatialfeatures_esp_h3res8_v1_yearly_v2`
+    tableName: 'carto-demo-data.demo_tables.derived_spatialfeatures_esp_h3res8_v1_yearly_v2'
   });
   renderLayers();
   renderWidgets();
