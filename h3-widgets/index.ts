@@ -5,18 +5,22 @@ import {Deck, MapViewState} from '@deck.gl/core';
 import {H3TileLayer, BASEMAP, colorBins} from '@deck.gl/carto';
 import { initSelectors } from './selectorUtils';
 import { debounce, getSpatialFilterFromViewState } from './utils';
-import { h3QuerySource } from '@carto/api-client'
+import { h3QuerySource, WidgetSource } from '@carto/api-client'
+import Chart from 'chart.js/auto';
 
 const cartoConfig = {
+  // @ts-expect-error misconfigured env variables
   apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
+  // @ts-expect-error misconfigured env variables
   accessToken: import.meta.env.VITE_API_ACCESS_TOKEN,
   connectionName: 'carto_dw'
 };
 
 const INITIAL_VIEW_STATE: MapViewState = {
-  latitude: 40.7128, // New York
-  longitude: -74.006, // New York
-  zoom: 7,
+  // Spain
+  latitude: 37.3753636,
+  longitude: -5.9962577,
+  zoom: 6,
   pitch: 0,
   bearing: 0,
   minZoom: 3.5,
@@ -36,6 +40,9 @@ let viewState = INITIAL_VIEW_STATE
 const variableSelector = document.getElementById('variable') as HTMLSelectElement;
 const aggMethodLabel = document.getElementById('agg-method') as HTMLSelectElement;
 const formulaWidget = document.getElementById('formula-data') as HTMLDivElement;
+const categoriesWidget = document.getElementById('categories-data') as HTMLCanvasElement;
+const histogramWidget = document.getElementById('histogram-data') as HTMLCanvasElement;
+let histogramChart: Chart; 
 
 aggMethodLabel.innerText = aggregationExp;
 variableSelector?.addEventListener('change', () => {
@@ -51,8 +58,8 @@ variableSelector?.addEventListener('change', () => {
 function render() {
   source = h3QuerySource({
     ...cartoConfig,
-    aggregationExp: `${aggregationExp} as value`,
-    sqlQuery: `SELECT * FROM cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2`
+    aggregationExp: `${aggregationExp} as value`,
+    sqlQuery: `SELECT * FROM carto-demo-data.demo_tables.derived_spatialfeatures_esp_h3res8_v1_yearly_v2`
   });
   renderLayers();
   renderWidgets();
@@ -91,15 +98,61 @@ function renderLayers() {
 }
 
 async function renderWidgets() {
-  formulaWidget.innerHTML = '<span style="font-weight: 400; font-size: 14px;">Loading...</span>'
   const { widgetSource } = await source
-  const formula = await widgetSource.getFormula({
+  await Promise.all([
+    renderFormula(widgetSource),
+    renderHistogram(widgetSource)
+  ])
+}
+
+async function renderFormula(ws: WidgetSource) {
+  formulaWidget.innerHTML = '<span style="font-weight: 400; font-size: 14px;">Loading...</span>'
+  const formula = await ws.getFormula({
     column: selectedVariable,
+    operation: 'sum',
+    spatialFilter: getSpatialFilterFromViewState(viewState),
+    viewState,
+  })
+  formulaWidget.textContent = Intl.NumberFormat('en-US', {
+    maximumFractionDigits: 0,
+    // notation: 'compact'
+  }).format(formula.value)
+}
+
+const TICKS = [100, 500, 1000, 5000];
+
+async function renderHistogram(ws: WidgetSource) {
+  histogramWidget.parentElement?.querySelector('.loader')?.classList.toggle('hidden', false);
+  histogramWidget.classList.toggle('hidden', true);
+
+  const categories = await ws.getCategories({
+    column: 'urbanity',
     operation: 'count',
     spatialFilter: getSpatialFilterFromViewState(viewState),
     viewState,
   })
-  formulaWidget.textContent = Intl.NumberFormat('en-US').format(formula.value)
+
+  histogramWidget.parentElement?.querySelector('.loader')?.classList.toggle('hidden', true);
+  histogramWidget.classList.toggle('hidden', false);
+
+  if (histogramChart) {
+    histogramChart.data.labels = categories.map((c) => c.name);
+    histogramChart.data.datasets[0].data = categories.map((c) => c.value);
+    histogramChart.update();
+  } else {
+    histogramChart = new Chart(histogramWidget, {
+      type: 'bar',
+      data: {
+        labels: categories.map((c) => c.name),
+        datasets: [
+          {
+            label: 'Urbanity category',
+            data: categories.map((c) => c.value),
+          }
+        ]
+      },
+    })
+  }
 }
 
 const debouncedRenderWidgets = debounce(renderWidgets, 500);

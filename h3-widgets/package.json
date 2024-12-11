@@ -14,6 +14,7 @@
     "vite": "^4.5.0"
   },
   "dependencies": {
+    "@carto/api-client": "^0.4.1-alpha.0",
     "@deck.gl/aggregation-layers": "^9.0.17",
     "@deck.gl/carto": "^9.0.17",
     "@deck.gl/core": "^9.0.17",
@@ -21,6 +22,7 @@
     "@deck.gl/geo-layers": "^9.0.17",
     "@deck.gl/layers": "^9.0.17",
     "@deck.gl/mesh-layers": "^9.0.17",
+    "chart.js": "^4.4.7",
     "maplibre-gl": "^3.5.2"
   }
 }
