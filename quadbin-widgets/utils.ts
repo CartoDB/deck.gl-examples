@@ -1,5 +1,5 @@
-import { createViewportSpatialFilter } from "@carto/api-client";
-import { MapViewState, WebMercatorViewport } from "@deck.gl/core";
+import {createViewportSpatialFilter} from '@carto/api-client';
+import {MapViewState, WebMercatorViewport} from '@deck.gl/core';
 
 export function debounce(func, wait) {
   let timeout;
@@ -11,5 +11,5 @@ export function debounce(func, wait) {
 
 export function getSpatialFilterFromViewState(viewState: MapViewState) {
   const viewport = new WebMercatorViewport(viewState);
-  return createViewportSpatialFilter(viewport.getBounds())
+  return createViewportSpatialFilter(viewport.getBounds());
 }
