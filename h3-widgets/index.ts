@@ -5,7 +5,7 @@ import {Deck, MapViewState} from '@deck.gl/core';
 import {H3TileLayer, BASEMAP, colorBins} from '@deck.gl/carto';
 import { initSelectors } from './selectorUtils';
 import { debounce, getSpatialFilterFromViewState } from './utils';
-import { h3TableSource, WidgetSource } from '@carto/api-client';
+import { addFilter, Filters, FilterType, h3TableSource, removeFilter, WidgetSource } from '@carto/api-client';
 import Chart from 'chart.js/auto';
 
 const cartoConfig = {
@@ -35,13 +35,19 @@ let aggregationExp = `SUM(${selectedVariable})`
 
 let source: Source;
 let viewState = INITIAL_VIEW_STATE
+const filters: Filters = {};
 
 // DOM elements
 const variableSelector = document.getElementById('variable') as HTMLSelectElement;
 const aggMethodLabel = document.getElementById('agg-method') as HTMLSelectElement;
 const formulaWidget = document.getElementById('formula-data') as HTMLDivElement;
-const categoriesWidget = document.getElementById('categories-data') as HTMLCanvasElement;
 const histogramWidget = document.getElementById('histogram-data') as HTMLCanvasElement;
+const histogramClearBtn = document.querySelector('.histogram-widget .clear-btn') as HTMLButtonElement;
+histogramClearBtn.addEventListener('click', () => {
+  removeFilter(filters, { column: 'urbanity' });
+  render();
+})
+
 let histogramChart: Chart; 
 
 aggMethodLabel.innerText = aggregationExp;
@@ -58,11 +64,12 @@ variableSelector?.addEventListener('change', () => {
 function render() {
   source = h3TableSource({
     ...cartoConfig,
+    filters,
     aggregationExp: `${aggregationExp} as value`,
     tableName: 'carto-demo-data.demo_tables.derived_spatialfeatures_esp_h3res8_v1_yearly_v2'
   });
-  renderLayers();
   renderWidgets();
+  renderLayers();
 }
 
 function renderLayers() {
@@ -119,7 +126,7 @@ async function renderFormula(ws: WidgetSource) {
   }).format(formula.value)
 }
 
-const TICKS = [100, 500, 1000, 5000];
+const HISTOGRAM_WIDGET_ID = 'urbanity_widget';
 
 async function renderHistogram(ws: WidgetSource) {
   histogramWidget.parentElement?.querySelector('.loader')?.classList.toggle('hidden', false);
@@ -128,6 +135,7 @@ async function renderHistogram(ws: WidgetSource) {
   const categories = await ws.getCategories({
     column: 'urbanity',
     operation: 'count',
+    filterOwner: HISTOGRAM_WIDGET_ID,
     spatialFilter: getSpatialFilterFromViewState(viewState),
     viewState,
   })
@@ -135,9 +143,13 @@ async function renderHistogram(ws: WidgetSource) {
   histogramWidget.parentElement?.querySelector('.loader')?.classList.toggle('hidden', true);
   histogramWidget.classList.toggle('hidden', false);
 
+  const selectedCategory = filters['urbanity']?.[FilterType.IN]?.values[0];
+  const colors = categories.map((c) => c.name === selectedCategory ? 'rgba(255, 99, 132, 0.2)' : 'rgba(54, 162, 235, 0.2)')
+
   if (histogramChart) {
     histogramChart.data.labels = categories.map((c) => c.name);
     histogramChart.data.datasets[0].data = categories.map((c) => c.value);
+    histogramChart.data.datasets[0].backgroundColor = colors;
     histogramChart.update();
   } else {
     histogramChart = new Chart(histogramWidget, {
@@ -148,8 +160,27 @@ async function renderHistogram(ws: WidgetSource) {
           {
             label: 'Urbanity category',
             data: categories.map((c) => c.value),
+            backgroundColor: colors,
           }
         ]
+      },
+      options: {
+        onClick: async (ev, elems) => {
+          console.log(elems[0])
+          const index = elems[0]?.index
+          const categoryName = categories[index]?.name
+          if (!categoryName || categoryName === selectedCategory) {
+            removeFilter(filters, { column: 'urbanity' })
+          } else {
+            addFilter(filters, {
+              column: 'urbanity',
+              type: FilterType.IN,
+              values: [categoryName],
+              owner: HISTOGRAM_WIDGET_ID,
+            })
+          }
+          await render()
+        }
       },
     })
   }
