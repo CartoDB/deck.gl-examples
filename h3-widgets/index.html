@@ -10,7 +10,7 @@
     <div id="top-left">
       <div id="story-card">
         <p class="overline">✨👀 You're viewing</p>
-        <h2>CARTO Spatial Features datasets in H3 (12M rows).</h2>
+        <h2>CARTO Widgets for H3 (12M rows).</h2>
         <p>
           More info about
           <a
@@ -41,9 +41,14 @@
         </div>
   
         <div class="widgets">
-          <div class="formula-widget">
+          <div class="widget formula-widget">
             <p class="overline">Total Population</p>
             <div id="formula-data"></div>
+          </div>
+          <div class="widget histogram-widget relative">
+            <p class="overline">Urbanity categories</p>
+            <p class="loader hidden">Loading...</p>
+            <canvas id="histogram-data" height="300px"></canvas>
           </div>
         </div>
       </div>
