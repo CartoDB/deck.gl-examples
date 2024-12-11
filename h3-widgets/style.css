@@ -149,3 +149,9 @@ button:hover {
 .hidden {
   opacity: 0;
 }
+
+.widget .clear-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+}
