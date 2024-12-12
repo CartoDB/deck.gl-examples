@@ -74,6 +74,7 @@ function render() {
   source = h3TableSource({
     ...cartoConfig,
     filters,
+    dataResolution: 8,
     aggregationExp: `${aggregationExp} as value`,
     tableName: 'carto-demo-data.demo_tables.derived_spatialfeatures_esp_h3res8_v1_yearly_v2'
   });
