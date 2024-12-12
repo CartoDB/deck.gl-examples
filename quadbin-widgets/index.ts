@@ -75,6 +75,7 @@ function render() {
     ...cartoConfig,
     filters,
     aggregationExp: `${aggregationExp} as value`,
+    dataResolution: 15,
     tableName: 'carto-demo-data.demo_tables.derived_spatialfeatures_esp_quadbin15_v1_yearly_v2'
   });
   renderWidgets();
