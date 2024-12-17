@@ -87,7 +87,7 @@ function renderLayers() {
     attr: 'value',
     domain: [0, 100, 1000, 10000, 100000, 1000000],
     colors: 'PinkYl'
-  })
+  });
   const layers = [
     new QuadbinTileLayer({
       id: 'quadbin_layer',
@@ -97,12 +97,12 @@ function renderLayers() {
       extruded: false,
       getFillColor: (...args) => {
         const color = colorScale(...args);
-        const d = args[0]
-        const value = Math.floor(d.properties.value)
+        const d = args[0];
+        const value = Math.floor(d.properties.value);
         if (value > 0) {
-          return color
+          return color;
         }
-        return [0, 0, 0, 255 * 0.25]
+        return [0, 0, 0, 255 * 0.25];
       },
       lineWidthMinPixels: 0.5,
       getLineWidth: 0.5,
