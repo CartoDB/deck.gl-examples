@@ -83,12 +83,11 @@ function render() {
 }
 
 function renderLayers() {
-
   const colorScale = colorBins({
     attr: 'value',
     domain: [0, 100, 1000, 10000, 100000, 1000000],
-    colors: 'PinkYl',
-  })
+    colors: 'PinkYl'
+  });
 
   const layers = [
     new H3TileLayer({
@@ -99,18 +98,18 @@ function renderLayers() {
       extruded: false,
       getFillColor: (...args) => {
         const color = colorScale(...args);
-        const d = args[0]
-        const value = Math.floor(d.properties.value)
+        const d = args[0];
+        const value = Math.floor(d.properties.value);
         if (value > 0) {
-          return color
+          return color;
         }
-        return [0, 0, 0, 255 * 0.25]
+        return [0, 0, 0, 255 * 0.25];
       },
       lineWidthMinPixels: 0.5,
       getLineWidth: 0.5,
       getLineColor: [255, 255, 255, 100],
       onClick: info => {
-        console.log(info.object)
+        console.log(info.object);
       }
     })
   ];
@@ -168,7 +167,7 @@ async function renderHistogram(ws: WidgetSource) {
   const selectedCategory = filters['urbanity']?.[FilterType.IN]?.values[0];
   const colors = categories.map(c =>
     c.name === selectedCategory ? 'rgba(255, 99, 132, 0.2)' : 'rgba(54, 162, 235, 0.2)'
-  )
+  );
 
   if (histogramChart) {
     histogramChart.data.labels = categories.map(c => c.name);
