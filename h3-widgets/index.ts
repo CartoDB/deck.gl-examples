@@ -75,7 +75,7 @@ function render() {
     ...cartoConfig,
     filters,
     dataResolution: 8,
-    aggregationExp: `${aggregationExp} as value`,
+    aggregationExp: `${aggregationExp} as value, any_value(urbanity) as urbanity`,
     tableName: 'carto-demo-data.demo_tables.derived_spatialfeatures_esp_h3res8_v1_yearly_v2'
   });
   renderWidgets();
@@ -83,6 +83,13 @@ function render() {
 }
 
 function renderLayers() {
+
+  const colorScale = colorBins({
+    attr: 'value',
+    domain: [0, 100, 1000, 10000, 100000, 1000000],
+    colors: 'PinkYl',
+  })
+
   const layers = [
     new H3TileLayer({
       id: 'h3_layer',
@@ -90,14 +97,21 @@ function renderLayers() {
       opacity: 0.8,
       pickable: true,
       extruded: false,
-      getFillColor: colorBins({
-        attr: 'value',
-        domain: [0, 100, 1000, 10000, 100000, 1000000],
-        colors: 'PinkYl'
-      }),
+      getFillColor: (...args) => {
+        const color = colorScale(...args);
+        const d = args[0]
+        const value = Math.floor(d.properties.value)
+        if (value > 0) {
+          return color
+        }
+        return [0, 0, 0, 255 * 0.25]
+      },
       lineWidthMinPixels: 0.5,
       getLineWidth: 0.5,
-      getLineColor: [255, 255, 255, 100]
+      getLineColor: [255, 255, 255, 100],
+      onClick: info => {
+        console.log(info.object)
+      }
     })
   ];
 
@@ -106,7 +120,8 @@ function renderLayers() {
     getTooltip: ({object}) =>
       object && {
         html: `Hex ID: ${object.id}</br>
-        ${selectedVariable.toUpperCase()}: ${parseInt(object.properties.value)}</br>
+        ${selectedVariable.toUpperCase()}: ${Number(object.properties.value).toFixed(2)}</br>
+        Urbanity: ${object.properties.urbanity}</br>
         Aggregation Expression: ${aggregationExp}`
       }
   });
@@ -145,13 +160,15 @@ async function renderHistogram(ws: WidgetSource) {
     viewState
   });
 
+  categories.sort((a, b) => a.name.localeCompare(b.name));
+
   histogramWidget.parentElement?.querySelector('.loader')?.classList.toggle('hidden', true);
   histogramWidget.classList.toggle('hidden', false);
 
   const selectedCategory = filters['urbanity']?.[FilterType.IN]?.values[0];
   const colors = categories.map(c =>
     c.name === selectedCategory ? 'rgba(255, 99, 132, 0.2)' : 'rgba(54, 162, 235, 0.2)'
-  );
+  )
 
   if (histogramChart) {
     histogramChart.data.labels = categories.map(c => c.name);
@@ -172,10 +189,10 @@ async function renderHistogram(ws: WidgetSource) {
         ]
       },
       options: {
-        onClick: async (ev, elems) => {
-          console.log(elems[0]);
+        onClick: async (ev, elems, chart) => {
+          const labels = chart.data.labels as string[];
           const index = elems[0]?.index;
-          const categoryName = categories[index]?.name;
+          const categoryName = labels[index];
           if (!categoryName || categoryName === selectedCategory) {
             removeFilter(filters, {column: 'urbanity'});
           } else {
