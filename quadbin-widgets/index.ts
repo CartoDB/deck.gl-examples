@@ -74,7 +74,7 @@ function render() {
   source = quadbinTableSource({
     ...cartoConfig,
     filters,
-    aggregationExp: `${aggregationExp} as value`,
+    aggregationExp: `${aggregationExp} as value, any_value(urbanity) as urbanity`,
     dataResolution: 15,
     tableName: 'carto-demo-data.demo_tables.derived_spatialfeatures_esp_quadbin15_v1_yearly_v2'
   });
@@ -83,6 +83,11 @@ function render() {
 }
 
 function renderLayers() {
+  const colorScale = colorBins({
+    attr: 'value',
+    domain: [0, 100, 1000, 10000, 100000, 1000000],
+    colors: 'PinkYl'
+  })
   const layers = [
     new QuadbinTileLayer({
       id: 'quadbin_layer',
@@ -90,11 +95,15 @@ function renderLayers() {
       opacity: 0.8,
       pickable: true,
       extruded: false,
-      getFillColor: colorBins({
-        attr: 'value',
-        domain: [0, 100, 1000, 10000, 100000, 1000000],
-        colors: 'PinkYl'
-      }),
+      getFillColor: (...args) => {
+        const color = colorScale(...args);
+        const d = args[0]
+        const value = Math.floor(d.properties.value)
+        if (value > 0) {
+          return color
+        }
+        return [0, 0, 0, 255 * 0.25]
+      },
       lineWidthMinPixels: 0.5,
       getLineWidth: 0.5,
       getLineColor: [255, 255, 255, 100]
@@ -145,6 +154,8 @@ async function renderHistogram(ws: WidgetSource) {
     viewState
   });
 
+  categories.sort((a, b) => a.name.localeCompare(b.name));
+
   histogramWidget.parentElement?.querySelector('.loader')?.classList.toggle('hidden', true);
   histogramWidget.classList.toggle('hidden', false);
 
@@ -172,10 +183,10 @@ async function renderHistogram(ws: WidgetSource) {
         ]
       },
       options: {
-        onClick: async (ev, elems) => {
-          console.log(elems[0]);
+        onClick: async (ev, elems, chart) => {
+          const labels = chart.data.labels as string[];
           const index = elems[0]?.index;
-          const categoryName = categories[index]?.name;
+          const categoryName = labels[index];
           if (!categoryName || categoryName === selectedCategory) {
             removeFilter(filters, {column: 'urbanity'});
           } else {
