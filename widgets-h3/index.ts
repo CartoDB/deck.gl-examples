@@ -25,11 +25,11 @@ const cartoConfig = {
 
 const INITIAL_VIEW_STATE: MapViewState = {
   // Spain
-  latitude: 37.3753636,
-  longitude: -5.9962577,
-  zoom: 6,
-  pitch: 0,
-  bearing: 0,
+  latitude: 35.3753636,
+  longitude: -14.9962577,
+  zoom: 5.2,
+  pitch: 50,
+  bearing: 5,
   minZoom: 3.5,
   maxZoom: 15
 };
@@ -46,7 +46,6 @@ const filters: Filters = {};
 
 // DOM elements
 const variableSelector = document.getElementById('variable') as HTMLSelectElement;
-const aggMethodLabel = document.getElementById('agg-method') as HTMLSelectElement;
 const formulaWidget = document.getElementById('formula-data') as HTMLDivElement;
 const histogramWidget = document.getElementById('histogram-data') as HTMLCanvasElement;
 const histogramClearBtn = document.querySelector(
@@ -59,13 +58,11 @@ histogramClearBtn.addEventListener('click', () => {
 
 let histogramChart: Chart;
 
-aggMethodLabel.innerText = aggregationExp;
 variableSelector?.addEventListener('change', () => {
   const aggMethod = variableSelector.selectedOptions[0].dataset.aggMethod || 'SUM';
 
   selectedVariable = variableSelector.value;
   aggregationExp = `${aggMethod}(${selectedVariable})`;
-  aggMethodLabel.innerText = aggregationExp;
 
   render();
 });
@@ -93,9 +90,9 @@ function renderLayers() {
     new H3TileLayer({
       id: 'h3_layer',
       data: source,
-      opacity: 0.8,
+      opacity: 0.75,
       pickable: true,
-      extruded: false,
+      extruded: true,
       getFillColor: (...args) => {
         const color = colorScale(...args);
         const d = args[0];
@@ -105,12 +102,15 @@ function renderLayers() {
         }
         return [0, 0, 0, 255 * 0.25];
       },
+      getElevation: (...args) => {
+        const d = args[0];
+        return d.properties.value;
+      },
+      coverage: 0.95,
+      elevationScale: 0.2,
       lineWidthMinPixels: 0.5,
       getLineWidth: 0.5,
-      getLineColor: [255, 255, 255, 100],
-      onClick: info => {
-        console.log(info.object);
-      }
+      getLineColor: [255, 255, 255, 100]
     })
   ];
 
@@ -153,25 +153,24 @@ async function renderHistogram(ws: WidgetSource) {
 
   const categories = await ws.getCategories({
     column: 'urbanity',
-    operation: 'count',
+    operation: 'sum',
+    operationColumn: selectedVariable,
     filterOwner: HISTOGRAM_WIDGET_ID,
     spatialFilter: getSpatialFilterFromViewState(viewState),
     viewState
   });
-
-  categories.sort((a, b) => a.name.localeCompare(b.name));
 
   histogramWidget.parentElement?.querySelector('.loader')?.classList.toggle('hidden', true);
   histogramWidget.classList.toggle('hidden', false);
 
   const selectedCategory = filters['urbanity']?.[FilterType.IN]?.values[0];
   const colors = categories.map(c =>
-    c.name === selectedCategory ? 'rgba(255, 99, 132, 0.2)' : 'rgba(54, 162, 235, 0.2)'
+    c.name === selectedCategory ? 'rgba(255, 99, 132, 0.8)' : 'rgba(54, 162, 235, 0.75)'
   );
 
   if (histogramChart) {
     histogramChart.data.labels = categories.map(c => c.name);
-    histogramChart.data.datasets[0].data = categories.map(c => c.value);
+    histogramChart.data.datasets[0].data = categories.map(c => Math.floor(c.value));
     histogramChart.data.datasets[0].backgroundColor = colors;
     histogramChart.update();
   } else {
@@ -182,7 +181,7 @@ async function renderHistogram(ws: WidgetSource) {
         datasets: [
           {
             label: 'Urbanity category',
-            data: categories.map(c => c.value),
+            data: categories.map(c => Math.floor(c.value)),
             backgroundColor: colors
           }
         ]

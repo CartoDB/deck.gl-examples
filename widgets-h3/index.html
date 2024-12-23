@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>CARTO + deck.gl - H3 Spatial Index Widgets</title>
+    <title>CARTO + deck.gl - H3 Widgets</title>
   </head>
   <body>
     <div id="map"></div>
@@ -10,52 +10,53 @@
     <div id="top-left">
       <div id="story-card">
         <p class="overline">✨👀 You're viewing</p>
-        <h2>CARTO Widgets for H3 Spatial Index</h2>
+        <h2>CARTO Widgets for H3 Sources</h2>
         <p>
-          More info about
+          This example showcases how to build widgets (charts and filters) into visualizations using
+          CARTO + deck.gl + H3 Spatial Index sources. Learn more about
           <a
-            href=" https://carto.com/blog/carto-spatial-features-urbanity-climatology-elevation"
+            href="https://docs.carto.com/carto-for-developers/reference/carto-widgets-reference/"
             rel="noopener noreferrer"
             target="_blank"
-            >H3 Spatial Index</a
+            >widgets in CARTO.</a
           >
         </p>
-  
+
         <div class="layer-controls">
           <p class="overline">Variable</p>
           <select name="variable" id="variable" class="select"></select>
-          <p class="overline">Agreggation method applied</p>
-          <p><pre id="agg-method"></pre></p>
-          <p><small>More information about <a href="https://docs.carto.com/carto-for-developers/carto-for-react/guides/data-sources#spatial-indexes-and-custom-geometry-column-names">aggregationExp</a></small></p>
           <div>
-            <img
-              class="legend"
-              src="./images/scale.jpg"
-              alt="legend"
-            />
+            <img class="legend" src="./images/scale.jpg" alt="legend" />
             <div class="label-container">
               <div>Less</div>
               <div>More</div>
             </div>
           </div>
         </div>
-  
+
         <div class="widgets">
           <div class="widget formula-widget">
-            <p class="overline">Total Population</p>
+            <p class="overline">Total</p>
             <div id="formula-data"></div>
           </div>
           <div class="widget histogram-widget relative">
             <button class="clear-btn">Clear filter</button>
-            <p class="overline">Urbanity categories</p>
-            <p class="">You can click the bars to filter the map with the selected category</p>
+            <p class="overline">Population by urbanity</p>
             <p class="loader hidden">Loading...</p>
-            <canvas id="histogram-data" height="300px"></canvas>
+            <canvas id="histogram-data" height="200px"></canvas>
           </div>
         </div>
       </div>
     </div>
-    <p class="caption">Source: <a href="https://carto.com/spatial-data-catalog/browser/dataset/cdb_spatial_fea_94e6b1f/" rel="noopener noreferrer" target="_blank">Spatial Features - United States of America (H3 Resolution 8)</a></p>
+    <p class="caption">
+      Source:
+      <a
+        href="https://carto.com/spatial-data-catalog/browser/dataset/cdb_spatial_fea_94e6b1f/"
+        rel="noopener noreferrer"
+        target="_blank"
+        >Spatial Features - United States of America (H3 Resolution 8)</a
+      >
+    </p>
     <script type="module" src="./index.ts"></script>
   </body>
 </html>

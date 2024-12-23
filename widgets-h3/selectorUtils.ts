@@ -10,7 +10,7 @@ export async function initSelectors() {
   const variableSelector = document.getElementById('variable') as HTMLSelectElement;
   const data = await getVariables();
   const options = data
-    .filter((variable: Variable) => variable.db_type === 'FLOAT')
+    .filter((variable: Variable) => ['population', 'female', 'male'].includes(variable.column_name))
     .map((variable: Variable) => {
       return `<option value="${variable.column_name}" data-agg-method="${variable.agg_method}">${variable.name}</option>`;
     });
