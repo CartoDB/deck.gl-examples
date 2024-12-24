@@ -9,7 +9,7 @@ import {
   addFilter,
   Filters,
   FilterType,
-  h3TableSource,
+  h3QuerySource,
   removeFilter,
   WidgetSource
 } from '@carto/api-client';
@@ -24,17 +24,16 @@ const cartoConfig = {
 };
 
 const INITIAL_VIEW_STATE: MapViewState = {
-  // Spain
-  latitude: 35.3753636,
-  longitude: -14.9962577,
-  zoom: 5.2,
-  pitch: 50,
-  bearing: 5,
+  latitude: 35.7128,
+  longitude: -88.006,
+  zoom: 5,
+  pitch: 60,
+  bearing: 0,
   minZoom: 3.5,
   maxZoom: 15
 };
 
-type Source = ReturnType<typeof h3TableSource>;
+type Source = ReturnType<typeof h3QuerySource>;
 
 // Selectors variables
 let selectedVariable = 'population';
@@ -68,12 +67,13 @@ variableSelector?.addEventListener('change', () => {
 });
 
 function render() {
-  source = h3TableSource({
+  source = h3QuerySource({
     ...cartoConfig,
     filters,
     dataResolution: 8,
     aggregationExp: `${aggregationExp} as value, any_value(urbanity) as urbanity`,
-    tableName: 'carto-demo-data.demo_tables.derived_spatialfeatures_esp_h3res8_v1_yearly_v2'
+    sqlQuery:
+      'SELECT * FROM cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2'
   });
   renderWidgets();
   renderLayers();
