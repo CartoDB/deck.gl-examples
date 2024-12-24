@@ -7,9 +7,7 @@ html {
   font-family: Inter, sans-serif;
   font-weight: 400;
   font-size: 1rem;
-}
-
-body {
+  line-height: 1.5;
   margin: 0;
 }
 
@@ -132,7 +130,9 @@ button:hover {
   font-family: monospace;
 }
 
-.relative { position: relative; }
+.relative {
+  position: relative;
+}
 
 .loader {
   font-size: 14px;

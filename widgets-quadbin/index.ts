@@ -26,8 +26,8 @@ const cartoConfig = {
 const INITIAL_VIEW_STATE: MapViewState = {
   // Spain
   latitude: 37.3753636,
-  longitude: -5.9962577,
-  zoom: 6,
+  longitude: -7.9962577,
+  zoom: 4.8,
   pitch: 0,
   bearing: 0,
   minZoom: 3.5,
@@ -46,7 +46,6 @@ const filters: Filters = {};
 
 // DOM elements
 const variableSelector = document.getElementById('variable') as HTMLSelectElement;
-const aggMethodLabel = document.getElementById('agg-method') as HTMLSelectElement;
 const formulaWidget = document.getElementById('formula-data') as HTMLDivElement;
 const histogramWidget = document.getElementById('histogram-data') as HTMLCanvasElement;
 const histogramClearBtn = document.querySelector(
@@ -59,13 +58,11 @@ histogramClearBtn.addEventListener('click', () => {
 
 let histogramChart: Chart;
 
-aggMethodLabel.innerText = aggregationExp;
 variableSelector?.addEventListener('change', () => {
   const aggMethod = variableSelector.selectedOptions[0].dataset.aggMethod || 'SUM';
 
   selectedVariable = variableSelector.value;
   aggregationExp = `${aggMethod}(${selectedVariable})`;
-  aggMethodLabel.innerText = aggregationExp;
 
   render();
 });
@@ -148,20 +145,19 @@ async function renderHistogram(ws: WidgetSource) {
 
   const categories = await ws.getCategories({
     column: 'urbanity',
-    operation: 'count',
+    operation: 'sum',
+    operationColumn: selectedVariable,
     filterOwner: HISTOGRAM_WIDGET_ID,
     spatialFilter: getSpatialFilterFromViewState(viewState),
     viewState
   });
-
-  categories.sort((a, b) => a.name.localeCompare(b.name));
 
   histogramWidget.parentElement?.querySelector('.loader')?.classList.toggle('hidden', true);
   histogramWidget.classList.toggle('hidden', false);
 
   const selectedCategory = filters['urbanity']?.[FilterType.IN]?.values[0];
   const colors = categories.map(c =>
-    c.name === selectedCategory ? 'rgba(255, 99, 132, 0.2)' : 'rgba(54, 162, 235, 0.2)'
+    c.name === selectedCategory ? 'rgba(255, 99, 132, 0.75)' : 'rgba(54, 162, 235, 0.75)'
   );
 
   if (histogramChart) {
