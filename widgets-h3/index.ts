@@ -137,7 +137,7 @@ async function renderFormula(ws: WidgetSource) {
     column: selectedVariable,
     operation: 'sum',
     spatialFilter: getSpatialFilterFromViewState(viewState),
-    viewState
+    spatialIndexReferenceViewState: viewState
   });
   formulaWidget.textContent = Intl.NumberFormat('en-US', {
     maximumFractionDigits: 0
@@ -157,7 +157,7 @@ async function renderHistogram(ws: WidgetSource) {
     operationColumn: selectedVariable,
     filterOwner: HISTOGRAM_WIDGET_ID,
     spatialFilter: getSpatialFilterFromViewState(viewState),
-    viewState
+    spatialIndexReferenceViewState: viewState
   });
 
   histogramWidget.parentElement?.querySelector('.loader')?.classList.toggle('hidden', true);
@@ -201,7 +201,7 @@ async function renderHistogram(ws: WidgetSource) {
               owner: HISTOGRAM_WIDGET_ID
             });
           }
-          await render();
+          render();
         }
       }
     });

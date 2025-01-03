@@ -2,7 +2,7 @@ import './style.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import maplibregl from 'maplibre-gl';
 import {Deck, MapViewState} from '@deck.gl/core';
-import {H3TileLayer, BASEMAP, colorBins, QuadbinTileLayer} from '@deck.gl/carto';
+import {BASEMAP, colorBins, QuadbinTileLayer} from '@deck.gl/carto';
 import {initSelectors} from './selectorUtils';
 import {debounce, getSpatialFilterFromViewState} from './utils';
 import {
@@ -129,7 +129,7 @@ async function renderFormula(ws: WidgetSource) {
     column: selectedVariable,
     operation: 'sum',
     spatialFilter: getSpatialFilterFromViewState(viewState),
-    viewState
+    spatialIndexReferenceViewState: viewState
   });
   formulaWidget.textContent = Intl.NumberFormat('en-US', {
     maximumFractionDigits: 0
@@ -149,7 +149,7 @@ async function renderHistogram(ws: WidgetSource) {
     operationColumn: selectedVariable,
     filterOwner: HISTOGRAM_WIDGET_ID,
     spatialFilter: getSpatialFilterFromViewState(viewState),
-    viewState
+    spatialIndexReferenceViewState: viewState
   });
 
   histogramWidget.parentElement?.querySelector('.loader')?.classList.toggle('hidden', true);
@@ -193,7 +193,7 @@ async function renderHistogram(ws: WidgetSource) {
               owner: HISTOGRAM_WIDGET_ID
             });
           }
-          await render();
+          render();
         }
       }
     });
