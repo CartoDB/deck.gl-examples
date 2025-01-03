@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>CARTO + deck.gl - H3 Widgets</title>
+  </head>
+  <body>
+    <div id="map"></div>
+    <canvas id="deck-canvas"></canvas>
+    <div id="top-left">
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>CARTO Widgets for H3 Sources</h2>
+        <p>
+          This example showcases how to build widgets (charts and filters) into visualizations using
+          CARTO + deck.gl + H3 Spatial Index sources. Learn more about
+          <a
+            href="https://docs.carto.com/carto-for-developers/reference/carto-widgets-reference/"
+            rel="noopener noreferrer"
+            target="_blank"
+            >widgets in CARTO.</a
+          >
+        </p>
+
+        <div class="layer-controls">
+          <p class="overline">Variable</p>
+          <select name="variable" id="variable" class="select"></select>
+          <div>
+            <img class="legend" src="./images/scale.jpg" alt="legend" />
+            <div class="label-container">
+              <div>Less</div>
+              <div>More</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="widgets">
+          <div class="widget formula-widget">
+            <p class="overline">Total</p>
+            <div id="formula-data"></div>
+          </div>
+          <div class="widget histogram-widget relative">
+            <button class="clear-btn">Clear filter</button>
+            <p class="overline">Population by urbanity</p>
+            <p class="loader hidden">Loading...</p>
+            <canvas id="histogram-data" height="200px"></canvas>
+          </div>
+        </div>
+        <hr />
+        <p class="caption">
+          Source:
+          <a
+            href="https://carto.com/spatial-data-catalog/browser/dataset/cdb_spatial_fea_94e6b1f/"
+            rel="noopener noreferrer"
+            target="_blank"
+            >Spatial Features - United States of America (H3 Resolution 8)</a
+          >
+        </p>
+      </div>
+    </div>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>

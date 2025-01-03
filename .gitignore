@@ -26,3 +26,6 @@ dist
 # Don't lock libraries in examples
 yarn.lock
 package-lock.json
+
+#.DS_Store
+.DS_Store
