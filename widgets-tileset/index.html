@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://app.carto.com/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://app.carto.com/favicon/favicon-16x16.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CARTO + deck.gl - Widgets for tilesets</title>
+  <body>
+    <div id="app">
+      <div id="map"></div>
+      <canvas id="deck-canvas"></canvas>
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>Widgets for tilesets</h2>
+        <p>This is an example of a couple scalable, performant <a href="https://docs.carto.com/carto-for-developers/reference/carto-widgets-reference" rel="noopener noreferrer" target="_blank">Widgets</a> using CARTO + deck.gl for a big USA block groups tileset.</p>
+        <p class="small">These widgets aggregate data in different numerical categories, and they are synchronized with the map using <code>spatialFilter</code>. Learn more about <a href="https://docs.carto.com/carto-for-developers/charts-and-widgets" rel="noopener noreferrer" target="_blank">building charts and widgets with CARTO</a>.</p>
+        <hr>
+        <div class="widget-wrapper">
+          <p class="widget-title overline">Block groups by income per capita (Histogram widget)</p>
+          <span id="clearHistogramFilter" class="widget-clear-filter">Clear filter</span>
+          <div class="echarts-histogram" id="histogram-widget">
+        </div>
+        <hr>
+        <p class="caption">Source: <a href="https://www.openstreetmap.org" rel="noopener noreferrer" target="_blank">OpenStreetMap</a></p>
+      </div>
+
+    </div>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>
