@@ -123,3 +123,9 @@ code {
 *::-webkit-scrollbar {
   display: none;
 }
+
+.formula-widget-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

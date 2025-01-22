@@ -55,6 +55,7 @@ const map = new maplibregl.Map({
 // prepare and init widgets HTML elements
 
 const histogramWidget = document.querySelector<HTMLSelectElement>('#histogram-widget');
+const formulaWidget = document.querySelector<HTMLSelectElement>('#formula-widget');
 
 var chartDom = histogramWidget;
 var histogramWidgetChart = echarts.init(chartDom);
@@ -171,13 +172,20 @@ async function renderWidgets() {
 
   // configure widgets
 
+  const formula = await dataSource.widgetSource.getFormula({
+    column: '*',
+    operation: 'count'
+  })
+
+  if (formula.value) {
+    formulaWidget.innerHTML = formula.value.toFixed(0);
+  }
+
   const histogram = await dataSource.widgetSource.getHistogram({
     column: 'income_per_capita',
     ticks: histogramTicks,
     operation: 'count'
   });
-
-  console.log(histogram);
 
   const option = {
     tooltip: {
@@ -248,7 +256,7 @@ function hexToRgb(hex) {
 
 // render Layers function
 
-async function renderLayers() {
+function renderLayers() {
   // Exit if dataSource is not ready
   if (!dataSource) {
     return;
