@@ -22,9 +22,9 @@ const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 // init deckgl
 
 const INITIAL_VIEW_STATE = {
-  latitude: 20.8097343,
-  longitude: -60.5556199,
-  zoom: 1.5,
+  latitude: 37.634945,
+  longitude: -118.837644,
+  zoom: 2.5,
   bearing: 0,
   pitch: 0
 };
@@ -70,6 +70,7 @@ histogramWidgetChart.on('click', function (params) {
 
 // define source
 
+let tilesLoaded = false;
 let dataSource: VectorTilesetSourceResponse;
 
 async function initSource() {
@@ -163,6 +164,11 @@ const histogramTicks = [15000, 20000, 23000, 26000, 30000, 34000, 40000, 50000];
 async function renderWidgets() {
   // Exit if dataSource is not ready
   if (!dataSource) {
+    return;
+  }
+
+  // Exit if tiles are not loaded by layer viewport
+  if (!tilesLoaded) {
     return;
   }
 
@@ -280,6 +286,10 @@ function renderLayers() {
       lineWidthMinPixels: 0.3,
       onViewportLoad(tiles) {
         dataSource.widgetSource.loadTiles(tiles)
+        if (!tilesLoaded) {
+          tilesLoaded = true;
+          renderWidgets();
+        }
       },
     })
   ];
