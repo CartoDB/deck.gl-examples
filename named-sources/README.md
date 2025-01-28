@@ -10,6 +10,9 @@ Uses [Vite](https://vitejs.dev/) to bundle and serve files.
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/CartoDB/deck.gl-examples/tree/master/named-sources?file=index.ts)
 
+> [!WARNING]
+> Please make sure you recreate the `.env` file from this repository in your Stackblitz project.
+
 Or run it locally:
 
 ```bash
