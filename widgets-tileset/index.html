@@ -32,6 +32,16 @@
         <p>This is an example of a couple scalable, performant <a href="https://docs.carto.com/carto-for-developers/reference/carto-widgets-reference" rel="noopener noreferrer" target="_blank">Widgets</a> using CARTO + deck.gl for a big USA block groups tileset.</p>
         <p class="small">These widgets aggregate data in different numerical categories, and they are synchronized with the map using <code>spatialFilter</code>. Learn more about <a href="https://docs.carto.com/carto-for-developers/charts-and-widgets" rel="noopener noreferrer" target="_blank">building charts and widgets with CARTO</a>.</p>
         <hr>
+        <section id="dropping-warning-small" class="hidden">
+          <p class="small">
+            <strong>Warning:</strong> There may be some data missing at this zoom level because of the tileset dropping features.
+          </p>
+        </section>
+        <section id="dropping-warning-big" class="hidden">
+          <p class="small">
+            <strong>Warning:</strong> There is an important amount of data missing at this zoom level because of the tileset dropping features. Widget calculations will not be accurate.
+          </p>
+        </section>
         <div class="widget-wrapper formula-widget-wrapper">
           <p class="widget-title overline">Block groups count:</p>
           <div id="formula-widget"></div>

@@ -54,8 +54,11 @@ const map = new maplibregl.Map({
 
 // prepare and init widgets HTML elements
 
-const histogramWidget = document.querySelector<HTMLSelectElement>('#histogram-widget');
-const formulaWidget = document.querySelector<HTMLSelectElement>('#formula-widget');
+const histogramWidget = document.querySelector<HTMLDivElement>('#histogram-widget');
+const formulaWidget = document.querySelector<HTMLDivElement>('#formula-widget');
+const droppingWarningSmall = document.querySelector<HTMLDivElement>('#dropping-warning-small');
+const droppingWarningBig = document.querySelector<HTMLDivElement>('#dropping-warning-big');
+const wrappers = document.querySelectorAll<HTMLDivElement>('.widget-wrapper');
 
 var chartDom = histogramWidget;
 var histogramWidgetChart = echarts.init(chartDom);
@@ -73,6 +76,26 @@ histogramWidgetChart.on('click', function (params) {
 let tilesLoaded = false;
 let dataSource: VectorTilesetSourceResponse;
 
+const EXCESIVE_DROPPING_PERCENT = 0.05
+
+function getDroppingPercent(dataset: VectorTilesetSourceResponse, zoom: number) {
+  const { fraction_dropped_per_zoom, maxzoom, minzoom } = dataset
+  if (!fraction_dropped_per_zoom?.length) {
+    return 0
+  }
+
+  const roundedZoom = Math.round(zoom)
+  const clampedZoom = clamp(roundedZoom, minzoom || 0, maxzoom || 20)
+
+  const percent = fraction_dropped_per_zoom[clampedZoom]
+  return percent
+}
+
+function clamp(n: number, min: number, max: number) {
+  return Math.min(Math.max(n, min), max);
+}
+
+
 async function initSource() {
   dataSource = await vectorTilesetSource({
     ...cartoConfig,
@@ -84,9 +107,11 @@ async function initSource() {
 // SPATIAL FILTER
 // prepare a function to get the new viewport state, that we'll pass debounced to our widgets to minimize requests
 
+let currentZoom = INITIAL_VIEW_STATE.zoom;
 let viewportSpatialFilter;
 
 const debouncedUpdateSpatialFilter = debounce(viewState => {
+  currentZoom = viewState.zoom;
   const viewport = new WebMercatorViewport(viewState);
   viewportSpatialFilter = createViewportSpatialFilter(viewport.getBounds());
   renderWidgets();
@@ -170,6 +195,18 @@ async function renderWidgets() {
   // Exit if tiles are not loaded by layer viewport
   if (!tilesLoaded) {
     return;
+  }
+
+  const droppingPercent = getDroppingPercent(dataSource, currentZoom);
+  droppingWarningSmall.classList.add('hidden');
+  droppingWarningBig.classList.add('hidden');
+
+  wrappers.forEach(el => el.classList.remove('dim'));
+  if (droppingPercent > EXCESIVE_DROPPING_PERCENT) {
+    droppingWarningBig.classList.remove('hidden');
+    wrappers.forEach(el => el.classList.add('dim'));
+  } else if (droppingPercent > 0) {
+    droppingWarningSmall.classList.remove('hidden');
   }
 
   dataSource.widgetSource.extractTileFeatures({ spatialFilter: viewportSpatialFilter })

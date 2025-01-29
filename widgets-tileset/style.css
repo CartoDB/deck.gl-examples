@@ -129,3 +129,11 @@ code {
   align-items: center;
   gap: 8px;
 }
+
+.hidden {
+  display: none;
+}
+
+.dim {
+  opacity: 0.33;
+}
