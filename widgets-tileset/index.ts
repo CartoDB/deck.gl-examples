@@ -16,7 +16,7 @@ import { VectorTilesetSourceResponse } from '@carto/api-client';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
-const connectionName = 'carto_dw';
+const connectionName = 'amanzanares-pm-bq';
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
 // init deckgl
@@ -48,7 +48,7 @@ const deck = new Deck({
 
 const map = new maplibregl.Map({
   container: 'map',
-  style: BASEMAP.POSITRON,
+  style: BASEMAP.DARK_MATTER,
   interactive: false
 });
 
@@ -58,6 +58,7 @@ const histogramWidget = document.querySelector<HTMLDivElement>('#histogram-widge
 const formulaWidget = document.querySelector<HTMLDivElement>('#formula-widget');
 const droppingWarningSmall = document.querySelector<HTMLDivElement>('#dropping-warning-small');
 const droppingWarningBig = document.querySelector<HTMLDivElement>('#dropping-warning-big');
+const droppingPercentage = document.querySelector<HTMLDivElement>('#dropping-percentage');
 const wrappers = document.querySelectorAll<HTMLDivElement>('.widget-wrapper');
 
 var chartDom = histogramWidget;
@@ -99,7 +100,7 @@ function clamp(n: number, min: number, max: number) {
 async function initSource() {
   dataSource = await vectorTilesetSource({
     ...cartoConfig,
-    tableName: 'carto-demo-data.demo_tilesets.sociodemographics_usa_blockgroup',
+    tableName: 'cartodb-on-gcp-pm-team.amanzanares_opensource_demo.national_water_model_tileset_final_1',
   })
   return dataSource;
 }
@@ -144,7 +145,7 @@ function filterViaHistogram(dataIndex) {
   clearFiltersButton.style.display = 'inherit';
 
   removeFilter(filters, {
-    column: 'income_per_capita'
+    column: 'streamOrder'
   });
 
   const minValue = histogramTicks[dataIndex];
@@ -153,14 +154,14 @@ function filterViaHistogram(dataIndex) {
   if (dataIndex === histogramTicks.length - 1) {
     // For the last category (> 600), use CLOSED_OPEN
     addFilter(filters, {
-      column: 'income_per_capita',
+      column: 'streamOrder',
       type: FilterType.CLOSED_OPEN,
       values: [[minValue, Infinity]]
     });
   } else {
     // For first and middle categories, use BETWEEN
     addFilter(filters, {
-      column: 'income_per_capita',
+      column: 'streamOrder',
       type: FilterType.BETWEEN,
       values: [[minValue, maxValue]]
     });
@@ -182,7 +183,7 @@ function clearHistogramFilter() {
 // RENDER
 // prepare ticks for our widget
 
-const histogramTicks = [15000, 20000, 23000, 26000, 30000, 34000, 40000, 50000];
+const histogramTicks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 // Array.from({length: 31}, (_, i) => i * (600 / 30))
 // render Widgets function
 
@@ -200,6 +201,7 @@ async function renderWidgets() {
   const droppingPercent = getDroppingPercent(dataSource, currentZoom);
   droppingWarningSmall.classList.add('hidden');
   droppingWarningBig.classList.add('hidden');
+  droppingPercentage.innerHTML = `${(droppingPercent * 100).toFixed(2)}%`;
 
   wrappers.forEach(el => el.classList.remove('dim'));
   if (droppingPercent > EXCESIVE_DROPPING_PERCENT) {
@@ -225,7 +227,7 @@ async function renderWidgets() {
   }
 
   const histogram = await dataSource.widgetSource.getHistogram({
-    column: 'income_per_capita',
+    column: 'streamOrder',
     ticks: histogramTicks,
     operation: 'count'
   });
@@ -247,7 +249,7 @@ async function renderWidgets() {
     },
     xAxis: {
       type: 'category',
-      data: histogramTicks.map(tick => `${tick} €`),
+      data: histogramTicks,
       // axisLabel: {
       //   interval: 4 // Show every 5th label
       // },
@@ -313,14 +315,19 @@ function renderLayers() {
       pickable: true,
       data: dataSource,
       opacity: 1,
-      getFillColor: d => {
-        const n = d.properties.income_per_capita;
-        const index = histogramTicks.slice().reverse().findIndex((tick) => n >= tick);
-        const color = colors[index] || colors[colors.length - 1];
-        return color as Color;
+      getLineColor: d => {
+        const [r, g, b] = hexToRgb('#d5d5d7')
+        const n = d.properties.streamOrder;
+        const alphaPart = Math.min(n / 10, 1);
+        const alpha = 120 + (128 * alphaPart);
+        return [r, g, b, alpha]
       },
-      getLineColor: [0, 0 ,0],
-      lineWidthMinPixels: 0.3,
+      getLineWidth: d => {
+        const n = d.properties.streamOrder;
+        return n * 0.5;
+      },
+      lineWidthUnits: 'pixels',
+      lineWidthMinPixels: 1,
       onViewportLoad(tiles) {
         dataSource.widgetSource.loadTiles(tiles)
         if (!tilesLoaded) {
