@@ -100,7 +100,7 @@ function clamp(n: number, min: number, max: number) {
 async function initSource() {
   dataSource = await vectorTilesetSource({
     ...cartoConfig,
-    tableName: 'cartodb-on-gcp-pm-team.amanzanares_opensource_demo.national_water_model_tileset_final_1',
+    tableName: 'cartodb-on-gcp-pm-team.amanzanares_opensource_demo.national_water_model_tileset_final_test_4',
   })
   return dataSource;
 }
