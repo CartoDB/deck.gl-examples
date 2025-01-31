@@ -59,6 +59,7 @@ const formulaWidget = document.querySelector<HTMLDivElement>('#formula-widget');
 const droppingWarningSmall = document.querySelector<HTMLDivElement>('#dropping-warning-small');
 const droppingWarningBig = document.querySelector<HTMLDivElement>('#dropping-warning-big');
 const droppingPercentage = document.querySelector<HTMLDivElement>('#dropping-percentage');
+const zoomLevel = document.querySelector<HTMLDivElement>('#zoom-level');
 const wrappers = document.querySelectorAll<HTMLDivElement>('.widget-wrapper');
 
 var chartDom = histogramWidget;
@@ -202,6 +203,7 @@ async function renderWidgets() {
   droppingWarningSmall.classList.add('hidden');
   droppingWarningBig.classList.add('hidden');
   droppingPercentage.innerHTML = `${(droppingPercent * 100).toFixed(2)}%`;
+  zoomLevel.innerHTML = `${currentZoom.toFixed()}`;
 
   wrappers.forEach(el => el.classList.remove('dim'));
   if (droppingPercent > EXCESIVE_DROPPING_PERCENT) {
