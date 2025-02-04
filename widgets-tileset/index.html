@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -22,6 +22,7 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CARTO + deck.gl - Widgets for tilesets</title>
+  </head>
   <body>
     <div id="app">
       <div id="map"></div>
@@ -29,17 +30,40 @@
       <div id="story-card">
         <p class="overline">✨👀 You're viewing</p>
         <h2>Widgets for tilesets</h2>
-        <p>This is an example of a couple scalable, performant <a href="https://docs.carto.com/carto-for-developers/reference/carto-widgets-reference" rel="noopener noreferrer" target="_blank">Widgets</a> using CARTO + deck.gl for a big USA river stream network.</p>
-        <p class="small">These widgets aggregate data in different numerical categories, and they are synchronized with the map using <code>spatialFilter</code>. Learn more about <a href="https://docs.carto.com/carto-for-developers/charts-and-widgets" rel="noopener noreferrer" target="_blank">building charts and widgets with CARTO</a>.</p>
-        <hr>
-        <section id="dropping-warning-small" class="hidden">
+        <p>
+          This is an example of a couple scalable, performant
+          <a
+            href="https://docs.carto.com/carto-for-developers/reference/carto-widgets-reference"
+            rel="noopener noreferrer"
+            target="_blank"
+            >Widgets</a
+          >
+          using CARTO + deck.gl for a big USA river stream network.
+        </p>
+        <p class="small">
+          These widgets aggregate data in different numerical categories, and they are synchronized
+          with the map using <code>spatialFilter</code>. Learn more about
+          <a
+            href="https://docs.carto.com/carto-for-developers/charts-and-widgets"
+            rel="noopener noreferrer"
+            target="_blank"
+            >building charts and widgets with CARTO</a
+          >.
+        </p>
+        <hr />
+        <section id="dropping-warning-small" class="warning">
           <p class="small">
-            <strong>Warning:</strong> There may be some data missing at this zoom level because of the tileset dropping features.
+            <strong>Warning:</strong> There may be some data missing at this zoom level because of
+            the tileset dropping features.
           </p>
         </section>
-        <section id="dropping-warning-big" class="hidden">
+        <section id="dropping-warning-big" class="warning">
           <p class="small">
-            <strong>Warning:</strong> There is an important amount of data (<span id="dropping-percentage"></span>) missing at this zoom level (<span id="zoom-level"></span>) because of the tileset dropping features. Widget calculations will not be accurate.
+            <strong>Warning:</strong> There is an important amount of data (<span
+              id="dropping-percentage"
+            ></span
+            >) missing at this zoom level (<span id="zoom-level"></span>) because of the tileset
+            dropping features. Widget calculations will not be accurate.
           </p>
         </section>
         <div class="widget-wrapper formula-widget-wrapper">
@@ -49,12 +73,16 @@
         <div class="widget-wrapper">
           <p class="widget-title overline">Stream count by stream order (Histogram widget)</p>
           <span id="clearHistogramFilter" class="widget-clear-filter">Clear filter</span>
-          <div class="echarts-histogram" id="histogram-widget">
+          <div class="echarts-histogram" id="histogram-widget"></div>
         </div>
-        <hr>
-        <p class="caption">Source: <a href="https://www.openstreetmap.org" rel="noopener noreferrer" target="_blank">OpenStreetMap</a></p>
+        <hr />
+        <p class="caption">
+          Source:
+          <a href="https://www.openstreetmap.org" rel="noopener noreferrer" target="_blank"
+            >OpenStreetMap</a
+          >
+        </p>
       </div>
-
     </div>
     <script type="module" src="./index.ts"></script>
   </body>

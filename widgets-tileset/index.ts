@@ -1,7 +1,7 @@
 import './style.css';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import {WebMercatorViewport, Deck, Color} from '@deck.gl/core';
+import {WebMercatorViewport, Deck} from '@deck.gl/core';
 import {
   vectorTilesetSource,
   addFilter,
@@ -12,7 +12,7 @@ import {
 import {BASEMAP, VectorTileLayer} from '@deck.gl/carto';
 import * as echarts from 'echarts';
 import {debounce} from './utils';
-import { VectorTilesetSourceResponse } from '@carto/api-client';
+import {VectorTilesetSourceResponse} from '@carto/api-client';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
@@ -33,14 +33,14 @@ const deck = new Deck({
   canvas: 'deck-canvas',
   initialViewState: INITIAL_VIEW_STATE,
   controller: true,
-  getTooltip: ({ object }) => {
+  getTooltip: ({object}) => {
     if (!object) return;
-    let html = ''
+    let html = '';
     const {properties} = object;
     for (const key in properties) {
       html += `<strong>${key}</strong>: ${properties[key]}<br/>`;
     }
-    return {html}
+    return {html};
   }
 });
 
@@ -78,31 +78,31 @@ histogramWidgetChart.on('click', function (params) {
 let tilesLoaded = false;
 let dataSource: VectorTilesetSourceResponse;
 
-const EXCESIVE_DROPPING_PERCENT = 0.05
+const EXCESIVE_DROPPING_PERCENT = 0.05;
 
 function getDroppingPercent(dataset: VectorTilesetSourceResponse, zoom: number) {
-  const { fraction_dropped_per_zoom, maxzoom, minzoom } = dataset
+  const {fraction_dropped_per_zoom, maxzoom, minzoom} = dataset;
   if (!fraction_dropped_per_zoom?.length) {
-    return 0
+    return 0;
   }
 
-  const roundedZoom = Math.round(zoom)
-  const clampedZoom = clamp(roundedZoom, minzoom || 0, maxzoom || 20)
+  const roundedZoom = Math.round(zoom);
+  const clampedZoom = clamp(roundedZoom, minzoom || 0, maxzoom || 20);
 
-  const percent = fraction_dropped_per_zoom[clampedZoom]
-  return percent
+  const percent = fraction_dropped_per_zoom[clampedZoom];
+  return percent;
 }
 
 function clamp(n: number, min: number, max: number) {
   return Math.min(Math.max(n, min), max);
 }
 
-
 async function initSource() {
   dataSource = await vectorTilesetSource({
     ...cartoConfig,
-    tableName: 'cartodb-on-gcp-pm-team.amanzanares_opensource_demo.national_water_model_tileset_final_test_4',
-  })
+    tableName:
+      'cartodb-on-gcp-pm-team.amanzanares_opensource_demo.national_water_model_tileset_final_test_4'
+  });
   return dataSource;
 }
 
@@ -181,13 +181,16 @@ function clearHistogramFilter() {
   initialize();
 }
 
+function setElementHidden(element: HTMLElement, flag: boolean) {
+  element.style.display = flag ? 'none' : 'block';
+}
+
 // RENDER
 // prepare ticks for our widget
 
 const histogramTicks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-// Array.from({length: 31}, (_, i) => i * (600 / 30))
-// render Widgets function
 
+// render Widgets function
 async function renderWidgets() {
   // Exit if dataSource is not ready
   if (!dataSource) {
@@ -200,20 +203,20 @@ async function renderWidgets() {
   }
 
   const droppingPercent = getDroppingPercent(dataSource, currentZoom);
-  droppingWarningSmall.classList.add('hidden');
-  droppingWarningBig.classList.add('hidden');
+  setElementHidden(droppingWarningSmall, true);
+  setElementHidden(droppingWarningBig, true);
   droppingPercentage.innerHTML = `${(droppingPercent * 100).toFixed(2)}%`;
   zoomLevel.innerHTML = `${currentZoom.toFixed()}`;
 
   wrappers.forEach(el => el.classList.remove('dim'));
   if (droppingPercent > EXCESIVE_DROPPING_PERCENT) {
-    droppingWarningBig.classList.remove('hidden');
+    setElementHidden(droppingWarningBig, false);
     wrappers.forEach(el => el.classList.add('dim'));
   } else if (droppingPercent > 0) {
-    droppingWarningSmall.classList.remove('hidden');
+    setElementHidden(droppingWarningSmall, false);
   }
 
-  dataSource.widgetSource.extractTileFeatures({ spatialFilter: viewportSpatialFilter })
+  dataSource.widgetSource.extractTileFeatures({spatialFilter: viewportSpatialFilter});
 
   histogramWidgetChart.showLoading();
 
@@ -222,7 +225,7 @@ async function renderWidgets() {
   const formula = await dataSource.widgetSource.getFormula({
     column: '*',
     operation: 'count'
-  })
+  });
 
   if (formula.value) {
     formulaWidget.innerHTML = formula.value.toFixed(0);
@@ -262,7 +265,8 @@ async function renderWidgets() {
     yAxis: {
       type: 'value',
       axisLabel: {
-        formatter: (value: number) => Intl.NumberFormat('en-US', { compactDisplay: 'short', notation: 'compact' }).format(value)
+        formatter: (value: number) =>
+          Intl.NumberFormat('en-US', {compactDisplay: 'short', notation: 'compact'}).format(value)
       }
     },
     series: [
@@ -291,8 +295,8 @@ const colors = [
   '#7bccc4',
   '#4eb3d3',
   '#2b8cbe',
-  '#08589e',
-].map((hex) => hexToRgb(hex));
+  '#08589e'
+].map(hex => hexToRgb(hex));
 
 function hexToRgb(hex) {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -318,11 +322,11 @@ function renderLayers() {
       data: dataSource,
       opacity: 1,
       getLineColor: d => {
-        const [r, g, b] = hexToRgb('#d5d5d7')
+        const [r, g, b] = hexToRgb('#d5d5d7');
         const n = d.properties.streamOrder;
         const alphaPart = Math.min(n / 10, 1);
-        const alpha = 120 + (128 * alphaPart);
-        return [r, g, b, alpha]
+        const alpha = 120 + 128 * alphaPart;
+        return [r, g, b, alpha];
       },
       getLineWidth: d => {
         const n = d.properties.streamOrder;
@@ -331,12 +335,12 @@ function renderLayers() {
       lineWidthUnits: 'pixels',
       lineWidthMinPixels: 1,
       onViewportLoad(tiles) {
-        dataSource.widgetSource.loadTiles(tiles)
+        dataSource.widgetSource.loadTiles(tiles);
         if (!tilesLoaded) {
           tilesLoaded = true;
           renderWidgets();
         }
-      },
+      }
     })
   ];
 
