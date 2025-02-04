@@ -78,7 +78,7 @@ histogramWidgetChart.on('click', function (params) {
 let tilesLoaded = false;
 let dataSource: VectorTilesetSourceResponse;
 
-const EXCESIVE_DROPPING_PERCENT = 0.05;
+const EXCESSIVE_DROPPING_PERCENT = 0.05
 
 function getDroppingPercent(dataset: VectorTilesetSourceResponse, zoom: number) {
   const {fraction_dropped_per_zoom, maxzoom, minzoom} = dataset;
@@ -209,7 +209,7 @@ async function renderWidgets() {
   zoomLevel.innerHTML = `${currentZoom.toFixed()}`;
 
   wrappers.forEach(el => el.classList.remove('dim'));
-  if (droppingPercent > EXCESIVE_DROPPING_PERCENT) {
+  if (droppingPercent > EXCESSIVE_DROPPING_PERCENT) {
     setElementHidden(droppingWarningBig, false);
     wrappers.forEach(el => el.classList.add('dim'));
   } else if (droppingPercent > 0) {
