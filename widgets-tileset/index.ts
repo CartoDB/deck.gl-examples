@@ -338,7 +338,7 @@ function renderLayers() {
         dataSource.widgetSource.loadTiles(tiles);
         if (!tilesLoaded) {
           tilesLoaded = true;
-          renderWidgets();
+          debouncedUpdateSpatialFilter();
         }
       }
     })
