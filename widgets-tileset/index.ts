@@ -78,7 +78,7 @@ histogramWidgetChart.on('click', function (params) {
 let tilesLoaded = false;
 let dataSource: VectorTilesetSourceResponse;
 
-const EXCESIVE_DROPPING_PERCENT = 0.05
+const EXCESSIVE_DROPPING_PERCENT = 0.05
 
 function getDroppingPercent(dataset: VectorTilesetSourceResponse, zoom: number) {
   const { fraction_dropped_per_zoom, maxzoom, minzoom } = dataset
