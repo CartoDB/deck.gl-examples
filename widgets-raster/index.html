@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>CARTO + deck.gl - Quadbin Spatial Index Widgets</title>
+  </head>
+  <body>
+    <div id="map"></div>
+    <canvas id="deck-canvas"></canvas>
+    <div id="top-left">
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>CARTO Widgets for Raster tiles</h2>
+        <p>
+          This example showcases how to build widgets (charts and filters) into visualizations using
+          CARTO + deck.gl + Raster tiles. Learn more about
+          <a
+            href="https://docs.carto.com/carto-for-developers/reference/carto-widgets-reference/"
+            rel="noopener noreferrer"
+            target="_blank"
+            >widgets in CARTO.</a
+          >
+        </p>
+
+        <div class="widgets">
+          <div class="widget formula-widget">
+            <p class="overline">Total cells</p>
+            <div id="formula-data"></div>
+          </div>
+          <!-- <div class="widget histogram-widget relative">
+            <button class="clear-btn">Clear filter</button>
+            <p class="overline">Land use categories</p>
+            <p class="loader hidden">Loading...</p>
+            <canvas id="histogram-data" height="200px"></canvas>
+          </div> -->
+          <div style="min-height: 300px;" class="widget treemap-widget relative">
+            <p class="overline">Land use categories</p>
+            <div id="treemap-data"></div>
+          </div>
+        </div>
+        <hr />
+        <p class="caption">
+          Source:
+          <a
+            href="https://carto.com/spatial-data-catalog/dataset/cdb_spatial_fea_69ae5f0d"
+            rel="noopener noreferrer"
+            target="_blank"
+            >Land Use US Classification</a
+          >
+        </p>
+      </div>
+    </div>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>
