@@ -22,9 +22,9 @@ const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 // init deckgl
 
 const INITIAL_VIEW_STATE = {
-  latitude: 37.634945,
-  longitude: -118.837644,
-  zoom: 2.5,
+  latitude: 30.5,
+  longitude: -90.1,
+  zoom: 6,
   bearing: 0,
   pitch: 0
 };
@@ -78,7 +78,7 @@ histogramWidgetChart.on('click', function (params) {
 let tilesLoaded = false;
 let dataSource: VectorTilesetSourceResponse;
 
-const EXCESSIVE_DROPPING_PERCENT = 0.05
+const EXCESSIVE_DROPPING_PERCENT = 0.05;
 
 function getDroppingPercent(dataset: VectorTilesetSourceResponse, zoom: number) {
   const {fraction_dropped_per_zoom, maxzoom, minzoom} = dataset;
@@ -188,7 +188,7 @@ function setElementHidden(element: HTMLElement, flag: boolean) {
 // RENDER
 // prepare ticks for our widget
 
-const histogramTicks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const histogramTicks = [2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 // render Widgets function
 async function renderWidgets() {
@@ -254,10 +254,7 @@ async function renderWidgets() {
     },
     xAxis: {
       type: 'category',
-      data: histogramTicks,
-      // axisLabel: {
-      //   interval: 4 // Show every 5th label
-      // },
+      data: [1, ...histogramTicks],
       axisTick: {
         alignWithLabel: true
       }
