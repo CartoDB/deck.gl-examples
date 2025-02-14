@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://app.carto.com/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://app.carto.com/favicon/favicon-16x16.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CARTO + deck.gl - Tileset widgets</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="map"></div>
+      <canvas id="deck-canvas"></canvas>
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>CARTO Widgets for Tileset sources</h2>
+        <p>
+          This example showcases how to build widgets (charts and filters) in a CARTO + deck.gl
+          visualization that uses pre-generated tilesets. Our example tileset contains 2.7M lines
+          representing water streams in the USA.
+        </p>
+        <p class="small">
+          Widgets for tilesets are calculated client-side, and are synchronized with the map using
+          <code>spatialFilter</code>. Learn more about
+          <a
+            href="https://docs.carto.com/carto-for-developers/charts-and-widgets"
+            rel="noopener noreferrer"
+            target="_blank"
+            >building charts and widgets with CARTO</a
+          >.
+        </p>
+        <hr />
+        <section id="zoom-based-order-filter">
+          <p class="small">
+            At this zoom level, this tileset only shows streams of order >
+            <code id="min-stream-order">2</code>.
+          </p>
+        </section>
+        <hr />
+        <section id="dropping-warning-small" class="warning">
+          <p class="small">
+            <strong>Warning:</strong> There may be some data missing in the widgets at this zoom
+            level because of the tileset dropping features.
+          </p>
+        </section>
+        <section id="dropping-warning-big" class="warning">
+          <p class="small">
+            <strong>Warning:</strong> Widgets calculations will not be accurate and are disabled at
+            this zoom level (<span id="zoom-level"></span>) because there is an important amount of
+            data (<span id="dropping-percentage"></span>) missing due to the tileset dropping
+            features.
+          </p>
+        </section>
+        <div class="widget-wrapper formula-widget-wrapper">
+          <p class="widget-title overline">Visible water streams:</p>
+          <div id="formula-widget"></div>
+        </div>
+        <div class="widget-wrapper">
+          <p class="widget-title overline">Visible water streams by order (Histogram widget)</p>
+          <span id="clearHistogramFilter" class="widget-clear-filter">Clear filter</span>
+          <div class="echarts-histogram" id="histogram-widget"></div>
+        </div>
+        <hr />
+        <p class="caption">
+          Source:
+          <a href="https://water.noaa.gov/about/nwm" rel="noopener noreferrer" target="_blank"
+            >NOAA National Water Model</a
+          >
+        </p>
+      </div>
+    </div>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>
