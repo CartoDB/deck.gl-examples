@@ -338,19 +338,24 @@ function renderLayers() {
       pickable: true,
       data: dataSource,
       opacity: 1,
+      // getLineColor: d => {
+      //   const [r, g, b] = hexToRgb('#d5d5d7');
+      //   const n = d.properties.streamOrder;
+      //   const alphaPart = Math.min(n / 10, 1);
+      //   const alpha = 120 + 128 * alphaPart;
+      //   return [r, g, b, alpha];
+      // },
       getLineColor: d => {
-        const [r, g, b] = hexToRgb('#d5d5d7');
-        const n = d.properties.streamOrder;
-        const alphaPart = Math.min(n / 10, 1);
-        const alpha = 120 + 128 * alphaPart;
-        return [r, g, b, alpha];
+        const rgb = colors[Math.min(d.properties.streamOrder - 1, 7)];
+        const alpha = Math.min(20 + d.properties.streamOrder * 23, 255); // Gradually increases opacity with stream order
+        return new Uint8Array([...rgb, alpha]);
       },
       getLineWidth: d => {
-        const n = d.properties.streamOrder;
-        return n * 0.5;
+        return d.properties.streamOrder;
       },
+      lineWidthScale: 0.5,
       lineWidthUnits: 'pixels',
-      lineWidthMinPixels: 1,
+      lineWidthMinPixels: 2,
       onViewportLoad(tiles) {
         dataSource.widgetSource.loadTiles(tiles);
         if (!tilesLoaded) {
