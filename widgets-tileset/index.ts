@@ -245,8 +245,6 @@ async function renderWidgets() {
     operation: 'count'
   });
 
-  console.log('formula', formula);
-
   if (formula.value) {
     formulaWidget.innerHTML = formula.value.toFixed(0);
   }
@@ -305,14 +303,14 @@ async function renderWidgets() {
 }
 
 const colors = [
-  '#f7fcf0',
-  '#e0f3db',
-  '#ccebc5',
-  '#a8ddb5',
-  '#7bccc4',
-  '#4eb3d3',
+  '#08589e',
   '#2b8cbe',
-  '#08589e'
+  '#4eb3d3',
+  '#7bccc4',
+  '#a8ddb5',
+  '#ccebc5',
+  '#e0f3db',
+  '#f7fcf0'
 ].map(hex => hexToRgb(hex));
 
 function hexToRgb(hex) {
@@ -347,15 +345,15 @@ function renderLayers() {
       // },
       getLineColor: d => {
         const rgb = colors[Math.min(d.properties.streamOrder - 1, 7)];
-        const alpha = Math.min(20 + d.properties.streamOrder * 23, 255); // Gradually increases opacity with stream order
+        const alpha = Math.min(50 + d.properties.streamOrder * 20, 255); // Gradually increases opacity with stream order
         return new Uint8Array([...rgb, alpha]);
       },
       getLineWidth: d => {
-        return d.properties.streamOrder;
+        return Math.pow(d.properties.streamOrder, 2);
       },
-      lineWidthScale: 0.5,
-      lineWidthUnits: 'pixels',
-      lineWidthMinPixels: 2,
+      lineWidthScale: 20,
+      lineWidthUnits: 'meters',
+      lineWidthMinPixels: 1,
       onViewportLoad(tiles) {
         dataSource.widgetSource.loadTiles(tiles);
         if (!tilesLoaded) {
