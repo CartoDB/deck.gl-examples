@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -21,7 +21,7 @@
       rel="stylesheet"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CARTO + deck.gl - Widgets for tilesets</title>
+    <title>CARTO + deck.gl - Tileset widgets</title>
   </head>
   <body>
     <div id="app">
@@ -29,20 +29,15 @@
       <canvas id="deck-canvas"></canvas>
       <div id="story-card">
         <p class="overline">✨👀 You're viewing</p>
-        <h2>Widgets for tilesets</h2>
+        <h2>CARTO Widgets for Tileset sources</h2>
         <p>
-          This is an example of a couple scalable, performant
-          <a
-            href="https://docs.carto.com/carto-for-developers/reference/carto-widgets-reference"
-            rel="noopener noreferrer"
-            target="_blank"
-            >Widgets</a
-          >
-          using CARTO + deck.gl for a big USA river stream network.
+          This example showcases how to build widgets (charts and filters) in a CARTO + deck.gl
+          visualization that uses pre-generated tilesets. Our example tileset contains 2.7M lines
+          representing water streams in the USA.
         </p>
         <p class="small">
-          These widgets aggregate data in different numerical categories, and they are synchronized
-          with the map using <code>spatialFilter</code>. Learn more about
+          Widgets for tilesets are calculated client-side, and are synchronized with the map using
+          <code>spatialFilter</code>. Learn more about
           <a
             href="https://docs.carto.com/carto-for-developers/charts-and-widgets"
             rel="noopener noreferrer"
@@ -74,19 +69,19 @@
           </p>
         </section>
         <div class="widget-wrapper formula-widget-wrapper">
-          <p class="widget-title overline">Stream count:</p>
+          <p class="widget-title overline">Visible water streams:</p>
           <div id="formula-widget"></div>
         </div>
         <div class="widget-wrapper">
-          <p class="widget-title overline">Stream count by stream order (Histogram widget)</p>
+          <p class="widget-title overline">Visible water streams by order (Histogram widget)</p>
           <span id="clearHistogramFilter" class="widget-clear-filter">Clear filter</span>
           <div class="echarts-histogram" id="histogram-widget"></div>
         </div>
         <hr />
         <p class="caption">
           Source:
-          <a href="https://www.openstreetmap.org" rel="noopener noreferrer" target="_blank"
-            >OpenStreetMap</a
+          <a href="https://water.noaa.gov/about/nwm" rel="noopener noreferrer" target="_blank"
+            >NOAA National Water Model</a
           >
         </p>
       </div>
