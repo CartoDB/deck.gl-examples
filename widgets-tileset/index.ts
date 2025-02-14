@@ -11,8 +11,7 @@ import {
 } from '@carto/api-client';
 import {BASEMAP, VectorTileLayer} from '@deck.gl/carto';
 import * as echarts from 'echarts';
-import {debounce} from './utils';
-import {VectorTilesetSourceResponse} from '@carto/api-client';
+import {debounce, getDroppingPercent} from './utils';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
@@ -25,6 +24,7 @@ const INITIAL_VIEW_STATE = {
   latitude: 30.5,
   longitude: -90.1,
   zoom: 6,
+  minZoom: 2.5,
   bearing: 0,
   pitch: 0
 };
@@ -56,14 +56,17 @@ const map = new maplibregl.Map({
 
 const histogramWidget = document.querySelector<HTMLDivElement>('#histogram-widget');
 const formulaWidget = document.querySelector<HTMLDivElement>('#formula-widget');
+const minStreamOrderWarning = document.querySelector<HTMLDivElement>('#min-stream-order');
 const droppingWarningSmall = document.querySelector<HTMLDivElement>('#dropping-warning-small');
 const droppingWarningBig = document.querySelector<HTMLDivElement>('#dropping-warning-big');
 const droppingPercentage = document.querySelector<HTMLDivElement>('#dropping-percentage');
 const zoomLevel = document.querySelector<HTMLDivElement>('#zoom-level');
 const wrappers = document.querySelectorAll<HTMLDivElement>('.widget-wrapper');
 
-var chartDom = histogramWidget;
-var histogramWidgetChart = echarts.init(chartDom);
+const chartDom = histogramWidget;
+const histogramWidgetChart = echarts.init(chartDom);
+
+let histogramTicks = [];
 
 // add click filter interaction
 
@@ -76,26 +79,9 @@ histogramWidgetChart.on('click', function (params) {
 // define source
 
 let tilesLoaded = false;
-let dataSource: VectorTilesetSourceResponse;
+let dataSource;
 
 const EXCESSIVE_DROPPING_PERCENT = 0.05;
-
-function getDroppingPercent(dataset: VectorTilesetSourceResponse, zoom: number) {
-  const {fraction_dropped_per_zoom, maxzoom, minzoom} = dataset;
-  if (!fraction_dropped_per_zoom?.length) {
-    return 0;
-  }
-
-  const roundedZoom = Math.round(zoom);
-  const clampedZoom = clamp(roundedZoom, minzoom || 0, maxzoom || 20);
-
-  const percent = fraction_dropped_per_zoom[clampedZoom];
-  return percent;
-}
-
-function clamp(n: number, min: number, max: number) {
-  return Math.min(Math.max(n, min), max);
-}
 
 async function initSource() {
   dataSource = await vectorTilesetSource({
@@ -128,6 +114,28 @@ deck.setProps({
     debouncedUpdateSpatialFilter(viewState);
   }
 });
+
+// MINIMUM STREAM ORDER
+// Our tileset was generated in a way that it drops water streams of low orders at low zoom levels. Let's add logic in our app to handle this.
+
+let minStreamOrder: number;
+
+function getMinStreamOrder(zoomLevel: number) {
+  if (zoomLevel < 5.5) {
+    return 4; // at zoom 5.5, this tileset only uses streams of order 4 and above
+  } else if (zoomLevel < 6.5) {
+    return 3; // at zoom 6.5, this tileset only uses streams of order 3 and above
+  } else if (zoomLevel < 7.5) {
+    return 2; // at zoom 7.5, this tileset only uses streams of order 2 and above
+  } else {
+    return 1; // at zoom 10, we show all streams
+  }
+}
+
+function setMinStreamOrder() {
+  minStreamOrder = getMinStreamOrder(currentZoom);
+  minStreamOrderWarning.innerHTML = `${minStreamOrder}`;
+}
 
 // COLUMN FILTERS
 // prepare filters
@@ -186,9 +194,6 @@ function setElementHidden(element: HTMLElement, flag: boolean) {
 }
 
 // RENDER
-// prepare ticks for our widget
-
-const histogramTicks = [2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 // render Widgets function
 async function renderWidgets() {
@@ -202,11 +207,24 @@ async function renderWidgets() {
     return;
   }
 
+  // Set the min stream order
+  setMinStreamOrder();
+
+  // prepare histogram ticks depending on the min stream order
+
+  histogramTicks = [];
+  const maxStreamOrder = 10;
+
+  for (let i = minStreamOrder + 1; i <= maxStreamOrder; i++) {
+    histogramTicks.push(i); //[minStreamOrder, ..., 10]
+  }
+
+  // Render the dropping percentage warning
   const droppingPercent = getDroppingPercent(dataSource, currentZoom);
   setElementHidden(droppingWarningSmall, true);
   setElementHidden(droppingWarningBig, true);
   droppingPercentage.innerHTML = `${(droppingPercent * 100).toFixed(2)}%`;
-  zoomLevel.innerHTML = `${currentZoom.toFixed()}`;
+  zoomLevel.innerHTML = `${currentZoom.toFixed(2)}`;
 
   wrappers.forEach(el => el.classList.remove('dim'));
   if (droppingPercent > EXCESSIVE_DROPPING_PERCENT) {
@@ -216,16 +234,18 @@ async function renderWidgets() {
     setElementHidden(droppingWarningSmall, false);
   }
 
+  // Start preparing the widgets
   dataSource.widgetSource.extractTileFeatures({spatialFilter: viewportSpatialFilter});
 
   histogramWidgetChart.showLoading();
 
   // configure widgets
-
   const formula = await dataSource.widgetSource.getFormula({
     column: '*',
     operation: 'count'
   });
+
+  console.log('formula', formula);
 
   if (formula.value) {
     formulaWidget.innerHTML = formula.value.toFixed(0);
@@ -254,7 +274,7 @@ async function renderWidgets() {
     },
     xAxis: {
       type: 'category',
-      data: [1, ...histogramTicks],
+      data: [minStreamOrder, ...histogramTicks],
       axisTick: {
         alignWithLabel: true
       }
