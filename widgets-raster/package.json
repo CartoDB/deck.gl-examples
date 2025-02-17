@@ -1,5 +1,5 @@
 {
-  "name": "carto-deckgl-example-widgets-quadbin",
+  "name": "carto-deckgl-example-widgets-raster",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -16,13 +16,13 @@
   },
   "dependencies": {
     "@carto/api-client": "0.5.0-alpha.3",
-    "@deck.gl/aggregation-layers": "^9.0.17",
-    "@deck.gl/carto": "^9.0.17",
-    "@deck.gl/core": "^9.0.17",
-    "@deck.gl/extensions": "^9.0.17",
-    "@deck.gl/geo-layers": "^9.0.17",
-    "@deck.gl/layers": "^9.0.17",
-    "@deck.gl/mesh-layers": "^9.0.17",
+    "@deck.gl/aggregation-layers": "^9.0.32",
+    "@deck.gl/carto": "^9.0.32",
+    "@deck.gl/core": "^9.0.32",
+    "@deck.gl/extensions": "^9.0.32",
+    "@deck.gl/geo-layers": "^9.0.32",
+    "@deck.gl/layers": "^9.0.32",
+    "@deck.gl/mesh-layers": "^9.0.32",
     "echarts": "^5.6.0",
     "maplibre-gl": "^3.5.2"
   }
