@@ -120,6 +120,10 @@ button:hover {
   border: #ccc 1px solid;
 }
 
+.small {
+  font-size: 0.9rem;
+}
+
 .widget {
   margin: 2rem 0;
 }

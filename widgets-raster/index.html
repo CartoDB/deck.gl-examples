@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>CARTO + deck.gl - Quadbin Spatial Index Widgets</title>
+    <title>CARTO + deck.gl - Raster Widgets</title>
   </head>
   <body>
     <div id="map"></div>
@@ -10,10 +10,15 @@
     <div id="top-left">
       <div id="story-card">
         <p class="overline">✨👀 You're viewing</p>
-        <h2>CARTO Widgets for Raster tiles</h2>
+        <h2>CARTO Widgets for Raster sources</h2>
         <p>
-          This example showcases how to build widgets (charts and filters) into visualizations using
-          CARTO + deck.gl + Raster tiles. Learn more about
+          This example showcases how to build widgets (charts and filters) into raster
+          visualizations built with CARTO + deck.gl, coming from your cloud data warehouse. This
+          raster covers land use in the US with a 20m resolution.
+        </p>
+        <p class="small">
+          The widgets are calculated on the client side and stay synchronized with the
+          visualization, allowing all kinds of filtering and interactions. Learn more about
           <a
             href="https://docs.carto.com/carto-for-developers/reference/carto-widgets-reference/"
             rel="noopener noreferrer"
@@ -21,7 +26,7 @@
             >widgets in CARTO.</a
           >
         </p>
-
+        <hr />
         <div class="widgets">
           <div class="widget formula-widget">
             <p class="overline">Total cells</p>
@@ -33,7 +38,7 @@
             <p class="loader hidden">Loading...</p>
             <canvas id="histogram-data" height="200px"></canvas>
           </div> -->
-          <div style="min-height: 300px;" class="widget treemap-widget relative">
+          <div style="min-height: 300px" class="widget treemap-widget relative">
             <p class="overline">Land use categories</p>
             <div id="treemap-data"></div>
           </div>
