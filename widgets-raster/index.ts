@@ -15,7 +15,7 @@ import {
   WidgetSourceProps
 } from '@carto/api-client';
 import * as echarts from 'echarts';
-import { RASTER_CATEGORY_MAP } from './raster_category_map';
+import {RASTER_CATEGORY_MAP} from './raster_category_map';
 
 const cartoConfig = {
   // @ts-expect-error misconfigured env variables
@@ -29,7 +29,7 @@ const INITIAL_VIEW_STATE: MapViewState = {
   latitude: 42.728,
   longitude: -78.731,
   zoom: 6,
-  minZoom: 3.5,
+  minZoom: 5.5
 };
 
 type Source = ReturnType<typeof rasterSource>;
@@ -79,32 +79,31 @@ const treemapChart = echarts.init(treemapWidget);
 //   render();
 // });
 
-const getFillColorLayer = (d: GeoJSON.Feature<GeoJSON.Geometry, { band_1: number }>) => {
+const getFillColorLayer = (d: GeoJSON.Feature<GeoJSON.Geometry, {band_1: number}>) => {
   const value = d.properties.band_1;
-  if (rasterMetadata){
-    const meta = rasterMetadata.bands[0]
+  if (rasterMetadata) {
+    const meta = rasterMetadata.bands[0];
     if (meta.colorinterp === 'palette') {
-      const category = meta.colortable?.[value]
+      const category = meta.colortable?.[value];
       if (category) {
-        const [r, g, b] = category
+        const [r, g, b] = category;
         if (r === 0 && g === 0 && b === 0) {
-          return [0, 0, 0, 0] as Color
+          return [0, 0, 0, 0] as Color;
         }
 
-        return category as Color
+        return category as Color;
       }
     }
   }
-  return [0, 0, 0, 0] as Color
-}
+  return [0, 0, 0, 0] as Color;
+};
 
 function render() {
   source = rasterSource({
     ...cartoConfig,
     filters,
-    tableName: 'cartodb-on-gcp-pm-team.amanzanares_raster.classification_us_compressed',
-  })
-  renderWidgets();
+    tableName: 'cartodb-on-gcp-pm-team.amanzanares_raster.classification_us_compressed'
+  });
   renderLayers();
 }
 
@@ -118,40 +117,58 @@ function renderLayers() {
       onDataLoad: (tilejson: any) => {
         rasterMetadata = tilejson.raster_metadata;
       },
-      onViewportLoad: async (tiles) => {
+      onViewportLoad: async tiles => {
         const {widgetSource} = await source;
-        widgetSource.loadTiles(tiles);
+        await widgetSource.loadTiles(tiles);
         debouncedRenderWidgets();
-      },
+      }
     })
   ];
 
   deck.setProps({
     layers,
     getTooltip: ({object}) => {
-      const value = object?.properties?.band_1
+      const value = object?.properties?.band_1;
       if (!value) {
         return null;
       }
 
       return {
         text: RASTER_CATEGORY_MAP[value]
-      }
+      };
     }
   });
 }
 
+// WIDGETS
+
+// Loading state and handlers for widgets
+
+let widgetsLoading = false;
+
+function setWidgetsLoading() {
+  if (widgetsLoading) {
+    return;
+  }
+
+  widgetsLoading = true;
+  formulaWidget.innerHTML = '<span style="font-weight: 400; font-size: 14px;">Loading...</span>';
+  treemapChart.showLoading();
+}
+
+// Render widgets
+
 async function renderWidgets() {
   const {widgetSource} = await source;
   widgetSource.extractTileFeatures({
-    spatialFilter: getSpatialFilterFromViewState(viewState)!,
-  })
-  
+    spatialFilter: getSpatialFilterFromViewState(viewState)!
+  });
+
   await Promise.all([renderFormula(widgetSource), renderHistogram(widgetSource)]);
+  widgetsLoading = false;
 }
 
 async function renderFormula(ws: WidgetSource<WidgetSourceProps>) {
-  formulaWidget.innerHTML = '<span style="font-weight: 400; font-size: 14px;">Loading...</span>';
   const formula = await ws.getFormula({
     column: '*',
     operation: 'count',
@@ -168,43 +185,45 @@ const TREE_WIDGET_ID = 'band_1_widget';
 const CATEGORY_COLUMN = 'band_1';
 
 async function renderHistogram(ws: WidgetSource<WidgetSourceProps>) {
-  treemapChart.showLoading();
-
   const categories = await ws.getCategories({
     column: CATEGORY_COLUMN,
     operation: 'count',
     filterOwner: TREE_WIDGET_ID,
     spatialFilter: getSpatialFilterFromViewState(viewState),
     spatialIndexReferenceViewState: viewState
-  })
+  });
 
   const colors = categories.map(c => {
-    const rgb = getFillColorLayer({ properties: { band_1: c.value } } as any)
-    return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${rgb[3]})`
-  })
+    const rgb = getFillColorLayer({properties: {band_1: c.value}} as any);
+    return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${rgb[3]})`;
+  });
+
+  console.log('renderHistogram');
 
   const option = {
     tooltip: {},
-    series: [{
-      name: 'Land use categories',
-      type: 'treemap',
-      data: categories.map((c, i) => ({
-        name: RASTER_CATEGORY_MAP[Number(c.name)],
-        value: c.value,
-        color: colors[i]
-      })),
-      label: {
-        show: true,
-      },
-      leafSize: 10,
-    }]
-  }
+    series: [
+      {
+        name: 'Land use categories',
+        type: 'treemap',
+        data: categories.map((c, i) => ({
+          name: RASTER_CATEGORY_MAP[Number(c.name)],
+          value: c.value,
+          color: colors[i]
+        })),
+        label: {
+          show: true
+        },
+        leafSize: 10
+      }
+    ]
+  };
 
   treemapChart.setOption(option);
   treemapChart.hideLoading();
 }
 
-const debouncedRenderWidgets = debounce(renderWidgets, 500);
+const debouncedRenderWidgets = debounce(renderWidgets, 700);
 
 // Main execution
 const map = new maplibregl.Map({
@@ -223,6 +242,7 @@ deck.setProps({
     const {longitude, latitude, ...rest} = props.viewState;
     map.jumpTo({center: [longitude, latitude], ...rest});
     viewState = props.viewState;
+    setWidgetsLoading();
     debouncedRenderWidgets();
   }
 });
