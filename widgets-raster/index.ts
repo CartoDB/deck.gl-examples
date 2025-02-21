@@ -193,12 +193,7 @@ async function renderHistogram(ws: WidgetSource<WidgetSourceProps>) {
     spatialIndexReferenceViewState: viewState
   });
 
-  const colors = categories.map(c => {
-    const rgb = getFillColorLayer({properties: {band_1: c.value}} as any);
-    return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${rgb[3]})`;
-  });
-
-  console.log('renderHistogram');
+  console.log(categories);
 
   const option = {
     tooltip: {},
@@ -206,13 +201,22 @@ async function renderHistogram(ws: WidgetSource<WidgetSourceProps>) {
       {
         name: 'Land use categories',
         type: 'treemap',
-        data: categories.map((c, i) => ({
-          name: RASTER_CATEGORY_MAP[Number(c.name)],
-          value: c.value,
-          color: colors[i]
-        })),
+        data: categories.map(c => {
+          const rgb = getFillColorLayer({properties: {band_1: c.name}} as any);
+          return {
+            name: RASTER_CATEGORY_MAP[Number(c.name)],
+            value: c.value,
+            itemStyle: {
+              color: `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${rgb[3]})`
+            }
+          };
+        }),
         label: {
-          show: true
+          show: true,
+          color: '#ffffff',
+          textBorderColor: 'rgba(0, 0, 0, 0.5)',
+          textBorderWidth: 3,
+          fontSize: 10
         },
         leafSize: 10
       }
