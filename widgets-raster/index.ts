@@ -2,6 +2,7 @@ import './style.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import maplibregl from 'maplibre-gl';
 import {Color, Deck, MapViewState} from '@deck.gl/core';
+import {DataFilterExtension} from '@deck.gl/extensions';
 import {BASEMAP, RasterTileLayer} from '@deck.gl/carto';
 import {debounce, getSpatialFilterFromViewState} from './utils';
 import {
@@ -12,7 +13,8 @@ import {
   rasterSource,
   removeFilter,
   WidgetSource,
-  WidgetSourceProps
+  WidgetSourceProps,
+  getDataFilterExtensionProps
 } from '@carto/api-client';
 import * as echarts from 'echarts';
 import {RASTER_CATEGORY_MAP} from './raster_category_map';
@@ -43,41 +45,62 @@ let rasterMetadata: RasterMetadata;
 // DOM elements
 const formulaWidget = document.getElementById('formula-data') as HTMLDivElement;
 const treemapWidget = document.getElementById('treemap-data') as HTMLDivElement;
+const rasterResolution = document.getElementById('raster-resolution') as HTMLDivElement;
 
 const treemapChart = echarts.init(treemapWidget);
 
-// // disabled interaction until maps API supports filtering here
-// treemapChart.on('click', (params) => {
-//   if (params.componentType === 'series') {
-//     const category = params.name
-//     const entry = Object.entries(RASTER_CATEGORY_MAP).find(([key, value]) => value === category)
-//     if (entry) {
-//       const value = Number(entry[0])
-//       addFilter(
-//         filters,
-//         {
-//           column: CATEGORY_COLUMN,
-//           type: FilterType.IN,
-//           values: [value],
-//           owner: TREE_WIDGET_ID
-//         }
-//       );
-//       render();
-//     } else {
-//       removeFilter(filters, {column: CATEGORY_COLUMN, owner: TREE_WIDGET_ID})
-//       render();
-//     }
-//   }
-// })
+// RASTER RESOLUTION
+// Our raster contains a pyramid of tiles with different resolutions. For clarity, we'll show the resolution for the current zoom level.
 
-// const histogramWidget = document.getElementById('histogram-data') as HTMLCanvasElement;
-// const histogramClearBtn = document.querySelector(
-//   '.histogram-widget .clear-btn'
-// ) as HTMLButtonElement;
-// histogramClearBtn.addEventListener('click', () => {
-//   removeFilter(filters, {column: 'urbanity'});
-//   render();
-// });
+function setRasterResolution(zoom: number) {
+  let resolution: string = '100m';
+  if (zoom > 11.5) {
+    resolution = '20m';
+  } else if (zoom > 10.5) {
+    resolution = '40m';
+  } else if (zoom > 9.5) {
+    resolution = '80m';
+  } else if (zoom > 8.5) {
+    resolution = '160m';
+  } else if (zoom > 7.5) {
+    resolution = '320m';
+  } else if (zoom > 6.5) {
+    resolution = '640m';
+  } else if (zoom > 5.5) {
+    resolution = '1280m';
+  }
+
+  rasterResolution.innerHTML = resolution;
+}
+
+// FILTERS
+treemapChart.on('click', params => {
+  if (params.componentType === 'series') {
+    const category = params.name;
+    const entry = Object.entries(RASTER_CATEGORY_MAP).find(([key, value]) => value === category);
+    if (entry) {
+      clearBtn.style.visibility = 'visible';
+      const value = Number(entry[0]);
+      addFilter(filters, {
+        column: CATEGORY_COLUMN,
+        type: FilterType.IN,
+        values: [value],
+        owner: TREE_WIDGET_ID
+      });
+      render();
+    } else {
+      removeFilter(filters, {column: CATEGORY_COLUMN, owner: TREE_WIDGET_ID});
+      render();
+    }
+  }
+});
+
+const clearBtn = document.querySelector('.clear-btn') as HTMLButtonElement;
+clearBtn.addEventListener('click', () => {
+  removeFilter(filters, {column: CATEGORY_COLUMN});
+  clearBtn.style.visibility = 'hidden';
+  render();
+});
 
 const getFillColorLayer = (d: GeoJSON.Feature<GeoJSON.Geometry, {band_1: number}>) => {
   const value = d.properties.band_1;
@@ -101,7 +124,6 @@ const getFillColorLayer = (d: GeoJSON.Feature<GeoJSON.Geometry, {band_1: number}
 function render() {
   source = rasterSource({
     ...cartoConfig,
-    filters,
     tableName: 'cartodb-on-gcp-pm-team.amanzanares_raster.classification_us_compressed'
   });
   renderLayers();
@@ -121,7 +143,9 @@ function renderLayers() {
         const {widgetSource} = await source;
         await widgetSource.loadTiles(tiles);
         debouncedRenderWidgets();
-      }
+      },
+      extensions: [new DataFilterExtension({filterSize: 4})],
+      ...getDataFilterExtensionProps(filters)
     })
   ];
 
@@ -160,9 +184,6 @@ function setWidgetsLoading() {
 
 async function renderWidgets() {
   const {widgetSource} = await source;
-  widgetSource.extractTileFeatures({
-    spatialFilter: getSpatialFilterFromViewState(viewState)!
-  });
 
   await Promise.all([renderFormula(widgetSource), renderHistogram(widgetSource)]);
   widgetsLoading = false;
@@ -193,10 +214,18 @@ async function renderHistogram(ws: WidgetSource<WidgetSourceProps>) {
     spatialIndexReferenceViewState: viewState
   });
 
-  console.log(categories);
+  // Calculate total for percentages
+  const total = categories.reduce((sum, c) => sum + c.value, 0);
 
   const option = {
-    tooltip: {},
+    tooltip: {
+      formatter: (params: any) => {
+        const percentage = ((params.value / total) * 100).toFixed(1);
+        return `${
+          params.name
+        }<br/>Count: ${params.value.toLocaleString()}<br/>Percentage: ${percentage}%`;
+      }
+    },
     series: [
       {
         name: 'Land use categories',
@@ -246,6 +275,7 @@ deck.setProps({
     const {longitude, latitude, ...rest} = props.viewState;
     map.jumpTo({center: [longitude, latitude], ...rest});
     viewState = props.viewState;
+    setRasterResolution(viewState.zoom);
     setWidgetsLoading();
     debouncedRenderWidgets();
   }

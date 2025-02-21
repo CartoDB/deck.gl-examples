@@ -27,19 +27,15 @@
           >
         </p>
         <hr />
+        <p class="small">
+          Now viewing <code id="formula-data"></code> cells at a resolution of
+          <code id="raster-resolution">20m</code>. Please zoom in for more precision.
+        </p>
+        <hr />
         <div class="widgets">
-          <div class="widget formula-widget">
-            <p class="overline">Total cells</p>
-            <div id="formula-data"></div>
-          </div>
-          <!-- <div class="widget histogram-widget relative">
-            <button class="clear-btn">Clear filter</button>
-            <p class="overline">Land use categories</p>
-            <p class="loader hidden">Loading...</p>
-            <canvas id="histogram-data" height="200px"></canvas>
-          </div> -->
           <div style="min-height: 300px" class="widget treemap-widget relative">
             <p class="overline">Cropland categories</p>
+            <button class="clear-btn">Clear filter</button>
             <div id="treemap-data"></div>
           </div>
         </div>

@@ -15,7 +15,7 @@
     "vite": "^4.5.0"
   },
   "dependencies": {
-    "@carto/api-client": "0.5.0-alpha.3",
+    "@carto/api-client": "0.5.0-alpha.4",
     "@deck.gl/aggregation-layers": "^9.0.32",
     "@deck.gl/carto": "^9.0.32",
     "@deck.gl/core": "^9.0.32",
