@@ -1,13 +1,15 @@
 import './style.css';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import {WebMercatorViewport, Deck} from '@deck.gl/core';
+import {WebMercatorViewport, Deck, PathLayer} from '@deck.gl/core';
+import {DataFilterExtension} from '@deck.gl/extensions';
 import {
   vectorTilesetSource,
   addFilter,
   removeFilter,
   createViewportSpatialFilter,
-  FilterType
+  FilterType,
+  getDataFilterExtensionProps
 } from '@carto/api-client';
 import {BASEMAP, VectorTileLayer} from '@deck.gl/carto';
 import * as echarts from 'echarts';
@@ -160,21 +162,21 @@ function filterViaHistogram(dataIndex) {
   const minValue = histogramTicks[dataIndex];
   const maxValue = histogramTicks[dataIndex + 1] - 0.0001;
 
-  if (dataIndex === histogramTicks.length - 1) {
-    // For the last category (> 600), use CLOSED_OPEN
-    addFilter(filters, {
-      column: 'streamOrder',
-      type: FilterType.CLOSED_OPEN,
-      values: [[minValue, Infinity]]
-    });
-  } else {
-    // For first and middle categories, use BETWEEN
-    addFilter(filters, {
-      column: 'streamOrder',
-      type: FilterType.BETWEEN,
-      values: [[minValue, maxValue]]
-    });
-  }
+  // if (dataIndex === histogramTicks.length - 1) {
+  //   // For the last category (> 600), use CLOSED_OPEN
+  //   addFilter(filters, {
+  //     column: 'streamOrder',
+  //     type: FilterType.CLOSED_OPEN,
+  //     values: [[minValue, Infinity]]
+  //   });
+  // } else {
+  //   // For first and middle categories, use BETWEEN
+  //   addFilter(filters, {
+  //     column: 'streamOrder',
+  //     type: FilterType.BETWEEN,
+  //     values: [[minValue, maxValue]]
+  //   });
+  // }
 
   initialize();
 }
@@ -197,15 +199,13 @@ function setElementHidden(element: HTMLElement, flag: boolean) {
 
 // render Widgets function
 async function renderWidgets() {
-  // Exit if dataSource is not ready
-  if (!dataSource) {
+  // Exit if dataSource, tiles or viewport are not ready
+  if (!dataSource || !tilesLoaded || !viewportSpatialFilter) {
     return;
   }
 
-  // Exit if tiles are not loaded by layer viewport
-  if (!tilesLoaded) {
-    return;
-  }
+  // Start preparing the widgets
+  histogramWidgetChart.showLoading();
 
   // Set the min stream order
   setMinStreamOrder();
@@ -234,15 +234,11 @@ async function renderWidgets() {
     setElementHidden(droppingWarningSmall, false);
   }
 
-  // Start preparing the widgets
-  dataSource.widgetSource.extractTileFeatures({spatialFilter: viewportSpatialFilter});
-
-  histogramWidgetChart.showLoading();
-
   // configure widgets
   const formula = await dataSource.widgetSource.getFormula({
     column: '*',
-    operation: 'count'
+    operation: 'count',
+    spatialFilter: viewportSpatialFilter
   });
 
   if (formula.value) {
@@ -252,7 +248,8 @@ async function renderWidgets() {
   const histogram = await dataSource.widgetSource.getHistogram({
     column: 'streamOrder',
     ticks: histogramTicks,
-    operation: 'count'
+    operation: 'count',
+    spatialFilter: viewportSpatialFilter
   });
 
   const option = {
@@ -335,18 +332,10 @@ function renderLayers() {
       id: 'places',
       pickable: true,
       data: dataSource,
-      opacity: 1,
-      // getLineColor: d => {
-      //   const [r, g, b] = hexToRgb('#d5d5d7');
-      //   const n = d.properties.streamOrder;
-      //   const alphaPart = Math.min(n / 10, 1);
-      //   const alpha = 120 + 128 * alphaPart;
-      //   return [r, g, b, alpha];
-      // },
       getLineColor: d => {
         const rgb = colors[Math.min(d.properties.streamOrder - 1, 7)];
         const alpha = Math.min(50 + d.properties.streamOrder * 20, 255); // Gradually increases opacity with stream order
-        return new Uint8Array([...rgb, alpha]);
+        return [rgb[0], rgb[1], rgb[2], 255];
       },
       getLineWidth: d => {
         return Math.pow(d.properties.streamOrder, 2);
@@ -354,13 +343,16 @@ function renderLayers() {
       lineWidthScale: 20,
       lineWidthUnits: 'meters',
       lineWidthMinPixels: 1,
+      refinementStrategy: 'no-overlap',
       onViewportLoad(tiles) {
         dataSource.widgetSource.loadTiles(tiles);
         if (!tilesLoaded) {
           tilesLoaded = true;
           renderWidgets();
         }
-      }
+      },
+      extensions: [new DataFilterExtension()],
+      ...getDataFilterExtensionProps(filters, 'and', 2)
     })
   ];
 
