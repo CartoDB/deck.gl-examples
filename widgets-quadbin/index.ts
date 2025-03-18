@@ -128,8 +128,7 @@ async function renderFormula(ws: WidgetSource) {
   const formula = await ws.getFormula({
     column: selectedVariable,
     operation: 'sum',
-    spatialFilter: getSpatialFilterFromViewState(viewState),
-    spatialIndexReferenceViewState: viewState
+    spatialFilter: getSpatialFilterFromViewState(viewState)
   });
   formulaWidget.textContent = Intl.NumberFormat('en-US', {
     maximumFractionDigits: 0
