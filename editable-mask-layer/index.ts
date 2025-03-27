@@ -2,7 +2,11 @@ import './style.css';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import {WebMercatorViewport, Deck, Layer} from '@deck.gl/core';
-import {vectorTableSource, createViewportSpatialFilter, createPolygonSpatialFilter} from '@carto/api-client';
+import {
+  vectorTableSource,
+  createViewportSpatialFilter,
+  createPolygonSpatialFilter
+} from '@carto/api-client';
 import {BASEMAP, VectorTileLayer, VectorTileLayerProps} from '@deck.gl/carto';
 import {debounce} from './utils';
 import {
@@ -12,13 +16,13 @@ import {
   ModifyMode,
   TranslateMode,
   FeatureCollection,
-  ViewMode,
+  ViewMode
 } from '@deck.gl-community/editable-layers';
-import { GeoJsonLayer } from '@deck.gl/layers';
-import { MaskExtension } from '@deck.gl/extensions'
-import { multiPolygon } from '@turf/helpers';
+import {GeoJsonLayer} from '@deck.gl/layers';
+import {MaskExtension} from '@deck.gl/extensions';
+import {multiPolygon} from '@turf/helpers';
 
-const EditMode = new CompositeMode([new TranslateMode(), new ModifyMode()])
+const EditMode = new CompositeMode([new TranslateMode(), new ModifyMode()]);
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
@@ -44,7 +48,7 @@ const deck = new Deck({
   },
   parameters: {
     // @ts-expect-error - `depthTest` is not in the types
-    depthTest: false,
+    depthTest: false
   }
 });
 
@@ -70,54 +74,53 @@ let dataSource;
 let editableData = {
   type: 'FeatureCollection' as const,
   features: []
-} as FeatureCollection
+} as FeatureCollection;
 
 // internal state to track which feature(s) are being edited
-let selectedFeatureIndexes = [] as number[]
+let selectedFeatureIndexes = [] as number[];
 
 // reference to the <select> element that changes edit mode
-const editableModePicker = document.querySelector<HTMLSelectElement>('#editable-mode-picker')
+const editableModePicker = document.querySelector<HTMLSelectElement>('#editable-mode-picker');
 
 // reference to the <p> element describing current selected mode
-const editComment = document.querySelector<HTMLParagraphElement>('#edit-comment')
+const editComment = document.querySelector<HTMLParagraphElement>('#edit-comment');
 
 const editCommentMap = {
-  'draw': 'Click on the map to add points to a new polygon. To complete the polygon, press enter, do a double click, or click the initial point',
-  'edit': 'Click a drawn polygon to select it for moving it or editing its points',
-  'remove': 'Click a drawn polygon to remove it',
-}
+  draw: 'Click on the map to start drawing a mask polygon. To complete the polygon, press enter, double-click on the map, or click the first point again.',
+  edit: 'Click on a mask polygon to select it. Once selected, you can move it or edit its points',
+  remove: 'Click on a mask polygon to remove it'
+};
 
-editableModePicker?.addEventListener('change', (ev) => {
-  const value = (ev.target as HTMLSelectElement).value
-  selectedMode = editableModes[value] ?? ViewMode
-  selectedFeatureIndexes = []
-  render()
-})
+editableModePicker?.addEventListener('change', ev => {
+  const value = (ev.target as HTMLSelectElement).value;
+  selectedMode = editableModes[value] ?? ViewMode;
+  selectedFeatureIndexes = [];
+  render();
+});
 
 // reference to the <input type="checkbox" /> that enables or disables the editable layer
-const editModeToggle = document.querySelector<HTMLInputElement>('#edit-mode-enabled')
-let editModeEnabled = editModeToggle?.checked
+const editModeToggle = document.querySelector<HTMLInputElement>('#edit-mode-enabled');
+let editModeEnabled = editModeToggle?.checked;
 
 if (editableModePicker) {
-  editableModePicker.disabled = !editModeEnabled
+  editableModePicker.disabled = !editModeEnabled;
 }
 
-editModeToggle?.addEventListener('change', (ev) => {
-  const value = (ev.target as HTMLInputElement).checked
-  editModeEnabled = value
+editModeToggle?.addEventListener('change', ev => {
+  const value = (ev.target as HTMLInputElement).checked;
+  editModeEnabled = value;
   if (editableModePicker) {
-    editableModePicker.disabled = !editModeEnabled
+    editableModePicker.disabled = !editModeEnabled;
   }
-  render()
-})
+  render();
+});
 
 const editableModes = {
   draw: DrawPolygonMode,
   edit: EditMode,
-  remove: ViewMode,
-}
-let selectedMode = editableModes[editableModePicker?.value ?? 'draw']
-
+  remove: ViewMode
+};
+let selectedMode = editableModes[editableModePicker?.value ?? 'draw'];
 
 async function initSource() {
   return (dataSource = await vectorTableSource({
@@ -160,10 +163,12 @@ async function renderWidgets() {
 
   // configure widgets
 
-  let spatialFilter = viewportSpatialFilter
+  let spatialFilter = viewportSpatialFilter;
   if (editModeEnabled && editableData.features.length > 0) {
-    const _multiPolygon = multiPolygon(editableData.features.map((f) => (f.geometry as GeoJSON.Polygon).coordinates))
-    spatialFilter = createPolygonSpatialFilter(_multiPolygon.geometry)
+    const _multiPolygon = multiPolygon(
+      editableData.features.map(f => (f.geometry as GeoJSON.Polygon).coordinates)
+    );
+    spatialFilter = createPolygonSpatialFilter(_multiPolygon.geometry);
   }
 
   const formula = await dataSource.widgetSource.getFormula({
@@ -178,54 +183,54 @@ async function renderWidgets() {
 
 function renderEditComment() {
   if (editComment) {
-    editComment.textContent = editCommentMap[editableModePicker?.value ?? 'draw']
+    editComment.textContent = editCommentMap[editableModePicker?.value ?? 'draw'];
   }
 }
 
 // render Layers function
 
 async function renderLayers() {
-  const MASK_ID = 'mask-polygons'
-  const maskEnabled = editModeEnabled && editableData.features.length > 0
-  
+  const MASK_ID = 'mask-polygons';
+  const maskEnabled = editModeEnabled && editableData.features.length > 0;
+
   const editLayer = new EditableGeoJsonLayer({
     id: 'editable-layer',
     pickable: true,
-    onEdit: ({ updatedData, editType, editContext }) => {
+    onEdit: ({updatedData, editType, editContext}) => {
       updatedData.features = updatedData.features.map((f, index) => {
-        f.properties.index = f.properties.index ?? index
-        return f
-      })
-      console.log('editableData: ', editableData)
-      editableData = updatedData
-      renderLayers()
+        f.properties.index = f.properties.index ?? index;
+        return f;
+      });
+      console.log('editableData: ', editableData);
+      editableData = updatedData;
+      renderLayers();
       if (editType === 'addFeature') {
-        renderWidgets()
+        renderWidgets();
       }
     },
-    onClick: (info) => {
-      const feature = info.object as GeoJSON.Feature
+    onClick: info => {
+      const feature = info.object as GeoJSON.Feature;
       if (!feature) {
-        return
+        return;
       }
 
       if (feature.properties?.guideType || feature.properties?.editHandleType) {
-        return // do not try to select for edit or remove feature guides and handles
+        return; // do not try to select for edit or remove feature guides and handles
       }
 
-      const index = feature.properties?.index ?? 0
+      const index = feature.properties?.index ?? 0;
       if (editableModePicker?.value === 'remove') {
-        selectedFeatureIndexes = []
+        selectedFeatureIndexes = [];
         editableData = {
           ...editableData,
-          features: editableData.features.filter((f) => f.properties?.index !== index)
-        }
-        renderWidgets()
+          features: editableData.features.filter(f => f.properties?.index !== index)
+        };
+        renderWidgets();
       }
       if (editableModePicker?.value === 'edit') {
-        selectedFeatureIndexes = [feature.properties?.index]
+        selectedFeatureIndexes = [feature.properties?.index];
       }
-      renderLayers()
+      renderLayers();
     },
     autoHighlight: true,
     mode: editModeEnabled ? selectedMode : ViewMode,
@@ -233,41 +238,43 @@ async function renderLayers() {
       preventOverlappingLines: true
     },
     selectedFeatureIndexes,
-    data: editableData,
-  })
+    data: editableData
+  });
 
-  const dataLayer = dataSource ? new VectorTileLayer({
-    id: 'places',
-    pickable: false,
-    data: dataSource,
-    opacity: 1,
-    getFillColor: [3, 111, 226],
-    getLineColor: [255, 255, 255],
-    getPointRadius: 50,
-    getLineWidth: 10,
-    pointRadiusMinPixels: 1,
-    lineWidthMinPixels: 0.3,
-    extensions: [new MaskExtension()],
-    maskId: maskEnabled ? MASK_ID : undefined,
-  } as VectorTileLayerProps & { maskId: string }) : null
+  const dataLayer = dataSource
+    ? new VectorTileLayer({
+        id: 'places',
+        pickable: false,
+        data: dataSource,
+        opacity: 1,
+        getFillColor: [3, 111, 226],
+        getLineColor: [255, 255, 255],
+        getPointRadius: 50,
+        getLineWidth: 10,
+        pointRadiusMinPixels: 1,
+        lineWidthMinPixels: 0.3,
+        extensions: [new MaskExtension()],
+        maskId: maskEnabled ? MASK_ID : undefined
+      } as VectorTileLayerProps & {maskId: string})
+    : null;
   const maskLayer = new GeoJsonLayer({
     id: MASK_ID,
     data: editableData as GeoJSON.FeatureCollection,
-    operation: 'mask',
-  })
+    operation: 'mask'
+  });
 
   deck.setProps({
     layers: [maskLayer, editLayer, dataLayer],
-    getCursor: (editLayer as EditableGeoJsonLayer).getCursor.bind(editLayer) as any,
+    getCursor: (editLayer as EditableGeoJsonLayer).getCursor.bind(editLayer) as any
   });
 }
 
 // render everything!
 
 async function initialize() {
-  render()
+  render();
   await initSource();
-  render()
+  render();
 }
 
 function render() {
