@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://app.carto.com/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://app.carto.com/favicon/favicon-16x16.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CARTO + deck.gl - Editable mask layer </title>
+  <body>
+    <div id="app">
+      <div id="map"></div>
+      <canvas id="deck-canvas"></canvas>
+      <div id="story-card">
+        <p class="overline">✨👀 You're viewing</p>
+        <h2>Editable mask layer</h2>
+        <p>This example allows users to draw a <strong>custom mask layer</strong> to seamlessly filter layers and widgets from this CARTO + deck.gl example, that uses a 1.4M points dataset.</p>
+        <p class="small">The mask layer is created using a community module maintained by CARTO: <code><a href="https://www.npmjs.com/package/@deck.gl-community/editable-layers">@deck.gl-community/editable-layers</a></code>.</p>
+        <hr>
+        <div class="widget-wrapper">
+          <p class="widget-title overline">Total POIs (formula widget)</p>
+          <h2 class="widget-value" id="formula-widget">...</p>
+        </div>
+        <hr>
+        <div class="edit-header">
+          <h3 class="edit-header-title">Editable layer</h3>
+          <label class="edit-mode-toggle" for="edit-mode-enabled">
+            Enabled: 
+            <input type="checkbox" id="edit-mode-enabled" checked />
+          </label>
+          <div class="edit-mode-picker">
+            Mode:
+            <select id="editable-mode-picker">
+              <option value="draw" selected>Draw</option>
+              <option value="edit">Edit</option>
+              <option value="remove">Remove</option>
+            </select>
+          </div>
+        </div>
+        <p id="edit-comment"></p>
+        <p class="caption">Source: <a href="https://www.openstreetmap.org" rel="noopener noreferrer" target="_blank">OpenStreetMap</a></p>
+      </div>
+    </div>
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>
