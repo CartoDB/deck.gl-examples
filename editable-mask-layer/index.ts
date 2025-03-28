@@ -140,6 +140,8 @@ const debouncedUpdateSpatialFilter = debounce(viewState => {
   renderWidgets();
 }, 300);
 
+const debouncedRenderWidgets = debounce(renderWidgets, 300)
+
 // sync deckgl map after user interaction, obtain new viewport after
 
 deck.setProps({
@@ -204,9 +206,7 @@ async function renderLayers() {
       console.log('editableData: ', editableData);
       editableData = updatedData;
       renderLayers();
-      if (editType === 'addFeature') {
-        renderWidgets();
-      }
+      debouncedRenderWidgets();
     },
     onClick: info => {
       const feature = info.object as GeoJSON.Feature;
@@ -264,7 +264,7 @@ async function renderLayers() {
   });
 
   deck.setProps({
-    layers: [maskLayer, editLayer, dataLayer],
+    layers: [maskLayer, dataLayer, editLayer],
     getCursor: (editLayer as EditableGeoJsonLayer).getCursor.bind(editLayer) as any
   });
 }
