@@ -17,7 +17,7 @@ import {debounce, getDroppingPercent} from './utils';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const accessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
-const connectionName = 'amanzanares-pm-bq';
+const connectionName = 'carto_dw';
 const cartoConfig = {apiBaseUrl, accessToken, connectionName};
 
 // init deckgl
@@ -88,8 +88,7 @@ const EXCESSIVE_DROPPING_PERCENT = 0.05;
 async function initSource() {
   dataSource = await vectorTilesetSource({
     ...cartoConfig,
-    tableName:
-      'cartodb-on-gcp-pm-team.amanzanares_opensource_demo.national_water_model_tileset_final_test_4'
+    tableName: 'carto-demo-data.demo_tilesets.noaa_nwm_waterstreams_us'
   });
   return dataSource;
 }
