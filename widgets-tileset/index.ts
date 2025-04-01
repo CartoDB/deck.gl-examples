@@ -351,8 +351,8 @@ function renderLayers() {
           renderWidgets();
         }
       },
-      extensions: [new DataFilterExtension()],
-      ...getDataFilterExtensionProps(filters, 'and', 2)
+      extensions: [new DataFilterExtension({filterSize: 4})],
+      ...getDataFilterExtensionProps(filters, 'and', 4)
     })
   ];
 
