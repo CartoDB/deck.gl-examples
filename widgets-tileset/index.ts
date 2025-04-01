@@ -1,7 +1,7 @@
 import './style.css';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import {WebMercatorViewport, Deck, PathLayer} from '@deck.gl/core';
+import {WebMercatorViewport, Deck} from '@deck.gl/core';
 import {DataFilterExtension} from '@deck.gl/extensions';
 import {
   vectorTilesetSource,
@@ -159,36 +159,36 @@ function filterViaHistogram(dataIndex) {
     column: 'streamOrder'
   });
 
-  const minValue = histogramTicks[dataIndex];
-  const maxValue = histogramTicks[dataIndex + 1] - 0.0001;
+  const minValue = histogramTicks[dataIndex - 1];
+  const maxValue = histogramTicks[dataIndex] - 0.0001;
 
-  // if (dataIndex === histogramTicks.length - 1) {
-  //   // For the last category (> 600), use CLOSED_OPEN
-  //   addFilter(filters, {
-  //     column: 'streamOrder',
-  //     type: FilterType.CLOSED_OPEN,
-  //     values: [[minValue, Infinity]]
-  //   });
-  // } else {
-  //   // For first and middle categories, use BETWEEN
-  //   addFilter(filters, {
-  //     column: 'streamOrder',
-  //     type: FilterType.BETWEEN,
-  //     values: [[minValue, maxValue]]
-  //   });
-  // }
+  if (dataIndex === histogramTicks.length - 1) {
+    // For the last category (> 600), use CLOSED_OPEN
+    addFilter(filters, {
+      column: 'streamOrder',
+      type: FilterType.CLOSED_OPEN,
+      values: [[minValue, Infinity]]
+    });
+  } else {
+    // For first and middle categories, use BETWEEN
+    addFilter(filters, {
+      column: 'streamOrder',
+      type: FilterType.BETWEEN,
+      values: [[minValue, maxValue]]
+    });
+  }
 
-  initialize();
+  render();
 }
 
 function clearHistogramFilter() {
   clearFiltersButton.style.display = 'none';
 
   removeFilter(filters, {
-    column: 'income_per_capita'
+    column: 'streamOrder'
   });
 
-  initialize();
+  render();
 }
 
 function setElementHidden(element: HTMLElement, flag: boolean) {
@@ -238,6 +238,7 @@ async function renderWidgets() {
   const formula = await dataSource.widgetSource.getFormula({
     column: '*',
     operation: 'count',
+    filters: filters,
     spatialFilter: viewportSpatialFilter
   });
 
@@ -249,6 +250,7 @@ async function renderWidgets() {
     column: 'streamOrder',
     ticks: histogramTicks,
     operation: 'count',
+    filters: filters,
     spatialFilter: viewportSpatialFilter
   });
 
@@ -334,8 +336,8 @@ function renderLayers() {
       data: dataSource,
       getLineColor: d => {
         const rgb = colors[Math.min(d.properties.streamOrder - 1, 7)];
-        const alpha = Math.min(50 + d.properties.streamOrder * 20, 255); // Gradually increases opacity with stream order
-        return [rgb[0], rgb[1], rgb[2], 255];
+        const alpha = Math.min(155 + d.properties.streamOrder * 10, 255); // Gradually increases opacity with stream order
+        return [rgb[0], rgb[1], rgb[2], alpha];
       },
       getLineWidth: d => {
         return Math.pow(d.properties.streamOrder, 2);
@@ -363,10 +365,14 @@ function renderLayers() {
 
 // render everything!
 
-async function initialize() {
+async function setup() {
   await initSource();
+  render();
+}
+
+function render() {
   renderWidgets();
   renderLayers();
 }
 
-initialize();
+setup();
