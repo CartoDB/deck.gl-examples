@@ -140,7 +140,7 @@ const debouncedUpdateSpatialFilter = debounce(viewState => {
   renderWidgets();
 }, 300);
 
-const debouncedRenderWidgets = debounce(renderWidgets, 300)
+const debouncedRenderWidgets = debounce(renderWidgets, 300);
 
 // sync deckgl map after user interaction, obtain new viewport after
 
@@ -238,7 +238,8 @@ async function renderLayers() {
       preventOverlappingLines: true
     },
     selectedFeatureIndexes,
-    data: editableData
+    data: editableData,
+    getFillColor: [3, 111, 226, 0.1]
   });
 
   const dataLayer = dataSource
