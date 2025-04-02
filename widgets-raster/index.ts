@@ -195,7 +195,6 @@ async function renderFormula(ws: WidgetSource<WidgetSourceProps>) {
     operation: 'count',
     filters: filters,
     spatialFilter: getSpatialFilterFromViewState(viewState),
-    spatialIndexReferenceViewState: viewState
   });
   formulaWidget.textContent = Intl.NumberFormat('en-US', {
     maximumFractionDigits: 0
@@ -212,7 +211,6 @@ async function renderTreemap(ws: WidgetSource<WidgetSourceProps>) {
     operation: 'count',
     filterOwner: TREE_WIDGET_ID,
     spatialFilter: getSpatialFilterFromViewState(viewState),
-    spatialIndexReferenceViewState: viewState
   });
 
   // Calculate total for percentages
