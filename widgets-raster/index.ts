@@ -24,12 +24,12 @@ const cartoConfig = {
   apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
   // @ts-expect-error misconfigured env variables
   accessToken: import.meta.env.VITE_API_ACCESS_TOKEN,
-  connectionName: 'amanzanares-pm-bq'
+  connectionName: 'carto_dw'
 };
 
 const INITIAL_VIEW_STATE: MapViewState = {
-  latitude: 42.728,
-  longitude: -78.731,
+  latitude: 40.728,
+  longitude: -85.731,
   zoom: 6,
   minZoom: 5.5
 };
@@ -87,7 +87,7 @@ treemapChart.on('click', params => {
         values: [value],
         owner: TREE_WIDGET_ID
       });
-      render();
+      render({includeTreemap: false}); // this makes sure the treemap zoom function works by not rendering the treemap again
     } else {
       removeFilter(filters, {column: CATEGORY_COLUMN, owner: TREE_WIDGET_ID});
       render();
@@ -120,14 +120,6 @@ const getFillColorLayer = (d: GeoJSON.Feature<GeoJSON.Geometry, {band_1: number}
   }
   return [0, 0, 0, 0] as Color;
 };
-
-function render() {
-  source = rasterSource({
-    ...cartoConfig,
-    tableName: 'cartodb-on-gcp-pm-team.amanzanares_raster.classification_us_compressed'
-  });
-  renderLayers();
-}
 
 function renderLayers() {
   const layers = [
@@ -182,10 +174,18 @@ function setWidgetsLoading() {
 
 // Render widgets
 
-async function renderWidgets() {
+async function renderWidgets({includeTreemap = true} = {}) {
+  if (!source) return;
   const {widgetSource} = await source;
 
-  await Promise.all([renderFormula(widgetSource), renderHistogram(widgetSource)]);
+  if (includeTreemap) {
+    await renderTreemap(widgetSource);
+  } else {
+    treemapChart.hideLoading();
+  }
+
+  formulaWidget.innerHTML = '<span style="font-weight: 400; font-size: 14px;">Loading...</span>';
+  await renderFormula(widgetSource);
   widgetsLoading = false;
 }
 
@@ -193,6 +193,7 @@ async function renderFormula(ws: WidgetSource<WidgetSourceProps>) {
   const formula = await ws.getFormula({
     column: '*',
     operation: 'count',
+    filters: filters,
     spatialFilter: getSpatialFilterFromViewState(viewState),
     spatialIndexReferenceViewState: viewState
   });
@@ -205,7 +206,7 @@ async function renderFormula(ws: WidgetSource<WidgetSourceProps>) {
 const TREE_WIDGET_ID = 'band_1_widget';
 const CATEGORY_COLUMN = 'band_1';
 
-async function renderHistogram(ws: WidgetSource<WidgetSourceProps>) {
+async function renderTreemap(ws: WidgetSource<WidgetSourceProps>) {
   const categories = await ws.getCategories({
     column: CATEGORY_COLUMN,
     operation: 'count',
@@ -247,7 +248,9 @@ async function renderHistogram(ws: WidgetSource<WidgetSourceProps>) {
           textBorderWidth: 3,
           fontSize: 10
         },
-        leafSize: 10
+        leafSize: 10,
+        width: '100%',
+        height: '100%'
       }
     ]
   };
@@ -277,8 +280,21 @@ deck.setProps({
     viewState = props.viewState;
     setRasterResolution(viewState.zoom);
     setWidgetsLoading();
-    debouncedRenderWidgets();
   }
 });
 
-render();
+function render({includeTreemap = true} = {}) {
+  renderLayers();
+  setWidgetsLoading();
+  renderWidgets({includeTreemap});
+}
+
+function setup() {
+  source = rasterSource({
+    ...cartoConfig,
+    tableName: 'carto-demo-data.demo_rasters.usda_land_classification'
+  });
+  renderLayers();
+}
+
+setup();
