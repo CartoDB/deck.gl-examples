@@ -132,7 +132,9 @@ function renderLayers() {
         rasterMetadata = tilejson.raster_metadata;
       },
       onViewportLoad: async tiles => {
+        if (!source) return;
         const {widgetSource} = await source;
+        setWidgetsLoading();
         await widgetSource.loadTiles(tiles);
         debouncedRenderWidgets();
       },
@@ -179,13 +181,12 @@ async function renderWidgets({includeTreemap = true} = {}) {
   const {widgetSource} = await source;
 
   if (includeTreemap) {
-    await renderTreemap(widgetSource);
+    await Promise.all([renderFormula(widgetSource), renderTreemap(widgetSource)]);
   } else {
-    treemapChart.hideLoading();
+    await renderFormula(widgetSource);
   }
 
-  formulaWidget.innerHTML = '<span style="font-weight: 400; font-size: 14px;">Loading...</span>';
-  await renderFormula(widgetSource);
+  // Reset loading state
   widgetsLoading = false;
 }
 
@@ -194,7 +195,7 @@ async function renderFormula(ws: WidgetSource<WidgetSourceProps>) {
     column: '*',
     operation: 'count',
     filters: filters,
-    spatialFilter: getSpatialFilterFromViewState(viewState),
+    spatialFilter: getSpatialFilterFromViewState(viewState)
   });
   formulaWidget.textContent = Intl.NumberFormat('en-US', {
     maximumFractionDigits: 0
@@ -210,7 +211,7 @@ async function renderTreemap(ws: WidgetSource<WidgetSourceProps>) {
     column: CATEGORY_COLUMN,
     operation: 'count',
     filterOwner: TREE_WIDGET_ID,
-    spatialFilter: getSpatialFilterFromViewState(viewState),
+    spatialFilter: getSpatialFilterFromViewState(viewState)
   });
 
   // Calculate total for percentages
@@ -277,13 +278,11 @@ deck.setProps({
     map.jumpTo({center: [longitude, latitude], ...rest});
     viewState = props.viewState;
     setRasterResolution(viewState.zoom);
-    setWidgetsLoading();
   }
 });
 
 function render({includeTreemap = true} = {}) {
   renderLayers();
-  setWidgetsLoading();
   renderWidgets({includeTreemap});
 }
 
