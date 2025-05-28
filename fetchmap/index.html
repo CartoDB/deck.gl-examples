@@ -31,25 +31,22 @@
         <p class="overline">✨👀 You're viewing</p>
         <h2>fetchMap Example</h2>
         <p>
-          This example demonstrates using <code>fetchMap</code> from
-          <code>@carto/api-client</code> to retrieve CARTO map details and display them.
-        </p>
-        <p>
-          It showcases how to integrate a map created in CARTO Builder into a Deck.gl application.
-          The data sheet below will display some information derived from the map data.
+          This example showcases how to integrate a map created in CARTO Builder into a custom CARTO
+          + Deck.gl application. It uses <code>fetchMap</code> from
+          <code>@carto/api-client</code> to retrieve the map configuration and layers.
         </p>
         <p class="small">
           Learn more about
           <a
-            href="https://docs.carto.com/carto-for-developers/carto-vl-and-deck-gl/integrations/deck.gl"
+            href="https://docs.carto.com/carto-for-developers/reference/fetchmap"
             rel="noopener noreferrer"
             target="_blank"
-            >CARTO & deck.gl integration</a
+            >fetchMap</a
           >.
         </p>
 
         <div id="map-selector-container" class="content-section-container">
-          <h3 class="map-selector-title">Select available maps</h3>
+          <h3 class="map-selector-title">Select one or more available maps</h3>
           <!-- Checkboxes will be dynamically inserted here by the script -->
           <button id="load-maps-button" class="map-selector-button">Load Maps</button>
         </div>
@@ -58,7 +55,7 @@
           <h3 class="map-selector-title">Loaded maps</h3>
           <div id="map-info-widget">
             <dl>
-              <dt>Map Title:</dt>
+              <dt>Map Title(s):</dt>
               <dd id="mapName">Loading...</dd>
 
               <dt>Number of Layers:</dt>
@@ -68,7 +65,15 @@
         </div>
 
         <hr />
-        <p class="caption">Map data from CARTO</p>
+        <p class="caption">
+          Source:
+          <a
+            href="https://carto.com/spatial-data-catalog/browser"
+            rel="noopener noreferrer"
+            target="_blank"
+            >CARTO Data Observatory</a
+          >
+        </p>
       </div>
     </div>
     <script type="module" src="./index.ts"></script>
