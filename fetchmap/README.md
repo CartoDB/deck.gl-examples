@@ -1,15 +1,8 @@
 ## Example: fetchMap
 
-This example demonstrates how to use the `fetchMap` function from `@carto/api-client` (version 0.5.2 or higher) to retrieve the configuration of a map created in CARTO Builder and render it using Deck.gl.
+This example demonstrates how to use the `fetchMap` function from `@carto/api-client` (version 0.5.5 or higher) to retrieve the configuration of a map created in CARTO Builder and render it using Deck.gl. Developers can then customize those layers and integrate them in their own application layers. This enables developers to collaborate with cartographers and other non-developers who will create layers directlly in CARTO, and greatly reduces the time to create an application.
 
-## Description
-
-The application initializes a Deck.gl instance, fetches map data (including layers, initial view state, and other configurations) using a specific `mapId`, and then renders the map.
-
-It also displays two simple widgets:
-
-1.  **Map Name**: Shows the title of the fetched CARTO map.
-2.  **Number of Layers**: Shows the count of layers in the fetched CARTO map.
+Check the [documentation and technical reference for fetchMap](https://docs.carto.com/carto-for-developers/reference/fetchmap) to learn more.
 
 ## Usage
 
