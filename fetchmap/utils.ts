@@ -35,7 +35,6 @@ export function LayerFactory(layers: LayerDescriptor[]) {
     .map(({type, props, filters}) => {
       const LayerClass = layerClasses[type];
       if (!LayerClass) {
-        console.error(`No layer class found for type: ${type}`);
         return null;
       }
       const filterProps = filters && {

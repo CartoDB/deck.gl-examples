@@ -11,7 +11,6 @@ function formatLegendNumber(num: number): string {
 }
 
 export function createLegend(layers: LayerDescriptor[]): HTMLElement {
-  console.log('[Legend] Creating legend for layers:', layers.length);
   const wrapper = document.createElement('div');
   wrapper.className = 'legend-wrapper';
 
@@ -23,136 +22,11 @@ export function createLegend(layers: LayerDescriptor[]): HTMLElement {
     const layerLabel = ((layer.props as any)?.cartoLabel || `Layer ${index + 1}`) as string;
     const initialVisibility = (layer.props as any)?.visible !== false;
 
-    // console.log(
-    //   `[Legend] Processing layer ${index}: ${layerLabel}, ID: ${layerId}, Visible: ${initialVisibility}`
-    // );
-
     const layerDiv = document.createElement('div');
     layerDiv.className = 'legend-layer';
-    layerDiv.setAttribute('data-layer-id', layerId); // Store layerId for drag/drop
-    layerDiv.draggable = true; // Make the layer div draggable
-
-    layerDiv.addEventListener('dragstart', (event: DragEvent) => {
-      if (event.dataTransfer) {
-        event.dataTransfer.setData('text/plain', layerId);
-        event.dataTransfer.effectAllowed = 'move';
-      }
-      layerDiv.classList.add('legend-layer-dragging');
-      document.body.style.cursor = 'grabbing'; // Set cursor on body for global effect
-      // console.log(`[Legend] DragStart: ${layerId}`);
-    });
-
-    layerDiv.addEventListener('dragend', () => {
-      layerDiv.classList.remove('legend-layer-dragging');
-      document.body.style.cursor = ''; // Reset body cursor
-      // console.log(`[Legend] DragEnd: ${layerId}`);
-      // Clean up any stray dragover classes from all items after a drag operation concludes
-      container.querySelectorAll('.legend-layer-dragover').forEach(el => {
-        el.classList.remove('legend-layer-dragover');
-      });
-    });
-
-    layerDiv.addEventListener('dragenter', (event: DragEvent) => {
-      event.preventDefault(); // Necessary to allow drop
-      const draggingId = event.dataTransfer?.getData('text/plain');
-      if (draggingId && layerDiv.getAttribute('data-layer-id') !== draggingId) {
-        // Basic hover indication (optional, as dragover will handle specifics)
-        // layerDiv.classList.add('legend-layer-dragover-general'); // A more general hover, if desired
-      }
-    });
-
-    layerDiv.addEventListener('dragover', (event: DragEvent) => {
-      event.preventDefault(); // Necessary to allow drop
-      if (event.dataTransfer) {
-        event.dataTransfer.dropEffect = 'move';
-      }
-      const draggingId = event.dataTransfer?.getData('text/plain');
-      const currentTargetLayerId = layerDiv.getAttribute('data-layer-id');
-
-      if (draggingId && currentTargetLayerId && draggingId !== currentTargetLayerId) {
-        // Clear previous drop indicators from ALL items
-        container.querySelectorAll('.legend-drop-above, .legend-drop-below').forEach(el => {
-          el.classList.remove('legend-drop-above', 'legend-drop-below');
-        });
-
-        const rect = layerDiv.getBoundingClientRect();
-        const inUpperHalf = event.clientY < rect.top + rect.height / 2;
-
-        if (inUpperHalf) {
-          layerDiv.classList.add('legend-drop-above');
-        } else {
-          layerDiv.classList.add('legend-drop-below');
-        }
-      } else {
-        // If dragging over itself, or no valid drag, clear indicators from this specific element
-        layerDiv.classList.remove('legend-drop-above', 'legend-drop-below');
-      }
-    });
-
-    layerDiv.addEventListener('dragleave', () => {
-      layerDiv.classList.remove('legend-drop-above', 'legend-drop-below');
-      // layerDiv.classList.remove('legend-layer-dragover-general');
-    });
-
-    layerDiv.addEventListener('drop', (event: DragEvent) => {
-      event.preventDefault();
-      // Clear indicators from the dropped-upon element
-      layerDiv.classList.remove('legend-drop-above', 'legend-drop-below');
-      // Also clear from all other elements just in case dragleave didn't fire everywhere
-      container.querySelectorAll('.legend-drop-above, .legend-drop-below').forEach(el => {
-        el.classList.remove('legend-drop-above', 'legend-drop-below');
-      });
-
-      if (event.dataTransfer) {
-        const draggedLayerId = event.dataTransfer.getData('text/plain');
-        const targetLayerId = layerDiv.getAttribute('data-layer-id');
-        // console.log(`[Legend] Drop: ${draggedLayerId} onto ${targetLayerId}`);
-
-        if (draggedLayerId && targetLayerId && draggedLayerId !== targetLayerId) {
-          const layerElements = Array.from(container.children) as HTMLElement[];
-          const draggedElement = container.querySelector(`[data-layer-id="${draggedLayerId}"]`);
-          const targetElement = layerDiv; // The element being dropped onto
-
-          if (draggedElement && targetElement) {
-            // Determine if dragging upwards or downwards
-            const rect = targetElement.getBoundingClientRect();
-            const inUpperHalf = event.clientY < rect.top + rect.height / 2;
-
-            if (inUpperHalf) {
-              container.insertBefore(draggedElement, targetElement);
-            } else {
-              container.insertBefore(draggedElement, targetElement.nextSibling);
-            }
-
-            // Get the new order of layer IDs
-            const newOrderIds = (Array.from(container.children) as HTMLElement[])
-              .map(el => el.getAttribute('data-layer-id'))
-              .filter(id => id !== null) as string[];
-
-            // Dispatch custom event with the new order
-            const reorderEvent = new CustomEvent('reorderlayers', {
-              detail: {layerIds: newOrderIds}
-            });
-            wrapper.dispatchEvent(reorderEvent);
-            // console.log('[Legend] Dispatched reorderlayers:', newOrderIds);
-          }
-        }
-      }
-    });
 
     const titleContainer = document.createElement('div');
     titleContainer.className = 'legend-title-container';
-
-    // Create and prepend drag handler
-    const dragHandler = document.createElement('div');
-    dragHandler.className = 'legend-drag-handler';
-    // Create three dots for the drag handle
-    for (let i = 0; i < 3; i++) {
-      const dot = document.createElement('span');
-      dot.innerHTML = '&#x2022;'; // Bullet point character
-      dragHandler.appendChild(dot);
-    }
-    titleContainer.appendChild(dragHandler);
 
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
@@ -196,7 +70,6 @@ export function createLegend(layers: LayerDescriptor[]): HTMLElement {
     let legendItemsGeneratedFromScales = false;
     if (layer.scales && layer.scales.fillColor) {
       const scale: Scale = layer.scales.fillColor;
-      // console.log(`[Legend] Layer ${layerLabel}: Found fillColor scale`, scale);
 
       const scaleHeaderDiv = document.createElement('div');
       scaleHeaderDiv.className = 'legend-header';
