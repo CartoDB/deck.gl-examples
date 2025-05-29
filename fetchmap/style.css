@@ -1,0 +1,302 @@
+body,
+html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+#map,
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+}
+
+#app {
+  flex: 1 1 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#story-card {
+  padding: 1.75rem;
+  background: #fdfdfe;
+  box-shadow: 4px 4px 8px #30303099;
+  border-radius: 4px;
+  z-index: 1;
+  margin: 1.5rem;
+  max-width: 480px;
+  max-height: 100vh;
+  z-index: 10;
+  overflow: scroll;
+}
+
+.layer-controls {
+  margin-top: 2.25rem;
+}
+
+.overline {
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.125rem;
+  text-transform: uppercase;
+}
+
+hr {
+  border: 1px solid #eee;
+  margin: 10px 0px;
+}
+
+select {
+  margin-bottom: 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  letter-spacing: 0.001rem;
+  max-width: 100%;
+}
+
+select:hover {
+  cursor: pointer;
+}
+
+select {
+  padding: 0.6rem;
+  width: 360px;
+}
+
+code {
+  padding: 2px 5px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+}
+
+.caption {
+  margin-top: 2.25rem;
+  margin-bottom: 0px;
+  font-size: 0.8rem;
+}
+
+.widget-wrapper {
+  position: relative;
+  margin: 10px 0px;
+}
+
+.echarts-categories {
+  width: 100%;
+  height: 200px;
+}
+
+.small {
+  font-size: 0.9rem;
+}
+
+.widget-clear-filter {
+  display: none;
+  font-size: 12px;
+  text-align: right;
+  position: absolute;
+  right: 25px;
+  top: -4px;
+  color: #30303099;
+  cursor: pointer;
+}
+
+/* Hide scrollbars while maintaining scroll functionality */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+/* WebKit browsers (Chrome, Safari) */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* New Widget Styles */
+#map-info-widget dl {
+  display: grid;
+  grid-template-columns: max-content auto;
+  gap: 0;
+  margin-bottom: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#map-info-widget dt {
+  font-weight: 500;
+  grid-column: 1;
+  padding: 0.65rem;
+  border-bottom: 1px solid #f0f0f0;
+  border-right: 1px solid #f0f0f0;
+  background-color: #f9f9f9;
+  font-size: 0.85rem;
+}
+
+#map-info-widget dd {
+  grid-column: 2;
+  margin-left: 0;
+  text-align: right;
+  padding: 0.65rem;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #ffffff;
+  font-size: 0.85rem;
+}
+
+#map-info-widget dt:last-of-type,
+#map-info-widget dd:last-of-type {
+  border-bottom: none;
+}
+
+#layer-details h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+#layerList {
+  list-style: none;
+  padding-left: 0;
+  font-size: 0.9rem;
+}
+
+.layer-info-item {
+  padding: 8px;
+  margin: 5px 0;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.layer-name {
+  font-weight: 500;
+}
+
+.layer-type {
+  font-size: 0.9em;
+  margin-bottom: 5px;
+}
+
+.layer-data {
+  font-size: 0.9em;
+}
+
+#legend {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+    sans-serif;
+  z-index: 1000;
+  min-width: 150px;
+}
+
+.legend-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #2d3c43;
+}
+
+.legend-content {
+  font-size: 12px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  border-radius: 2px;
+}
+
+.legend-label {
+  color: #2d3c43;
+}
+
+/* Styles for the Map Selector */
+.map-selector {
+  /* Any specific styles for map-selector itself, if needed, can remain here */
+  /* border-top: 1px solid #e0e0e0; */ /* This is now handled by content-section-container */
+}
+
+.content-section-container {
+  padding: 15px 0;
+  margin-top: 20px; /* Increased margin for better separation */
+  border-top: 1px solid #e0e0e0; /* Lighter border */
+}
+
+.content-section-container:first-of-type {
+  margin-top: 15px; /* Slightly less margin for the very first section if needed, or can be same */
+}
+
+.content-section-container > h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.map-selector-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* Increased spacing */
+}
+
+.map-selector-option input[type='checkbox'] {
+  margin-right: 8px;
+  cursor: pointer;
+  /* Optional: custom checkbox styling can be complex and might require more CSS or a library */
+  /* For a simple enhancement, you can scale it slightly if needed */
+  transform: scale(1.1);
+}
+
+.map-selector-option label {
+  font-size: 0.9rem;
+  color: #555; /* Slightly softer text color */
+  cursor: pointer;
+  flex-grow: 1; /* Allow label to take available space */
+  margin-left: 0; /* Reset margin from previous inline style */
+}
+
+.map-selector-button {
+  display: block;
+  width: 100%;
+  padding: 8px 15px; /* Adjusted padding */
+  margin-top: 15px;
+  background-color: transparent; /* Transparent background */
+  color: #4a90e2; /* Text color same as border/theme */
+  border: 1px solid #4a90e2; /* Outline border */
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 0.9rem; /* Slightly smaller font */
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.map-selector-button:hover {
+  background-color: #4a90e2; /* Fill on hover */
+  color: white; /* Text color white on hover */
+}
