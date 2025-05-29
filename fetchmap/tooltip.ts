@@ -83,13 +83,12 @@ export function buildTooltip(
               const precision = formatSpec.includes('.')
                 ? parseInt(formatSpec.match(/\.(\d)/)?.[1] || '2')
                 : 0;
-              if (Math.abs(rawValue) >= 1e9)
-                formattedNumber = (rawValue / 1e9).toFixed(precision) + 'B';
-              else if (Math.abs(rawValue) >= 1e6)
-                formattedNumber = (rawValue / 1e6).toFixed(precision) + 'M';
-              else if (Math.abs(rawValue) >= 1e3)
-                formattedNumber = (rawValue / 1e3).toFixed(precision) + 'k';
-              else formattedNumber = rawValue.toFixed(precision);
+              const formatter = new Intl.NumberFormat('en-US', {
+                notation: 'compact',
+                maximumFractionDigits: precision,
+                compactDisplay: 'short'
+              });
+              formattedNumber = formatter.format(rawValue);
             } else if (
               formatSpec.includes('.') &&
               (formatSpec.endsWith('f') || /^\.\d$/.test(formatSpec) || /^\.\d~$/.test(formatSpec))
