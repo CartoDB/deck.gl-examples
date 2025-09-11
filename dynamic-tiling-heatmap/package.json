@@ -11,7 +11,7 @@
     "unlink-deck": "yarn unlink @deck.gl/core && yarn link @deck.gl/layers && yarn link @deck.gl/geo-layers && yarn link @deck.gl/mesh-layers && yarn link @deck.gl/aggregation-layers && yarn link @deck.gl/carto && yarn link @deck.gl/extensions"
   },
   "devDependencies": {
-    "vite": "^4.5.6"
+    "vite": "^5.4.20"
   },
   "dependencies": {
     "@deck.gl/aggregation-layers": "^9.0.17",
