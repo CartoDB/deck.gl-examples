@@ -15,13 +15,13 @@
     "vite": "^4.5.0"
   },
   "dependencies": {
-    "@deck.gl/aggregation-layers": "^9.0.17",
-    "@deck.gl/carto": "^9.0.17",
-    "@deck.gl/core": "^9.0.17",
-    "@deck.gl/extensions": "^9.0.17",
-    "@deck.gl/geo-layers": "^9.0.17",
-    "@deck.gl/layers": "^9.0.17",
-    "@deck.gl/mesh-layers": "^9.0.17",
+    "@deck.gl/aggregation-layers": "^9.2.0",
+    "@deck.gl/carto": "^9.2.0",
+    "@deck.gl/core": "^9.2.0",
+    "@deck.gl/extensions": "^9.2.0",
+    "@deck.gl/geo-layers": "^9.2.0",
+    "@deck.gl/layers": "^9.2.0",
+    "@deck.gl/mesh-layers": "^9.2.0",
     "@types/react": "^18.2.37",
     "maplibre-gl": "^3.5.2",
     "react": "^18.2.0"
