@@ -14,15 +14,15 @@
     "vite": "^4.5.0"
   },
   "dependencies": {
-    "@carto/api-client": "^0.5.0",
+    "@carto/api-client": "^0.5.21",
     "@deck.gl-community/editable-layers": "9.1.0-beta.4",
-    "@deck.gl/aggregation-layers": "9.1.8",
-    "@deck.gl/carto": "9.1.8",
-    "@deck.gl/core": "9.1.8",
-    "@deck.gl/extensions": "9.1.8",
-    "@deck.gl/geo-layers": "9.1.8",
-    "@deck.gl/layers": "9.1.8",
-    "@deck.gl/mesh-layers": "9.1.8",
+    "@deck.gl/aggregation-layers": "^9.2.0",
+    "@deck.gl/carto": "^9.2.0",
+    "@deck.gl/core": "^9.2.0",
+    "@deck.gl/extensions": "^9.2.0",
+    "@deck.gl/geo-layers": "^9.2.0",
+    "@deck.gl/layers": "^9.2.0",
+    "@deck.gl/mesh-layers": "^9.2.0",
     "@turf/helpers": "^7.2.0",
     "lodash": "^4.17.21",
     "maplibre-gl": "^3.5.2"
