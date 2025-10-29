@@ -1,0 +1,69 @@
+body,
+html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  margin: 0;
+}
+
+#map,
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+}
+
+#app {
+  flex: 1 1 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#story-card {
+  padding: 1.75rem;
+  background: #fdfdfe;
+  box-shadow: 4px 4px 8px #30303099;
+  border-radius: 4px;
+  z-index: 1;
+  margin: 1.5rem;
+  max-width: 480px;
+  max-height: 100vh;
+  z-index: 10;
+  overflow: scroll;
+}
+
+h2 {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.overline {
+  font-size: .625rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: .125rem;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.caption {
+  margin-top: 2.25rem;
+  margin-bottom: 0px;
+  font-size: 0.8rem;
+}
+
+code {
+  background-color: #f4f4f4;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
