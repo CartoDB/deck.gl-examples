@@ -21,7 +21,7 @@
     "@deck.gl/geo-layers": "^9.2.0",
     "@deck.gl/layers": "^9.2.0",
     "@deck.gl/mesh-layers": "^9.2.0",
-    "@carto/api-client": "^0.3.0",
+    "@carto/api-client": "^0.5.21",
     "echarts": "^5.5.1",
     "maplibre-gl": "^3.5.2"
   }
