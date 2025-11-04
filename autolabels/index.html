@@ -28,9 +28,16 @@
       <canvas id="deck-canvas"></canvas>
       <div id="story-card">
         <p class="overline">✨👀 You're viewing</p>
-        <h2>Auto Labels for Polygons</h2>
-        <p>This example demonstrates the <code>autoLabels</code> feature of <a href="https://deck.gl/docs/api-reference/carto/vector-tile-layer#autolabels">VectorTileLayer</a>, which automatically generates labels for polygon features at their centroids.</p>
-        <p>The map displays US counties with labels showing county names, styled with population-based colors. Labels are automatically positioned and include collision detection to maintain readability.</p>
+        <h2>Auto Labels</h2>
+        <p>This example demonstrates the <code>autoLabels</code> feature of <a href="https://deck.gl/docs/api-reference/carto/vector-tile-layer#autolabels">VectorTileLayer</a>, which automatically generates labels for polygon and line features.</p>
+        <div class="layer-selector">
+          Select your Auto Labels example:
+          <select id="example-selector">
+            <option value="polygons">Polygons (US Counties)</option>
+            <option value="lines">Lines (Bristol UK Cycle Network)</option>
+          </select>
+        </div>
+        <p id="description">The map displays US counties with labels showing county names, styled with population-based colors. Labels are automatically positioned and include collision detection to maintain readability.</p>
         <p class="caption">💡 Zoom in and out to see labels adjust dynamically based on the viewport.</p>
       </div>
     </div>

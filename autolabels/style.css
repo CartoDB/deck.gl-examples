@@ -68,3 +68,21 @@ code {
   font-family: 'Courier New', monospace;
   font-size: 0.9em;
 }
+
+.layer-selector {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+select {
+  border-radius: 4px;
+  max-width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  display: block;
+  width: 100%;
+}
+
+select:hover {
+  cursor: pointer;
+}

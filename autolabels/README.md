@@ -1,6 +1,10 @@
 ## Example: Auto Labels
 
-This example demonstrates the [autoLabels feature of VectorTileLayer](https://deck.gl/docs/api-reference/carto/vector-tile-layer#autolabels), which automatically generates labels for polygon features at their centroids.
+This example demonstrates the [autoLabels feature of VectorTileLayer](https://deck.gl/docs/api-reference/carto/vector-tile-layer#autolabels), which automatically generates labels for polygon and line features.
+
+The example includes two demonstrations:
+- **Polygons**: US counties with labels at their centroids, styled by population
+- **Lines**: Bristol UK cycle network with labels along routes, styled by status
 
 The `autoLabels` property enables automatic label generation with collision resolution (ie: non-overlapping) for lines and polygons, making it easy to add readable labels to geographic features such as zipcodes or roads without manual label placement.
 
