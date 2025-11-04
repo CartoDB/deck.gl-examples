@@ -110,10 +110,10 @@ function renderLinesExample() {
       autoLabels: true,
       getText: f => f.properties.route_name,
       pointType: 'text',
-      textSizeScale: 8,
-      getTextColor: [255, 255, 255, 255],
-      textOutlineColor: [0, 0, 0, 255],
-      textOutlineWidth: 6,
+      textSizeScale: 14,
+      getTextColor: [0, 0, 0, 255],
+      textOutlineColor: [255, 255, 255, 255],
+      textOutlineWidth: 7,
       textFontSettings: {
         sdf: true,
       },
@@ -122,7 +122,7 @@ function renderLinesExample() {
         domain: ['Existing', 'Aspirational', 'Proposed', 'Planned'],
         colors: 'Bold'
       }),
-      lineWidthMinPixels: 2,
+      lineWidthMinPixels: 3,
       opacity: 0.9
     })
   ];
