@@ -15,7 +15,6 @@
 - [Semantic Layer](#semantic-layer)
 - [Session Management](#session-management)
 - [Endpoints](#endpoints)
-- [Testing](#testing)
 
 ---
 
@@ -24,13 +23,13 @@
 ### Prerequisites
 
 - Node.js v22+
-- pnpm
+- npm
 - A CARTO AI API key and endpoint (OpenAI-compatible)
 
 ### Installation
 
 ```bash
-pnpm install
+npm install
 ```
 
 ### Environment Setup
@@ -81,24 +80,23 @@ CARTO_LDS_API_KEY=your-lds-api-key
 
 ```bash
 # Development with hot reload
-pnpm dev             # http://localhost:3003
+npm run dev             # http://localhost:3003
 
 # Development with MCP mock mode (fixture-backed tools)
-pnpm dev:mock-mcp
+npm run dev:mock-mcp
 
 # Production
-pnpm build && pnpm start
+npm run build && npm start
 ```
 
 ### Development Commands
 
 ```bash
-pnpm dev             # Start with tsx watch (hot reload)
-pnpm dev:mock-mcp    # Start with MCP mock mode
-pnpm build           # Compile TypeScript to dist/
-pnpm start           # Run compiled production build
-pnpm typecheck       # Type check without emitting
-pnpm test            # Run unit tests (Vitest)
+npm run dev             # Start with tsx watch (hot reload)
+npm run dev:mock-mcp    # Start with MCP mock mode
+npm run build           # Compile TypeScript to dist/
+npm start           # Run compiled production build
+npm run typecheck       # Type check without emitting
 ```
 
 ---
@@ -138,13 +136,6 @@ src/
 +-- types/
     +-- messages.ts                 # WebSocket message type definitions
     +-- user-context.ts             # User analysis context types
-
-tests/
-+-- unit/
-    +-- agent/                      # Provider and tool tests
-    +-- services/                   # Agent runner, conversation manager, MCP client, utils tests
-    +-- prompts/                    # System prompt builder tests
-    +-- semantic/                   # Semantic model loading and validation tests
 ```
 
 ---
@@ -346,21 +337,3 @@ The `ConversationManager` (`services/conversation-manager.ts`) handles per-sessi
 | `/api/chat` | POST | HTTP SSE fallback for environments without WebSocket |
 | `/health` | GET | Health check |
 | `/api/semantic-config` | GET | Returns semantic layer configuration (welcome message, chips) |
-
----
-
-## Testing
-
-Unit tests use **Vitest** and cover:
-
-```bash
-pnpm test   # Run all tests
-```
-
-```text
-tests/unit/
-+-- agent/              # Provider configuration and tool aggregation
-+-- services/           # Conversation manager, MCP client, utils
-+-- prompts/            # System prompt builder
-+-- semantic/           # Semantic model loading and validation
-```

@@ -7,12 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "test": "vitest run",
     "test": "vitest run"
   },
   "dependencies": {
     "@carto/api-client": "^0.5.24",
     "@deck.gl-community/editable-layers": "^9.2.8",
-    "@carto/agentic-deckgl": "*",
     "@deck.gl/carto": "^9.2.2",
     "@deck.gl/core": "^9.2.2",
     "@deck.gl/extensions": "^9.2.6",

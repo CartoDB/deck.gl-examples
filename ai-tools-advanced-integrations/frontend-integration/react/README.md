@@ -25,13 +25,14 @@ This guide covers the React-specific architecture, contexts, hooks, and patterns
 ### Prerequisites
 
 - Node.js v18+
-- pnpm
+- npm
 - Backend server running on `ws://localhost:3003/ws`
 
 ### Installation
 
 ```bash
-pnpm install
+npm install
+npm install $LIBRARY_PATH   # Install the local library (see global README for LIBRARY_PATH)
 ```
 
 ### Environment Setup
@@ -63,10 +64,10 @@ VITE_USE_HTTP=false
 cd ../../agentic-deckgl && npm run build && cd -
 
 # 2. Start the backend
-cd ../../backend-integration/vercel-ai-sdk && pnpm dev &
+cd ../../backend-integration/vercel-ai-sdk && npm run dev &
 
 # 3. Start the React frontend
-pnpm dev
+npm run dev
 ```
 
 Open `http://localhost:5173` in your browser.
@@ -74,7 +75,7 @@ Open `http://localhost:5173` in your browser.
 ### Building
 
 ```bash
-pnpm build
+npm run build
 ```
 
 Output is written to `dist/`.

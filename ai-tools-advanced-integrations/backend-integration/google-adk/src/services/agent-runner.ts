@@ -24,7 +24,7 @@ import { getAllTools, getAllToolNames, isFrontendToolResult } from '../agent/too
 import { getCustomToolNames } from '../agent/custom-tools.js';
 import { getModel } from '../agent/providers.js';
 import { buildSystemPrompt } from '../prompts/system-prompt.js';
-import { sanitizeMalformedKeys, stripCredentials } from './utils.js';
+import { sanitizeMalformedKeys, stripCredentials, escapeAdkTemplateVars } from './utils.js';
 import type { InitialState, ConversationMessage } from '../types/messages.js';
 
 /**
@@ -88,7 +88,7 @@ export async function runMapAgent(
       name: 'MapControlAgent',
       model: getModel(),
       description: 'AI agent for map control and spatial analysis',
-      instruction: buildSystemPrompt(toolNames, initialState, userContext),
+      instruction: escapeAdkTemplateVars(buildSystemPrompt(toolNames, initialState, userContext)),
       tools,
     });
 

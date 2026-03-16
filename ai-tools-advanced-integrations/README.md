@@ -30,39 +30,39 @@ The AI generates deck.gl JSON specifications using 3 consolidated tools:
 ai-tools-advanced-integrations/
 ├── README.md
 ├── frontend-integration/
-│   ├── angular/           # Angular 20 (pnpm)
-│   ├── react/             # React 19 (pnpm, includes E2E tests)
-│   ├── vue/               # Vue 3 (pnpm)
-│   ├── vanilla/           # Vanilla JS (pnpm)
+│   ├── angular/           # Angular 20 (npm)
+│   ├── react/             # React 19 (npm)
+│   ├── vue/               # Vue 3 (npm)
+│   ├── vanilla/           # Vanilla JS (npm)
 │   └── README.md
 └── backend-integration/
-    ├── openai-agents-sdk/  # OpenAI Agents SDK (pnpm) — default
-    ├── vercel-ai-sdk/      # Vercel AI SDK v6 (pnpm)
-    ├── google-adk/         # Google ADK (pnpm)
+    ├── openai-agents-sdk/  # OpenAI Agents SDK (npm) — default
+    ├── vercel-ai-sdk/      # Vercel AI SDK v6 (npm)
+    ├── google-adk/         # Google ADK (npm)
     └── README.md
 ```
 
 ## Prerequisites
 
 - **Node.js** >= 18
-- **pnpm** >= 9
+- **npm** (bundled with Node.js)
 - **CARTO account** with API access token
 - **LLM API access** (OpenAI-compatible endpoint)
 
 ## Setup
 
-These examples depend on the `@carto/agentic-deckgl` library, which lives in a separate repository. You need to link it locally before running the examples.
+These examples depend on the `@carto/agentic-deckgl` library, which lives in a separate repository. You need to install it locally before running the examples.
 
-All examples use **pnpm**. The library is linked via `pnpm link /path/to/agentic-deckgl`.
+All examples use **npm**. The library is installed via `npm install /path/to/agentic-deckgl`, which adds a `file:` reference to `package.json` — this is faster than `npm link` because it avoids symlink overhead in Vite's dev server.
 
 ### 1. Build the core library
 
 ```bash
 # Clone the library repo (if not already cloned)
-git clone https://github.com/CartoDB/ps-frontend-tools-poc.git
+git clone https://github.com/CartoDB/carto-agentic-deckgl.git
 
 # Build the library
-cd ps-frontend-tools-poc/agentic-deckgl
+cd carto-agentic-deckgl/agentic-deckgl
 npm install
 npm run build
 ```
@@ -73,7 +73,7 @@ You only need to rebuild the library after making changes to it.
 
 ```bash
 # Replace with the actual path to your agentic-deckgl directory
-LIBRARY_PATH=/path/to/ps-frontend-tools-poc/agentic-deckgl
+LIBRARY_PATH=/path/to/carto-agentic-deckgl/agentic-deckgl
 
 # Option A: OpenAI Agents SDK (default, recommended)
 cd backend-integration/openai-agents-sdk
@@ -86,9 +86,10 @@ cd backend-integration/google-adk
 ```
 
 ```bash
-pnpm link $LIBRARY_PATH && pnpm install
-cp .env.example .env     # Edit with your credentials
-pnpm dev                 # http://localhost:3003
+npm install                     # Install dependencies
+npm install $LIBRARY_PATH       # Install the local library (adds file: reference)
+cp .env.example .env            # Edit with your credentials
+npm run dev                     # http://localhost:3003
 ```
 
 ### 3. Pick a frontend and start it
@@ -96,23 +97,27 @@ pnpm dev                 # http://localhost:3003
 ```bash
 # Angular 20
 cd frontend-integration/angular
-pnpm link $LIBRARY_PATH && pnpm install
-pnpm start              # http://localhost:4200
+npm install
+npm install $LIBRARY_PATH
+npm start              # http://localhost:4200
 
 # React 19
 cd frontend-integration/react
-pnpm link $LIBRARY_PATH && pnpm install
-pnpm dev                # http://localhost:5173
+npm install
+npm install $LIBRARY_PATH
+npm run dev                # http://localhost:5173
 
 # Vue 3
 cd frontend-integration/vue
-pnpm link $LIBRARY_PATH && pnpm install
-pnpm dev                # http://localhost:5174
+npm install
+npm install $LIBRARY_PATH
+npm run dev                # http://localhost:5174
 
 # Vanilla JS
 cd frontend-integration/vanilla
-pnpm link $LIBRARY_PATH && pnpm install
-pnpm dev                # http://localhost:5173
+npm install
+npm install $LIBRARY_PATH
+npm run dev                # http://localhost:5173
 ```
 
 Each frontend needs CARTO credentials configured in its environment file (see [Environment Variables](#environment-variables)).
@@ -164,11 +169,11 @@ VITE_HTTP_API_URL=http://localhost:3003/api/chat
 VITE_USE_HTTP=false
 ```
 
-## Library Linking Troubleshooting
+## Library Installation Troubleshooting
 
-1. Always link using the local path: `pnpm link /path/to/agentic-deckgl`
-2. Link before running `pnpm install` — pnpm will fail to resolve `@carto/agentic-deckgl@*` from the registry
-3. Re-link after `pnpm install` if symlinks get removed
+1. Always run `npm install` first, then `npm install /path/to/agentic-deckgl` to add the local library
+2. After `npm install /path/to/agentic-deckgl`, a `file:` reference is added to `package.json` — this path is local to your machine, do not commit it
+3. Re-run `npm install /path/to/agentic-deckgl` after a clean `npm install` if the reference is lost
 4. For Angular, add `"preserveSymlinks": true` to `tsconfig.json` under `compilerOptions` if the linked package can't be resolved
 5. Use the same Node version across all examples
 
@@ -193,30 +198,19 @@ All backends implement the same WebSocket protocol, so any frontend works with a
 ### Backend
 
 ```bash
-pnpm dev             # Start dev server with hot reload (port 3003)
-pnpm build           # Compile TypeScript to dist/
-pnpm typecheck       # Type check without emitting
-pnpm test            # Run unit tests
+npm run dev             # Start dev server with hot reload (port 3003)
+npm run build           # Compile TypeScript to dist/
+npm run typecheck       # Type check without emitting
 ```
 
 ### Frontend
 
 ```bash
-pnpm install         # Install dependencies
-pnpm start           # Start dev server (Angular: port 4200)
-pnpm dev             # Start dev server (React/Vue/Vanilla)
-pnpm build           # Build for production
-pnpm test            # Run unit tests
-```
-
-### E2E Tests (React only)
-
-```bash
-cd frontend-integration/react
-npx playwright install chromium
-pnpm e2e             # Run all E2E tests
-pnpm e2e:headed      # Headed mode
-pnpm e2e -- --grep "Counties"  # Single test
+npm install         # Install dependencies
+npm start           # Start dev server (Angular: port 4200)
+npm run dev             # Start dev server (React/Vue/Vanilla)
+npm run build           # Build for production
+npm test            # Run unit tests
 ```
 
 ## License

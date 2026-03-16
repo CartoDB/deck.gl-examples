@@ -188,7 +188,7 @@ All frameworks use **Vitest** for unit testing. Each has its own self-contained 
 ```bash
 # Run tests for any framework
 cd <framework-directory>
-pnpm test   # or: npx vitest run
+npm test   # or: npx vitest run
 ```
 
 | Framework | Test Files | Test Count | Location |

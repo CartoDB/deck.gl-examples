@@ -11,11 +11,9 @@
     "dev:mock-mcp": "MCP_MOCK_MODE=true tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@carto/agentic-deckgl": "*",
     "@modelcontextprotocol/sdk": "^1.26.0",
     "@openai/agents": "^0.4.15",
     "cors": "^2.8.6",
@@ -33,7 +31,6 @@
     "@types/node": "^22.0.0",
     "@types/ws": "^8.18.1",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "typescript": "^5.9.3"
   }
 }

@@ -15,7 +15,6 @@
 - [Semantic Layer](#semantic-layer)
 - [Session Management](#session-management)
 - [Endpoints](#endpoints)
-- [Testing](#testing)
 
 ---
 
@@ -24,13 +23,13 @@
 ### Prerequisites
 
 - Node.js v18+
-- pnpm
+- npm
 - A CARTO AI API key and endpoint (OpenAI-compatible)
 
 ### Installation
 
 ```bash
-pnpm install
+npm install
 ```
 
 ### Environment Setup
@@ -82,20 +81,19 @@ CARTO_LDS_API_KEY=your-lds-api-key
 
 ```bash
 # Development with hot reload
-pnpm dev             # http://localhost:3003
+npm run dev             # http://localhost:3003
 
 # Production
-pnpm build && pnpm start
+npm run build && npm start
 ```
 
 ### Development Commands
 
 ```bash
-pnpm dev             # Start with tsx watch (hot reload)
-pnpm build           # Compile TypeScript to dist/
-pnpm start           # Run compiled production build
-pnpm typecheck       # Type check without emitting
-pnpm test            # Run unit tests (Vitest)
+npm run dev             # Start with tsx watch (hot reload)
+npm run build           # Compile TypeScript to dist/
+npm start           # Run compiled production build
+npm run typecheck       # Type check without emitting
 ```
 
 ---
@@ -134,11 +132,6 @@ src/
     +-- messages.ts                 # WebSocket message type definitions
     +-- user-context.ts             # User analysis context types
 
-tests/
-+-- unit/
-    +-- semantic/                   # Semantic model loading and validation tests
-    +-- services/                   # Agent runner, conversation manager, MCP client tests
-    +-- prompts/                    # System prompt builder tests
 ```
 
 ---
@@ -333,20 +326,3 @@ The `ConversationManager` (`services/conversation-manager.ts`) handles per-sessi
 | `/api/chat` | POST | HTTP SSE fallback for environments without WebSocket |
 | `/health` | GET | Health check |
 | `/api/semantic-config` | GET | Returns semantic layer configuration (welcome message, chips) |
-
----
-
-## Testing
-
-Unit tests use **Vitest** and cover:
-
-```bash
-pnpm test   # Run all tests
-```
-
-```text
-tests/unit/
-+-- semantic/           # Semantic model loading and validation
-+-- services/           # Agent runner, conversation manager, MCP client
-+-- prompts/            # System prompt builder
-```

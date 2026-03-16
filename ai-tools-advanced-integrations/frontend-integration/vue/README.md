@@ -25,13 +25,13 @@ This guide covers the Vue-specific architecture, composables, components, and pa
 ### Prerequisites
 
 - Node.js v18+
-- pnpm
+- npm
 - Backend server running on `ws://localhost:3003/ws`
 
 ### Installation
 
 ```bash
-pnpm install
+npm install
 ```
 
 ### Environment Setup
@@ -63,10 +63,10 @@ VITE_USE_HTTP=false
 cd ../../agentic-deckgl && npm run build && cd -
 
 # 2. Start the backend
-cd ../../backend-integration/vercel-ai-sdk && pnpm dev &
+cd ../../backend-integration/vercel-ai-sdk && npm run dev &
 
 # 3. Start the Vue frontend
-pnpm dev
+npm run dev
 ```
 
 Open `http://localhost:5174` in your browser.
@@ -74,7 +74,7 @@ Open `http://localhost:5174` in your browser.
 ### Building
 
 ```bash
-pnpm build
+npm run build
 ```
 
 Output is written to `dist/`.

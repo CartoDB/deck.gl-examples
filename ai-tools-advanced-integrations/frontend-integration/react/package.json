@@ -8,16 +8,9 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit",
-    "e2e": "playwright test --config e2e/playwright.config.ts",
-    "e2e:ui": "playwright test --ui --config e2e/playwright.config.ts",
-    "e2e:headed": "playwright test --headed --config e2e/playwright.config.ts",
-    "e2e:update-snapshots": "playwright test --update-snapshots --config e2e/playwright.config.ts",
-    "e2e:report": "playwright show-report",
-    "e2e:matrix": "node e2e/scripts/run-matrix.mjs"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@carto/agentic-deckgl": "*",
     "@carto/api-client": "^0.5.24",
     "@deck.gl-community/editable-layers": "^9.2.8",
     "@deck.gl/carto": "^9.2.2",
@@ -46,7 +39,6 @@
     "@math.gl/web-mercator": "^4.1.0",
     "@probe.gl/log": "^4.1.0",
     "@probe.gl/stats": "^4.1.0",
-    "agentic-deckgl": "link:../../../../../../../.local/share/pnpm/global/5/node_modules/@carto/agentic-deckgl",
     "cartocolor": "^5.0.2",
     "d3-scale": "^4.0.2",
     "earcut": "^3.0.2",
@@ -69,7 +61,6 @@
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "@vitejs/plugin-react": "^4.5.2",
-    "playwright": "^1.52.0",
     "typescript": "~5.8.3",
     "vite": "^6.0.0",
     "vitest": "^4.0.18"

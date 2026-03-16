@@ -25,13 +25,13 @@ This guide covers the Angular-specific architecture, services, and patterns. For
 ### Prerequisites
 
 - Node.js v18+
-- pnpm (`npm install -g pnpm`)
+- npm (bundled with Node.js)
 - Backend server running on `ws://localhost:3003/ws`
 
 ### Installation
 
 ```bash
-pnpm install
+npm install
 ```
 
 ### Environment Setup
@@ -72,10 +72,10 @@ export const environment = {
 cd ../../agentic-deckgl && npm run build && cd -
 
 # 2. Start the backend
-cd ../../backend-integration/vercel-ai-sdk && pnpm dev &
+cd ../../backend-integration/vercel-ai-sdk && npm run dev &
 
 # 3. Start the Angular frontend
-pnpm start
+npm start
 ```
 
 Open `http://localhost:4200` in your browser.
@@ -83,7 +83,7 @@ Open `http://localhost:4200` in your browser.
 ### Building
 
 ```bash
-pnpm build
+npm run build
 ```
 
 Output is written to `dist/`.
