@@ -208,9 +208,8 @@ npm run typecheck       # Type check without emitting
 ```bash
 npm install         # Install dependencies
 npm start           # Start dev server (Angular: port 4200)
-npm run dev             # Start dev server (React/Vue/Vanilla)
-npm run build           # Build for production
-npm test            # Run unit tests
+npm run dev         # Start dev server (React/Vue/Vanilla)
+npm run build       # Build for production
 ```
 
 ## License
