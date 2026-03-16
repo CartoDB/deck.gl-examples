@@ -36,17 +36,16 @@ ai-tools-advanced-integrations/
 │   ├── vanilla/           # Vanilla JS (pnpm)
 │   └── README.md
 └── backend-integration/
-    ├── openai-agents-sdk/  # OpenAI Agents SDK (npm) — default
-    ├── vercel-ai-sdk/      # Vercel AI SDK v6 (npm)
-    ├── google-adk/         # Google ADK (npm, requires --force)
+    ├── openai-agents-sdk/  # OpenAI Agents SDK (pnpm) — default
+    ├── vercel-ai-sdk/      # Vercel AI SDK v6 (pnpm)
+    ├── google-adk/         # Google ADK (pnpm)
     └── README.md
 ```
 
 ## Prerequisites
 
 - **Node.js** >= 18
-- **npm** >= 9
-- **pnpm** >= 9 (for frontend examples)
+- **pnpm** >= 9
 - **CARTO account** with API access token
 - **LLM API access** (OpenAI-compatible endpoint)
 
@@ -54,26 +53,28 @@ ai-tools-advanced-integrations/
 
 These examples depend on the `@carto/agentic-deckgl` library, which lives in a separate repository. You need to link it locally before running the examples.
 
+All examples use **pnpm**. The library is linked via `pnpm link /path/to/agentic-deckgl`.
+
 ### 1. Build the core library
 
 ```bash
 # Clone the library repo (if not already cloned)
 git clone https://github.com/CartoDB/ps-frontend-tools-poc.git
 
-# Build the library and register the global npm link
+# Build the library
 cd ps-frontend-tools-poc/agentic-deckgl
 npm install
 npm run build
-npm link                 # Registers global symlink for npm consumers
 ```
 
 You only need to rebuild the library after making changes to it.
 
 ### 2. Configure and start a backend (pick one)
 
-Backends use npm, so they consume the library via `npm link @carto/agentic-deckgl`.
-
 ```bash
+# Replace with the actual path to your agentic-deckgl directory
+LIBRARY_PATH=/path/to/ps-frontend-tools-poc/agentic-deckgl
+
 # Option A: OpenAI Agents SDK (default, recommended)
 cd backend-integration/openai-agents-sdk
 
@@ -85,20 +86,12 @@ cd backend-integration/google-adk
 ```
 
 ```bash
-npm install              # Use --force for google-adk
-npm link @carto/agentic-deckgl
+pnpm link $LIBRARY_PATH && pnpm install
 cp .env.example .env     # Edit with your credentials
-npm run dev              # http://localhost:3003
+pnpm dev                 # http://localhost:3003
 ```
 
 ### 3. Pick a frontend and start it
-
-Frontends use pnpm, which requires linking to the local library path directly:
-
-```bash
-# Replace with the actual path to your agentic-deckgl directory
-LIBRARY_PATH=/path/to/ps-frontend-tools-poc/agentic-deckgl
-```
 
 ```bash
 # Angular 20
@@ -173,17 +166,11 @@ VITE_USE_HTTP=false
 
 ## Library Linking Troubleshooting
 
-**npm (backends):**
-
-1. Verify the global link: `npm ls -g --depth=0 | grep agentic-deckgl`
-2. Re-link after `npm install` (it can remove symlinks): `npm link @carto/agentic-deckgl`
-3. Use the same Node version for both `npm link` and `npm link @carto/agentic-deckgl`
-
-**pnpm (frontends):**
-
 1. Always link using the local path: `pnpm link /path/to/agentic-deckgl`
 2. Link before running `pnpm install` — pnpm will fail to resolve `@carto/agentic-deckgl@*` from the registry
-3. For Angular, add `"preserveSymlinks": true` to `tsconfig.json` under `compilerOptions` if the linked package can't be resolved
+3. Re-link after `pnpm install` if symlinks get removed
+4. For Angular, add `"preserveSymlinks": true` to `tsconfig.json` under `compilerOptions` if the linked package can't be resolved
+5. Use the same Node version across all examples
 
 ## WebSocket Protocol
 
@@ -206,10 +193,10 @@ All backends implement the same WebSocket protocol, so any frontend works with a
 ### Backend
 
 ```bash
-npm run dev          # Start dev server with hot reload (port 3003)
-npm run build        # Compile TypeScript to dist/
-npm run typecheck    # Type check without emitting
-npm test             # Run unit tests
+pnpm dev             # Start dev server with hot reload (port 3003)
+pnpm build           # Compile TypeScript to dist/
+pnpm typecheck       # Type check without emitting
+pnpm test            # Run unit tests
 ```
 
 ### Frontend

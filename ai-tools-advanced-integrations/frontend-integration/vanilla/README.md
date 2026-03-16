@@ -25,13 +25,13 @@ This guide covers the Vanilla JS-specific architecture, class hierarchy, and eve
 ### Prerequisites
 
 - Node.js v18+
-- npm
+- pnpm
 - Backend server running on `ws://localhost:3003/ws`
 
 ### Installation
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Environment Setup
@@ -63,10 +63,10 @@ VITE_USE_HTTP=false
 cd ../../agentic-deckgl && npm run build && cd -
 
 # 2. Start the backend
-cd ../../backend-integration/vercel-ai-sdk && npm run dev &
+cd ../../backend-integration/vercel-ai-sdk && pnpm dev &
 
 # 3. Start the Vanilla frontend
-npm run dev
+pnpm dev
 ```
 
 Open `http://localhost:5173` in your browser.
@@ -74,7 +74,7 @@ Open `http://localhost:5173` in your browser.
 ### Building
 
 ```bash
-npm run build
+pnpm build
 ```
 
 Output is written to `dist/`.

@@ -72,7 +72,7 @@ export const environment = {
 cd ../../agentic-deckgl && npm run build && cd -
 
 # 2. Start the backend
-cd ../../backend-integration/vercel-ai-sdk && npm run dev &
+cd ../../backend-integration/vercel-ai-sdk && pnpm dev &
 
 # 3. Start the Angular frontend
 pnpm start

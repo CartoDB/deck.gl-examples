@@ -24,13 +24,13 @@
 ### Prerequisites
 
 - Node.js v22+
-- npm
+- pnpm
 - A CARTO AI API key and endpoint (OpenAI-compatible)
 
 ### Installation
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Environment Setup
@@ -81,24 +81,24 @@ CARTO_LDS_API_KEY=your-lds-api-key
 
 ```bash
 # Development with hot reload
-npm run dev     # http://localhost:3003
+pnpm dev             # http://localhost:3003
 
 # Development with MCP mock mode (fixture-backed tools)
-npm run dev:mock-mcp
+pnpm dev:mock-mcp
 
 # Production
-npm run build && npm start
+pnpm build && pnpm start
 ```
 
 ### Development Commands
 
 ```bash
-npm run dev          # Start with tsx watch (hot reload)
-npm run dev:mock-mcp # Start with MCP mock mode
-npm run build        # Compile TypeScript to dist/
-npm start            # Run compiled production build
-npm run typecheck    # Type check without emitting
-npm test             # Run unit tests (Vitest)
+pnpm dev             # Start with tsx watch (hot reload)
+pnpm dev:mock-mcp    # Start with MCP mock mode
+pnpm build           # Compile TypeScript to dist/
+pnpm start           # Run compiled production build
+pnpm typecheck       # Type check without emitting
+pnpm test            # Run unit tests (Vitest)
 ```
 
 ---
@@ -354,7 +354,7 @@ The `ConversationManager` (`services/conversation-manager.ts`) handles per-sessi
 Unit tests use **Vitest** and cover:
 
 ```bash
-npm test    # Run all tests
+pnpm test   # Run all tests
 ```
 
 ```text
