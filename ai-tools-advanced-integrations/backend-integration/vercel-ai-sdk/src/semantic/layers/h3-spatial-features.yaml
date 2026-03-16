@@ -1,0 +1,468 @@
+# OSI v1.0 Semantic Model — USA Spatial Features (H3 Resolution 8)
+semantic_model:
+  name: h3_spatial_features
+  description: "Demographics, POIs, elevation, and climate data aggregated at H3 resolution 8 for the USA"
+  ai_context:
+    instructions: "H3-indexed spatial dataset. Render with H3TileLayer + h3TableSource. Contains demographic breakdowns, POI counts, elevation, and monthly climate variables."
+    synonyms: ["spatial features", "h3 data", "demographics", "climate data"]
+
+  datasets:
+    - name: usa_spatial_features_h3
+      source: cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2
+      description: "Demographics, POIs, elevation, and climate data aggregated at H3 resolution 8 for the USA"
+      primary_key: [h3]
+      ai_context:
+        instructions: "Each row is one H3 cell at resolution 8. Population fields aggregate with SUM. Climate and elevation fields aggregate with AVG. Filter by urbanity for urban/rural analysis. Use do_date for temporal filtering."
+        synonyms: ["spatial features", "h3 cells", "hexagonal grid", "US demographics"]
+      fields:
+        # --- Identifiers & Dimensions ---
+        - name: h3
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: h3
+          dimension:
+            is_time: false
+          description: "H3 cell index at resolution 8"
+
+        - name: do_date
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: do_date
+          dimension:
+            is_time: true
+          description: "Observation date"
+
+        - name: country_iso
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: country_iso
+          dimension:
+            is_time: false
+          description: "Country ISO 2-letter code"
+
+        - name: country_iso_a3
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: country_iso_a3
+          dimension:
+            is_time: false
+          description: "Country ISO 3-letter code"
+
+        - name: urbanity
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: urbanity
+          dimension:
+            is_time: false
+          description: "Urbanity classification"
+          ai_context:
+            instructions: "Possible values: High_density_urban, Very_High_density_urban, remote, rural, Low_density_urban, Medium_density_urban. Use for filtering urban vs rural areas."
+            synonyms: ["urban classification", "urban/rural", "density class"]
+
+        # --- Population fields (used as both fields and in metrics) ---
+        - name: population
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: population
+          description: "Total population"
+          ai_context:
+            instructions: "Aggregate with SUM across H3 cells."
+            synonyms: ["pop", "inhabitants", "total population"]
+          custom_extensions:
+            - vendor_name: CARTO
+              data:
+                visualization_hint:
+                  style: color_bins
+                  palette: Sunset
+                  classification: quantile
+                  bins: 6
+
+        - name: male
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: male
+          description: "Total male population"
+
+        - name: female
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: female
+          description: "Total female population"
+
+        # --- POI fields ---
+        - name: retail
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: retail
+          description: "Number of retail points of interest"
+
+        - name: education
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: education
+          description: "Number of education points of interest"
+
+        - name: financial
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: financial
+          description: "Number of financial points of interest"
+
+        - name: food_drink
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: food_drink
+          description: "Number of food and drink points of interest"
+
+        - name: healthcare
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: healthcare
+          description: "Number of healthcare points of interest"
+
+        - name: leisure
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: leisure
+          description: "Number of leisure points of interest"
+
+        - name: tourism
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: tourism
+          description: "Number of tourism points of interest"
+
+        - name: transportation
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: transportation
+          description: "Number of transportation points of interest"
+
+        # --- Elevation ---
+        - name: elevation
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: elevation
+          description: "Average elevation in meters"
+
+        # --- Climate: Average temperature (monthly) ---
+        - name: tavg_jan
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: tavg_jan
+          description: "Average temperature in January"
+        - name: tavg_feb
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: tavg_feb
+          description: "Average temperature in February"
+        - name: tavg_mar
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: tavg_mar
+          description: "Average temperature in March"
+        - name: tavg_apr
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: tavg_apr
+          description: "Average temperature in April"
+        - name: tavg_may
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: tavg_may
+          description: "Average temperature in May"
+        - name: tavg_jun
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: tavg_jun
+          description: "Average temperature in June"
+        - name: tavg_jul
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: tavg_jul
+          description: "Average temperature in July"
+        - name: tavg_aug
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: tavg_aug
+          description: "Average temperature in August"
+        - name: tavg_sep
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: tavg_sep
+          description: "Average temperature in September"
+        - name: tavg_oct
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: tavg_oct
+          description: "Average temperature in October"
+        - name: tavg_nov
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: tavg_nov
+          description: "Average temperature in November"
+        - name: tavg_dec
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: tavg_dec
+          description: "Average temperature in December"
+
+        # --- Climate: Precipitation (monthly) ---
+        - name: prec_jan
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: prec_jan
+          description: "Average precipitation in January"
+        - name: prec_feb
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: prec_feb
+          description: "Average precipitation in February"
+        - name: prec_mar
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: prec_mar
+          description: "Average precipitation in March"
+        - name: prec_apr
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: prec_apr
+          description: "Average precipitation in April"
+        - name: prec_may
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: prec_may
+          description: "Average precipitation in May"
+        - name: prec_jun
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: prec_jun
+          description: "Average precipitation in June"
+        - name: prec_jul
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: prec_jul
+          description: "Average precipitation in July"
+        - name: prec_aug
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: prec_aug
+          description: "Average precipitation in August"
+        - name: prec_sep
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: prec_sep
+          description: "Average precipitation in September"
+        - name: prec_oct
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: prec_oct
+          description: "Average precipitation in October"
+        - name: prec_nov
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: prec_nov
+          description: "Average precipitation in November"
+        - name: prec_dec
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: prec_dec
+          description: "Average precipitation in December"
+
+      custom_extensions:
+        - vendor_name: CARTO
+          data:
+            spatial_data:
+              spatial_data_column: h3
+              spatial_data_type: spatial_index
+              spatial_index:
+                type: h3
+                resolution: 8
+                rollup_resolutions: [7, 6, 5]
+              geographic_level: h3_cell
+              aggregation_guidance:
+                note: "Population counts (population, male, female, and all age-group fields) aggregate with SUM. POI counts aggregate with SUM. Climate fields (tavg, tmin, tmax, prec, srad, wind, vapr) and elevation aggregate with AVG."
+                examples:
+                  population: "SUM"
+                  male: "SUM"
+                  female: "SUM"
+                  retail: "SUM"
+                  elevation: "AVG"
+                  tavg_jan: "AVG"
+                  prec_jan: "AVG"
+              ai_context:
+                instructions: "H3 index IS the spatial representation. Render as H3TileLayer with h3TableSource. Can roll up to resolutions 7, 6, 5 for regional analysis."
+
+  relationships: []
+
+  metrics:
+    # --- Demographics ---
+    - name: total_population
+      expression:
+        dialects:
+          - dialect: ANSI_SQL
+            expression: "SUM(population)"
+      description: "Total population across selected H3 cells"
+      ai_context:
+        instructions: "Use for population density analysis. Filter by urbanity for urban-only counts."
+        synonyms: ["pop count", "total pop", "inhabitants"]
+      custom_extensions:
+        - vendor_name: CARTO
+          data:
+            group: demographics
+
+    - name: total_male
+      expression:
+        dialects:
+          - dialect: ANSI_SQL
+            expression: "SUM(male)"
+      description: "Total male population"
+      custom_extensions:
+        - vendor_name: CARTO
+          data:
+            group: demographics
+
+    - name: total_female
+      expression:
+        dialects:
+          - dialect: ANSI_SQL
+            expression: "SUM(female)"
+      description: "Total female population"
+      custom_extensions:
+        - vendor_name: CARTO
+          data:
+            group: demographics
+
+    # --- POIs ---
+    - name: total_retail_pois
+      expression:
+        dialects:
+          - dialect: ANSI_SQL
+            expression: "SUM(retail)"
+      description: "Total retail points of interest"
+      custom_extensions:
+        - vendor_name: CARTO
+          data:
+            group: pois
+
+    - name: total_healthcare_pois
+      expression:
+        dialects:
+          - dialect: ANSI_SQL
+            expression: "SUM(healthcare)"
+      description: "Total healthcare points of interest"
+      custom_extensions:
+        - vendor_name: CARTO
+          data:
+            group: pois
+
+    - name: total_education_pois
+      expression:
+        dialects:
+          - dialect: ANSI_SQL
+            expression: "SUM(education)"
+      description: "Total education points of interest"
+      custom_extensions:
+        - vendor_name: CARTO
+          data:
+            group: pois
+
+    - name: total_food_drink_pois
+      expression:
+        dialects:
+          - dialect: ANSI_SQL
+            expression: "SUM(food_drink)"
+      description: "Total food and drink points of interest"
+      custom_extensions:
+        - vendor_name: CARTO
+          data:
+            group: pois
+
+    - name: total_transportation_pois
+      expression:
+        dialects:
+          - dialect: ANSI_SQL
+            expression: "SUM(transportation)"
+      description: "Total transportation points of interest"
+      custom_extensions:
+        - vendor_name: CARTO
+          data:
+            group: pois
+
+    # --- Elevation ---
+    - name: avg_elevation
+      expression:
+        dialects:
+          - dialect: ANSI_SQL
+            expression: "AVG(elevation)"
+      description: "Average elevation in meters"
+      custom_extensions:
+        - vendor_name: CARTO
+          data:
+            group: elevation
+
+    # --- Climate ---
+    - name: avg_temperature
+      expression:
+        dialects:
+          - dialect: ANSI_SQL
+            expression: "AVG(tavg_jan + tavg_feb + tavg_mar + tavg_apr + tavg_may + tavg_jun + tavg_jul + tavg_aug + tavg_sep + tavg_oct + tavg_nov + tavg_dec) / 12.0"
+      description: "Average annual temperature across all months"
+      ai_context:
+        instructions: "Approximate annual average. For monthly analysis, use individual tavg_* fields directly."
+      custom_extensions:
+        - vendor_name: CARTO
+          data:
+            group: climate
+
+    - name: total_annual_precipitation
+      expression:
+        dialects:
+          - dialect: ANSI_SQL
+            expression: "AVG(prec_jan + prec_feb + prec_mar + prec_apr + prec_may + prec_jun + prec_jul + prec_aug + prec_sep + prec_oct + prec_nov + prec_dec)"
+      description: "Average total annual precipitation"
+      custom_extensions:
+        - vendor_name: CARTO
+          data:
+            group: climate

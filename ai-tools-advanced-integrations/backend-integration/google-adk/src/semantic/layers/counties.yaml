@@ -1,0 +1,198 @@
+# OSI v1.0 Semantic Model — Counties (Higher Education & Elections)
+semantic_model:
+  name: data_analysis
+  description: "Geospatial data analysis model for US county demographics, education, and election data"
+  ai_context:
+    instructions: "Use this model for geospatial analytics with CARTO data sources. Contains county-level polygon data for education and election analysis, and H3-indexed spatial features for demographics, POIs, climate, and elevation."
+    synonyms: ["map data", "spatial analysis", "county data"]
+
+  datasets:
+    - name: higher_edu_by_county
+      source: cartobq.public_account.higher_edu_by_county
+      description: "Higher education and election data by US county"
+      primary_key: [fips]
+      ai_context:
+        instructions: "County-level polygon data. Use for choropleth maps of education rates, election results, and income. Render with VectorTileLayer + vectorTableSource."
+        synonyms: ["counties", "education data", "election data", "county data"]
+      fields:
+        - name: geom
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: geom
+          description: "County polygon geometry"
+
+        - name: fips
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: fips
+          dimension:
+            is_time: false
+          description: "FIPS county code"
+
+        - name: name
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: name
+          dimension:
+            is_time: false
+          description: "County name"
+
+        - name: pct_higher_ed
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: pct_higher_ed
+          description: "Percentage of residents with higher education"
+          custom_extensions:
+            - vendor_name: CARTO
+              data:
+                visualization_hint:
+                  style: color_bins
+                  palette: Sunset
+                  domain: [0, 100]
+                  classification: quantile
+                  bins: 5
+
+        - name: pct_income_100k
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: pct_income_100k
+          description: "Percentage of households with income $100k+"
+          custom_extensions:
+            - vendor_name: CARTO
+              data:
+                visualization_hint:
+                  style: color_bins
+                  palette: Emrld
+                  domain: [0, 50]
+                  classification: quantile
+                  bins: 5
+
+        - name: income_100000_or_more
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: income_100000_or_more
+          description: "Count of households with income $100k+"
+
+        - name: county_winner
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: county_winner
+          dimension:
+            is_time: false
+          description: "County election winner (dem/gop)"
+          custom_extensions:
+            - vendor_name: CARTO
+              data:
+                visualization_hint:
+                  style: color_categories
+                  palette: Bold
+                  domain: ["dem", "gop"]
+
+        - name: pct_dem
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: pct_dem
+          description: "Percentage Democratic votes"
+          custom_extensions:
+            - vendor_name: CARTO
+              data:
+                visualization_hint:
+                  style: color_continuous
+                  palette: TealRose
+                  domain: [0, 100]
+
+        - name: pct_gop
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: pct_gop
+          description: "Percentage GOP votes"
+
+        - name: trump
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: trump
+          description: "Trump vote count"
+
+        - name: clinton
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: clinton
+          description: "Clinton vote count"
+
+        - name: pct_clinton
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: pct_clinton
+          description: "Percentage Clinton votes"
+
+        - name: pct_trump
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: pct_trump
+          description: "Percentage Trump votes"
+
+        - name: pct_dem_r
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: pct_dem_r
+          description: "Percentage Democratic (rounded)"
+
+        - name: fid
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: fid
+          description: "Feature ID"
+
+      custom_extensions:
+        - vendor_name: CARTO
+          data:
+            spatial_data:
+              spatial_data_column: geom
+              spatial_data_type: polygon
+              srid: 4326
+              geographic_level: county
+              ai_context:
+                instructions: "Use geom for polygon operations. POLYGON geometry — render with VectorTileLayer + vectorTableSource."
+
+  relationships: []
+  metrics: []
+
+  custom_extensions:
+    - vendor_name: CARTO
+      data:
+        connection: "cartobq"
+        welcome_message: "Welcome! Ask me about county demographics, education levels, election results, or spatial features across the US."
+        welcome_chips:
+          - id: high_education_counties
+            label: "Counties with 40%+ higher education"
+            prompt: "Show me counties where more than 40% of residents have higher education"
+          - id: population_density_urban
+            label: "Population density in urban areas"
+            prompt: "Show population density by H3 cell filtering by urban areas (High_density_urban, Very_High_density_urban, Low_density_urban, Medium_density_urban)"
+          - id: demographics_buffer_nyc
+            label: "MCP Demographics around Times Square"
+            prompt: "What are the demographics within 5 minutes driving of Times Square, New York?"
+          - id: healthcare_pois_manhattan
+            label: "MCP Healthcare POIs near Central Park"
+            prompt: "Find healthcare points of interest within 2 km of Central Park, New York"
+        initial_view:
+          longitude: -98.5795
+          latitude: 39.8283
+          zoom: 4
+          pitch: 0
+          bearing: 0

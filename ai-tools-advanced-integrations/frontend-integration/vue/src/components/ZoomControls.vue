@@ -1,0 +1,93 @@
+<script setup lang="ts">
+interface Props {
+  disabled?: boolean;
+  zoomLevel: number;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  disabled: false,
+});
+
+const emit = defineEmits<{
+  zoomIn: [];
+  zoomOut: [];
+}>();
+</script>
+
+<template>
+  <div class="zoom-controls">
+    <button
+      @click="emit('zoomIn')"
+      :disabled="disabled"
+      class="zoom-btn"
+      title="Zoom In"
+    >
+      +
+    </button>
+    <div class="zoom-level">{{ zoomLevel.toFixed(1) }}</div>
+    <button
+      @click="emit('zoomOut')"
+      :disabled="disabled"
+      class="zoom-btn"
+      title="Zoom Out"
+    >
+      −
+    </button>
+  </div>
+</template>
+
+<style scoped>
+.zoom-controls {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.zoom-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: white;
+  border: none;
+  cursor: pointer;
+  color: #475569;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.zoom-btn:hover {
+  background: #f1f5f9;
+}
+
+.zoom-btn:active {
+  background: #e2e8f0;
+}
+
+.zoom-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.zoom-btn:disabled:hover {
+  background: white;
+}
+
+.zoom-level {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+</style>

@@ -1,0 +1,9 @@
+@if (message) {
+  <div class="snackbar" [class]="'snackbar-' + type">
+    <div class="snackbar-content">
+      <span class="snackbar-icon">{{ icon }}</span>
+      <span class="snackbar-message">{{ message }}</span>
+      <button class="snackbar-close" (click)="onClose()" title="Dismiss">✕</button>
+    </div>
+  </div>
+}

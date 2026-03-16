@@ -1,0 +1,39 @@
+@if (visible) {
+  <div class="dialog-backdrop" (click)="handleBackdropClick($event)">
+    <div class="dialog-container" role="dialog" aria-modal="true" aria-labelledby="dialog-title" aria-describedby="dialog-message">
+      <div class="dialog-header">
+        <h3 id="dialog-title" class="dialog-title">{{ title }}</h3>
+      </div>
+      
+      <div class="dialog-body">
+        <p id="dialog-message" class="dialog-message">{{ message }}</p>
+      </div>
+
+      @if (showCheckbox) {
+        <div class="dialog-checkbox">
+          <label>
+            <input type="checkbox" [checked]="checkboxChecked" (change)="onCheckboxChange($event)" />
+            {{ checkboxLabel }}
+          </label>
+        </div>
+      }
+
+      <div class="dialog-actions">
+        <button
+          type="button"
+          class="dialog-button dialog-button-cancel"
+          (click)="handleCancel()"
+          aria-label="{{ cancelText }}">
+          {{ cancelText }}
+        </button>
+        <button
+          type="button"
+          class="dialog-button dialog-button-confirm"
+          (click)="handleConfirm()"
+          aria-label="{{ confirmText }}">
+          {{ confirmText }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

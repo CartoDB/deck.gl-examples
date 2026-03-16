@@ -1,0 +1,206 @@
+# OSI v1.0 Semantic Model — OSM POIs USA
+semantic_model:
+  name: osm_pois_usa
+  description: "OpenStreetMap points of interest across the United States"
+  ai_context:
+    instructions: "Use this model to visualize and analyze points of interest from OpenStreetMap across the USA. Contains individual POI locations with category, name, and address information. Render with VectorTileLayer + vectorTableSource."
+    synonyms: ["pois", "points of interest", "osm data", "places", "locations"]
+
+  datasets:
+    - name: osm_pois_usa
+      source: carto-demo-data.demo_tables.osm_pois_usa
+      description: "OpenStreetMap points of interest across the United States"
+      primary_key: [osm_id]
+      ai_context:
+        instructions: "Each row is a single POI with its location, name, address, and category. Use group_name and subgroup_name for filtering and color categorization. Render with VectorTileLayer + vectorTableSource."
+        synonyms: ["osm pois", "us pois", "american pois", "places of interest"]
+      fields:
+        - name: geom
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: geom
+          description: "POI point geometry"
+
+        - name: osm_id
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: osm_id
+          dimension:
+            is_time: false
+          description: "OpenStreetMap feature ID"
+
+        - name: name
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: name
+          dimension:
+            is_time: false
+          description: "POI name"
+
+        - name: address
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: address
+          dimension:
+            is_time: false
+          description: "POI address"
+
+        - name: group_name
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: group_name
+          dimension:
+            is_time: false
+          description: "POI category group (e.g., food_and_drink, education, healthcare)"
+          values:
+            -	Others
+            -	Education
+            -	null
+            -	Sustenance
+            -	Commercial
+            -	Entertainment, Arts & Culture
+            -	Financial
+            -	Tourism
+            -	Healthcare
+            -	Civic amenities
+            -	Transportation
+          ai_context:
+            instructions: "Use for high-level POI categorization and filtering. Good candidate for color_categories styling."
+            synonyms: ["category", "poi type", "group"]
+          custom_extensions:
+            - vendor_name: CARTO
+              data:
+                visualization_hint:
+                  style: color_categories
+                  palette: Bold
+
+        - name: subgroup_name
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: subgroup_name
+          dimension:
+            is_time: false
+          description: "POI subcategory (e.g., restaurant, cafe, hospital)"
+          values:
+            - BBQ
+            - Zoo
+            - Park
+            - Kiosk
+            - Garden
+            - Artwork
+            - Parking
+            - Shelter
+            - Toilets
+            - Post box
+            - Nightclub
+            - Courthouse
+            - Grave yard
+            - Car sharing
+            - Marketplace
+            - Public bath
+            - General store
+            - Waste disposal
+            - Public bookcase
+            - Charging station
+            - Community centre
+            - Department store
+            - Bicycle repair station
+            - Crypt
+            - Brothel
+            - Rescue station
+            - Game feeding
+            - ATM
+            - Cafe
+            - Dojo
+            - Bench
+            - Hotel
+            - Cinema
+            - Clinic
+            - Museum
+            - Dentist
+            - Doctors
+            - Theatre
+            - Gambling
+            - Hospital
+            - Townhall
+            - Playground
+            - University
+            - Bus station
+            - Dive centre
+            - Fire station
+            - Music school
+            - Waste basket
+            - Stop position
+            - Animal shelter
+          ai_context:
+            instructions: "Use for detailed POI categorization. More granular than group_name."
+            synonyms: ["subcategory", "poi subtype", "subgroup"]
+          custom_extensions:
+            - vendor_name: CARTO
+              data:
+                visualization_hint:
+                  style: color_categories
+                  palette: Vivid
+
+        - name: map_marker
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: map_marker
+          dimension:
+            is_time: false
+          description: "Map marker icon identifier"
+
+        - name: all_tags
+          expression:
+            dialects:
+              - dialect: ANSI_SQL
+                expression: all_tags
+          dimension:
+            is_time: false
+          description: "Raw OpenStreetMap tags as a string"
+
+      custom_extensions:
+        - vendor_name: CARTO
+          data:
+            spatial_data:
+              spatial_data_column: geom
+              spatial_data_type: point
+              srid: 4326
+              geographic_level: poi
+              ai_context:
+                instructions: "Use geom for point operations. POINT geometry — render with VectorTileLayer + vectorTableSource."
+
+  relationships: []
+  metrics: []
+
+  custom_extensions:
+    - vendor_name: CARTO
+      data:
+        connection: "carto_dw"
+        welcome_message: "Welcome! Ask me about points of interest across the US — restaurants, shops, healthcare, education, and more."
+        welcome_chips:
+          - id: restaurants_manhattan
+            label: "Restaurants in Manhattan"
+            prompt: "Show me restaurants in Manhattan, New York"
+          - id: healthcare_pois
+            label: "Healthcare POIs in Los Angeles"
+            prompt: "Show healthcare points of interest in Los Angeles"
+          - id: education_pois_chicago
+            label: "Education POIs in Chicago"
+            prompt: "Show education points of interest in Chicago"
+          - id: food_drink_san_francisco
+            label: "Food & Drink in San Francisco"
+            prompt: "Show food and drink POIs in San Francisco"
+        initial_view:
+          longitude: -98.5795
+          latitude: 39.8283
+          zoom: 4
+          pitch: 0
+          bearing: 0

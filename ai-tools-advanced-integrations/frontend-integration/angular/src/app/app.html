@@ -1,0 +1,88 @@
+<div class="app-container">
+  <div class="main-layout" [class.sidebar-open]="!isMobile() && isSidebarOpen">
+    <!-- Primera columna: Header + Mapa -->
+    <div class="map-column">
+      <header class="app-header">
+        <h1 class="app-title">CARTO AI tools Demo</h1>
+      </header>
+
+      <div class="map-container" [class.sidebar-full]="isMobile() && sidebarState === 'full'">
+        <app-map-view
+          (mapInit)="handleMapInit($event)"
+          (viewStateChange)="handleViewStateChange($event)"
+        >
+        </app-map-view>
+
+        <!-- Layer Toggle + Draw Tool - top left -->
+        <div
+          class="top-left-controls"
+          [class.below-sidebar]="isMobile() && sidebarState === 'full'"
+        >
+          <app-layer-toggle
+            [disabled]="controlsDisabled"
+            [layers]="layers"
+            (toggle)="handleLayerToggle($event)"
+            (flyTo)="handleLayerFlyTo($event)"
+          >
+          </app-layer-toggle>
+
+          <div class="draw-tool-wrapper">
+            <app-draw-tool></app-draw-tool>
+          </div>
+        </div>
+
+        <!-- Zoom Controls - bottom left -->
+        <div class="zoom-controls-wrapper">
+          <app-zoom-controls
+            [disabled]="controlsDisabled"
+            [zoomLevel]="zoomLevel"
+            (zoomIn)="handleZoomIn()"
+            (zoomOut)="handleZoomOut()"
+          >
+          </app-zoom-controls>
+        </div>
+      </div>
+    </div>
+
+    <app-widget-container
+      [widgets]="widgets"
+      (removeWidget)="onRemoveWidget($event)"
+    ></app-widget-container>
+
+    <!-- Segunda columna: Sidebar/Chat -->
+    <div class="sidebar-column" [class.sidebar-open]="!isMobile() && isSidebarOpen">
+      <app-chat-ui
+        [isConnected]="isConnected"
+        [messages]="messages"
+        [loaderState]="loaderState"
+        [sidebarState]="sidebarState"
+        [isMobile]="isMobile()"
+        [isSidebarOpen]="isSidebarOpen"
+        (sendMessage)="handleSendMessage($event)"
+        (sidebarStateChange)="handleSidebarStateChange($event)"
+        (closeSidebar)="toggleSidebar()"
+        (clearChat)="handleClearChat($event)"
+      >
+      </app-chat-ui>
+    </div>
+  </div>
+
+  <!-- Floating Action Button - Desktop only, hidden when sidebar is open -->
+  @if (!isMobile() && !isSidebarOpen) {
+    <button class="fab-button" (click)="toggleSidebar()" aria-label="Toggle chat sidebar">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+    </button>
+  }
+
+  <app-snackbar [message]="snackbar.message" [type]="snackbar.type" (close)="hideSnackbar()">
+  </app-snackbar>
+</div>
