@@ -21,11 +21,16 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# Environment files
+.env
 .env.local
+.env.*.local
 
 # Don't lock libraries in examples
 yarn.lock
 package-lock.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
 
 #.DS_Store
 .DS_Store
