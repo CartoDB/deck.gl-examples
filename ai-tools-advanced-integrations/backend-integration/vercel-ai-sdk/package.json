@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.30",
+    "@carto/agentic-deckgl": "^0.1.0",
     "@modelcontextprotocol/sdk": "^1.26.0",
     "ai": "^6.0.94",
     "cors": "^2.8.6",

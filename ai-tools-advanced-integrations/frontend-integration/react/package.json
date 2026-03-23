@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@carto/agentic-deckgl": "^0.1.0",
     "@carto/api-client": "^0.5.24",
     "@deck.gl-community/editable-layers": "^9.2.8",
     "@deck.gl/carto": "^9.2.2",
