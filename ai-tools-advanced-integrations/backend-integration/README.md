@@ -88,7 +88,7 @@ All backend integrations use the same message protocol for frontend communicatio
 
 To add a new backend integration:
 
-1. Create a new directory under `backend-integration/` (e.g., `backend-integration/openai-agents-sdk/`)
+1. Create a new directory under `examples/backend/` (e.g., `examples/backend/openai-agents-sdk/`)
 2. Import tools from `@carto/agentic-deckgl` using the appropriate converter:
 
    ```typescript

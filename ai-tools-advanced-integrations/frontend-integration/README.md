@@ -179,23 +179,3 @@ VITE_USE_HTTP=false
 | `httpApiUrl` / `VITE_HTTP_API_URL` | Backend HTTP URL (fallback) |
 | `useHttp` / `VITE_USE_HTTP` | Use HTTP instead of WebSocket (`false` recommended) |
 
----
-
-## Testing
-
-All frameworks use **Vitest** for unit testing. Each has its own self-contained test suite covering the shared utilities (legend, layer-merge, tooltip).
-
-```bash
-# Run tests for any framework
-cd <framework-directory>
-npm test   # or: npx vitest run
-```
-
-| Framework | Test Files | Test Count | Location |
-| --------- | ---------- | ---------- | -------- |
-| Angular | 3 | 75 | `tests/unit/utils/` |
-| Vue | 3 | 75 | `tests/unit/utils/` |
-| React | 3 | 75 | `tests/unit/utils/` |
-| Vanilla | 3 | 75 | `tests/unit/utils/` |
-
-See [TEST-UNIT.md](../TEST-UNIT.md) for the rationale behind the per-framework test strategy.

@@ -30,51 +30,32 @@ The AI generates deck.gl JSON specifications using 3 consolidated tools:
 ai-tools-advanced-integrations/
 ├── README.md
 ├── frontend-integration/
-│   ├── angular/           # Angular 20 (npm)
-│   ├── react/             # React 19 (npm)
-│   ├── vue/               # Vue 3 (npm)
-│   ├── vanilla/           # Vanilla JS (npm)
+│   ├── angular/           # Angular 20 (pnpm)
+│   ├── react/             # React 19 (pnpm)
+│   ├── vue/               # Vue 3 (pnpm)
+│   ├── vanilla/           # Vanilla JS (pnpm)
 │   └── README.md
 └── backend-integration/
-    ├── openai-agents-sdk/  # OpenAI Agents SDK (npm) — default
-    ├── vercel-ai-sdk/      # Vercel AI SDK v6 (npm)
-    ├── google-adk/         # Google ADK (npm)
+    ├── openai-agents-sdk/  # OpenAI Agents SDK (pnpm) — default
+    ├── vercel-ai-sdk/      # Vercel AI SDK v6 (pnpm)
+    ├── google-adk/         # Google ADK (pnpm)
     └── README.md
 ```
 
 ## Prerequisites
 
 - **Node.js** >= 18
-- **npm** (bundled with Node.js)
+- **pnpm** (`npm install -g pnpm`)
 - **CARTO account** with API access token
 - **LLM API access** (OpenAI-compatible endpoint)
 
 ## Setup
 
-These examples depend on the `@carto/agentic-deckgl` library, which lives in a separate repository. You need to install it locally before running the examples.
+All examples use **pnpm** and depend on the `@carto/agentic-deckgl` package from npm (already listed in each `package.json`).
 
-All examples use **npm**. The library is installed via `npm install /path/to/agentic-deckgl`, which adds a `file:` reference to `package.json` — this is faster than `npm link` because it avoids symlink overhead in Vite's dev server.
-
-### 1. Build the core library
+### 1. Configure and start a backend (pick one)
 
 ```bash
-# Clone the library repo (if not already cloned)
-git clone https://github.com/CartoDB/carto-agentic-deckgl.git
-
-# Build the library
-cd carto-agentic-deckgl/agentic-deckgl
-npm install
-npm run build
-```
-
-You only need to rebuild the library after making changes to it.
-
-### 2. Configure and start a backend (pick one)
-
-```bash
-# Replace with the actual path to your agentic-deckgl directory
-LIBRARY_PATH=/path/to/carto-agentic-deckgl/agentic-deckgl
-
 # Option A: OpenAI Agents SDK (default, recommended)
 cd backend-integration/openai-agents-sdk
 
@@ -86,38 +67,33 @@ cd backend-integration/google-adk
 ```
 
 ```bash
-npm install                     # Install dependencies
-npm install $LIBRARY_PATH       # Install the local library (adds file: reference)
+pnpm install                     # Install dependencies
 cp .env.example .env            # Edit with your credentials
-npm run dev                     # http://localhost:3003
+pnpm run dev                     # http://localhost:3003
 ```
 
-### 3. Pick a frontend and start it
+### 2. Pick a frontend and start it
 
 ```bash
 # Angular 20
 cd frontend-integration/angular
-npm install
-npm install $LIBRARY_PATH
-npm start              # http://localhost:4200
+pnpm install
+pnpm start              # http://localhost:4200
 
 # React 19
 cd frontend-integration/react
-npm install
-npm install $LIBRARY_PATH
-npm run dev                # http://localhost:5173
+pnpm install
+pnpm run dev                # http://localhost:5173
 
 # Vue 3
 cd frontend-integration/vue
-npm install
-npm install $LIBRARY_PATH
-npm run dev                # http://localhost:5174
+pnpm install
+pnpm run dev                # http://localhost:5174
 
 # Vanilla JS
 cd frontend-integration/vanilla
-npm install
-npm install $LIBRARY_PATH
-npm run dev                # http://localhost:5173
+pnpm install
+pnpm run dev                # http://localhost:5173
 ```
 
 Each frontend needs CARTO credentials configured in its environment file (see [Environment Variables](#environment-variables)).
@@ -169,14 +145,6 @@ VITE_HTTP_API_URL=http://localhost:3003/api/chat
 VITE_USE_HTTP=false
 ```
 
-## Library Installation Troubleshooting
-
-1. Always run `npm install` first, then `npm install /path/to/agentic-deckgl` to add the local library
-2. After `npm install /path/to/agentic-deckgl`, a `file:` reference is added to `package.json` — this path is local to your machine, do not commit it
-3. Re-run `npm install /path/to/agentic-deckgl` after a clean `npm install` if the reference is lost
-4. For Angular, add `"preserveSymlinks": true` to `tsconfig.json` under `compilerOptions` if the linked package can't be resolved
-5. Use the same Node version across all examples
-
 ## WebSocket Protocol
 
 All backends implement the same WebSocket protocol, so any frontend works with any backend.
@@ -198,18 +166,18 @@ All backends implement the same WebSocket protocol, so any frontend works with a
 ### Backend
 
 ```bash
-npm run dev             # Start dev server with hot reload (port 3003)
-npm run build           # Compile TypeScript to dist/
-npm run typecheck       # Type check without emitting
+pnpm run dev             # Start dev server with hot reload (port 3003)
+pnpm run build           # Compile TypeScript to dist/
+pnpm run typecheck       # Type check without emitting
 ```
 
 ### Frontend
 
 ```bash
-npm install         # Install dependencies
-npm start           # Start dev server (Angular: port 4200)
-npm run dev         # Start dev server (React/Vue/Vanilla)
-npm run build       # Build for production
+pnpm install         # Install dependencies
+pnpm start           # Start dev server (Angular: port 4200)
+pnpm run dev         # Start dev server (React/Vue/Vanilla)
+pnpm run build       # Build for production
 ```
 
 ## License

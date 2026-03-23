@@ -23,13 +23,13 @@
 ### Prerequisites
 
 - Node.js v22+
-- npm
+- pnpm
 - A CARTO AI API key and endpoint (OpenAI-compatible)
 
 ### Installation
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Environment Setup
@@ -80,23 +80,23 @@ CARTO_LDS_API_KEY=your-lds-api-key
 
 ```bash
 # Development with hot reload
-npm run dev             # http://localhost:3003
+pnpm run dev     # http://localhost:3003
 
 # Development with MCP mock mode (fixture-backed tools)
-npm run dev:mock-mcp
+pnpm run dev:mock-mcp
 
 # Production
-npm run build && npm start
+pnpm run build && pnpm start
 ```
 
 ### Development Commands
 
 ```bash
-npm run dev             # Start with tsx watch (hot reload)
-npm run dev:mock-mcp    # Start with MCP mock mode
-npm run build           # Compile TypeScript to dist/
-npm start           # Run compiled production build
-npm run typecheck       # Type check without emitting
+pnpm run dev          # Start with tsx watch (hot reload)
+pnpm run dev:mock-mcp # Start with MCP mock mode
+pnpm run build        # Compile TypeScript to dist/
+pnpm start            # Run compiled production build
+pnpm run typecheck    # Type check without emitting
 ```
 
 ---

@@ -1,6 +1,7 @@
 {
   "name": "backend-vercel-ai",
   "version": "1.0.0",
+  "packageManager": "pnpm@9.15.4",
   "description": "Map AI backend using Vercel AI SDK",
   "type": "module",
   "scripts": {

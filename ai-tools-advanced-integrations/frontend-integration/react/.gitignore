@@ -22,3 +22,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+e2e/test-results/
+e2e/playwright-report/
+e2e/blob-report/
+e2e/screenshots/**/*.png
+!e2e/screenshots/.gitkeep

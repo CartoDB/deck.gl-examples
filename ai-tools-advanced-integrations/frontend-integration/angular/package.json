@@ -1,6 +1,7 @@
 {
   "name": "frontend-angular",
   "version": "0.0.0",
+  "packageManager": "pnpm@9.15.4",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -29,9 +30,9 @@
     "@angular/forms": "20.3.4",
     "@angular/platform-browser": "20.3.4",
     "@angular/router": "20.3.4",
-    "@carto/agentic-deckgl": "^0.1.0",
     "@carto/api-client": "^0.5.24",
     "@deck.gl-community/editable-layers": "9.2.8",
+    "@carto/agentic-deckgl": "^0.1.0",
     "@deck.gl/carto": "^9.2.2",
     "@deck.gl/core": "^9.2.2",
     "@deck.gl/extensions": "^9.2.6",

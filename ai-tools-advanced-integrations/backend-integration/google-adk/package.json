@@ -1,6 +1,7 @@
 {
   "name": "backend-google-adk",
   "version": "1.0.0",
+  "packageManager": "pnpm@9.15.4",
   "description": "Map AI backend using Google ADK",
   "type": "module",
   "private": true,
@@ -14,7 +15,6 @@
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
     "poc": "npx tsx poc/test-adk-litellm.ts",
-    "poc:stream": "npx tsx poc/test-adk-litellm-stream.ts",
     "poc:stream": "npx tsx poc/test-adk-litellm-stream.ts"
   },
   "dependencies": {
