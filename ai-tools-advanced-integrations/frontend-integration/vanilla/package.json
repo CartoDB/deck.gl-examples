@@ -8,7 +8,6 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest run"
   },
   "dependencies": {
     "@carto/api-client": "^0.5.24",
@@ -55,7 +54,6 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "vite": "^6.0.0",
-    "vitest": "^4.0.18"
+    "vite": "^6.0.0"
   }
 }

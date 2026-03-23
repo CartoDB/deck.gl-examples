@@ -8,7 +8,6 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -64,7 +63,6 @@
     "@types/react-dom": "^19.1.0",
     "@vitejs/plugin-react": "^4.5.2",
     "typescript": "~5.8.3",
-    "vite": "^6.0.0",
-    "vitest": "^4.0.18"
+    "vite": "^6.0.0"
   }
 }
