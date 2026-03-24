@@ -1,0 +1,52 @@
+@if (widgets.length > 0) {
+  <div class="widget-container">
+    <div class="widget-container-header">
+      <h3>Widgets</h3>
+    </div>
+    @for (widget of widgets; track widget.id) {
+      <div class="widget-card">
+        <div class="widget-card-header">
+          <span class="widget-card-title">{{ widget.name }}</span>
+          <button
+            class="widget-remove-btn"
+            (click)="removeWidget.emit(widget.id)"
+            title="Remove widget"
+          >
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <div class="widget-card-body">
+          @if (widget.loading) {
+            <div class="widget-loading">Loading...</div>
+          }
+          @if (widget.error) {
+            <div class="widget-error">{{ widget.error }}</div>
+          }
+          @if (!widget.loading && !widget.error && widget.data != null) {
+            @if (widget.type === 'formula') {
+              <div class="widget-formula-value">
+                {{ formatValue(widget.data) }}
+              </div>
+            } @else {
+              <div
+                class="widget-vega-container"
+                [attr.data-widget-id]="widget.id"
+                #vegaContainer
+              ></div>
+            }
+          }
+        </div>
+      </div>
+    }
+  </div>
+}

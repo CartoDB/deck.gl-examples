@@ -1,0 +1,174 @@
+<!-- Collapsed state: icon button -->
+@if (isPanelCollapsed) {
+  <button
+    class="layer-toggle-icon-btn"
+    (click)="togglePanel()"
+    [disabled]="disabled"
+    title="Show layers"
+  >
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+      <polyline points="2 17 12 22 22 17"></polyline>
+      <polyline points="2 12 12 17 22 12"></polyline>
+    </svg>
+  </button>
+}
+
+<!-- Expanded state: full panel -->
+@if (!isPanelCollapsed) {
+  <div class="layer-toggle">
+    <div class="layer-toggle-header">
+      <div class="header-left">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+          <polyline points="2 17 12 22 22 17"></polyline>
+          <polyline points="2 12 12 17 22 12"></polyline>
+        </svg>
+        <span>Layers</span>
+      </div>
+      <button class="close-btn" (click)="togglePanel()" title="Close">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="layer-list">
+      @for (layer of layers; track trackByLayer($index, layer)) {
+        <div class="layer-item" [class.disabled]="disabled">
+          <!-- Layer row -->
+          <div class="layer-row">
+            <button
+              class="expand-btn"
+              [class.expanded]="isLayerExpanded(layer.id)"
+              (click)="toggleLayerExpansion(layer.id)"
+              [disabled]="disabled"
+              title="Toggle details"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <!-- <span class="layer-color" [style.background-color]="layer.color"></span> -->
+            <span class="layer-name">{{ layer.name }}</span>
+            <button
+              class="fly-to-btn"
+              (click)="onFlyTo(layer)"
+              [disabled]="disabled"
+              title="Fly to layer"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 2L11 13"></path>
+                <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+              </svg>
+            </button>
+            <button
+              class="visibility-btn"
+              [class.hidden]="!layer.visible"
+              (click)="onToggle(layer)"
+              [disabled]="disabled"
+              [title]="layer.visible ? 'Hide layer' : 'Show layer'"
+            >
+              <!-- Eye open icon -->
+              @if (layer.visible) {
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              }
+              <!-- Eye closed icon -->
+              @if (!layer.visible) {
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path>
+                  <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path>
+                  <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              }
+            </button>
+          </div>
+
+          <!-- Layer details (expanded) -->
+          @if (isLayerExpanded(layer.id)) {
+            <div class="layer-details">
+              @if (getLegendData(layer)) {
+                @if (getLegendData(layer)?.type === 'discrete' && getLegendData(layer)?.entries) {
+                  <!-- Discrete color legend (Case A: POIs with category colors) -->
+                  <div class="legend-container">
+                    @if (getLegendData(layer)?.attribute) {
+                      <div class="legend-attribute-note">color by {{ getLegendData(layer)!.attribute }}</div>
+                    }
+                    <div class="legend-entries">
+                      @for (entry of getLegendData(layer)!.entries; track entry.label) {
+                        <div class="legend-entry">
+                          <span class="legend-dot" [style.background-color]="entry.color"></span>
+                          <span class="legend-label">{{ entry.label }}</span>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                } @else if (getLegendData(layer)?.type === 'continuous' || getLegendData(layer)?.type === 'bins') {
+                  <!-- Continuous/Bins color legend (Case B: colorContinuous/colorBins) -->
+                  @if (getLegendData(layer)?.functionConfig) {
+                    <div class="legend-container">
+                      @if (getLegendData(layer)?.attribute) {
+                        <div class="legend-attribute-note">color by {{ getLegendData(layer)!.attribute }}</div>
+                      }
+                      <div class="legend-gradient-container">
+                        <div 
+                          class="legend-gradient" 
+                          [style.background]="getGradientStyle(getLegendData(layer)!.functionConfig!)">
+                        </div>
+                        <div class="legend-domain-labels">
+                          <span class="domain-label-min">{{ getMinDomainValue(getLegendData(layer)!.functionConfig!.domain) }}</span>
+                          <span class="domain-label-max">{{ getMaxDomainValue(getLegendData(layer)!.functionConfig!.domain) }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                } @else if (getLegendData(layer)?.type === 'categories' && getLegendData(layer)?.functionConfig) {
+                  <!-- Categories legend -->
+                  <div class="legend-container">
+                    @if (getLegendData(layer)?.attribute) {
+                      <div class="legend-attribute-note">color by {{ getLegendData(layer)!.attribute }}</div>
+                    }
+                    <div class="legend-entries">
+                      @for (category of getLegendData(layer)!.functionConfig!.domain; track $index; let i = $index) {
+                        @if (getLegendData(layer)!.functionConfig!.colors && getLegendData(layer)!.functionConfig!.colors[i]) {
+                          <div class="legend-entry">
+                            <span 
+                              class="legend-dot" 
+                              [style.background-color]="getLegendData(layer)!.functionConfig!.colors![i]">
+                            </span>
+                            <span class="legend-label">{{ category }}</span>
+                          </div>
+                        }
+                      }
+                    </div>
+                  </div>
+                } @else if (getLegendData(layer)?.type === 'single' && getLegendData(layer)?.singleColor) {
+                  <!-- Single color legend -->
+                  <div class="legend-container">
+                    <div class="legend-entry">
+                      <span class="legend-dot" [style.background-color]="getLegendData(layer)!.singleColor"></span>
+                      <span class="legend-label">{{ layer.name }}</span>
+                    </div>
+                  </div>
+                }
+              } @else {
+                <!-- Fallback: no legend data, show default color -->
+                <div class="legend-container">
+                  <div class="legend-entry">
+                    <span class="legend-dot" [style.background-color]="layer.color"></span>
+                    <span class="legend-label">{{ layer.name }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

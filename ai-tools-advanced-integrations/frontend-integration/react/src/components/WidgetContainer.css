@@ -1,0 +1,93 @@
+.widget-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  min-width: 330px;
+  color: #1e293b;
+  font-size: 13px;
+  overflow-y: auto;
+  max-height: calc(40 - 100vh);
+}
+
+.widget-container-header {
+  display: flex;
+  align-items: center;
+  padding: 15px 14px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #1e293b;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.widget-card {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.widget-card:last-child {
+  border-bottom: none;
+}
+
+.widget-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.widget-card-title {
+  font-weight: 500;
+  font-size: 12px;
+  color: #475569;
+}
+
+.widget-remove-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  padding: 2px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.widget-remove-btn:hover {
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+.widget-card-body {
+  padding: 8px 14px;
+}
+
+.widget-formula-value {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  padding: 8px 0;
+  color: #1e293b;
+}
+
+.widget-vega-container {
+  width: 100%;
+  min-height: 100px;
+}
+
+.widget-vega-container svg {
+  width: 100% !important;
+}
+
+.widget-loading {
+  text-align: center;
+  padding: 12px;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.widget-error {
+  text-align: center;
+  padding: 8px;
+  color: #ef4444;
+  font-size: 11px;
+}

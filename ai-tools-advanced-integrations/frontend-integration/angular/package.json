@@ -1,0 +1,92 @@
+{
+  "name": "frontend-angular",
+  "version": "0.0.0",
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "typecheck": "ng build --configuration production"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/common": "20.3.4",
+    "@angular/compiler": "20.3.4",
+    "@angular/core": "20.3.4",
+    "@angular/forms": "20.3.4",
+    "@angular/platform-browser": "20.3.4",
+    "@angular/router": "20.3.4",
+    "@carto/api-client": "^0.5.24",
+    "@deck.gl-community/editable-layers": "9.2.8",
+    "@carto/agentic-deckgl": "^0.1.0",
+    "@deck.gl/carto": "^9.2.2",
+    "@deck.gl/core": "^9.2.2",
+    "@deck.gl/extensions": "^9.2.6",
+    "@deck.gl/geo-layers": "^9.2.6",
+    "@deck.gl/json": "^9.2.6",
+    "@deck.gl/layers": "^9.2.2",
+    "@deck.gl/mesh-layers": "^9.2.6",
+    "@loaders.gl/3d-tiles": "^4.3.4",
+    "@loaders.gl/compression": "^4.3.4",
+    "@loaders.gl/core": "^4.3.4",
+    "@loaders.gl/images": "^4.3.4",
+    "@loaders.gl/tiles": "^4.3.4",
+    "@luma.gl/constants": "^9.2.6",
+    "@luma.gl/core": "^9.2.6",
+    "@luma.gl/engine": "^9.2.6",
+    "@luma.gl/gltf": "^9.2.6",
+    "@luma.gl/shadertools": "^9.2.6",
+    "@luma.gl/webgl": "^9.2.6",
+    "@luma.gl/webgpu": "^9.2.6",
+    "@mapbox/tiny-sdf": "^2.0.7",
+    "@math.gl/core": "^4.1.0",
+    "@math.gl/polygon": "^4.1.0",
+    "@math.gl/web-mercator": "^4.1.0",
+    "@probe.gl/log": "^4.1.0",
+    "@probe.gl/stats": "^4.1.0",
+    "cartocolor": "^5.0.2",
+    "d3-scale": "^4.0.2",
+    "earcut": "^3.0.2",
+    "h3-js": "^4.4.0",
+    "jsep": "^1.4.0",
+    "maplibre-gl": "^5.12.0",
+    "marked": "^15.0.0",
+    "mjolnir.js": "^3.0.0",
+    "ngx-markdown": "20.0.0",
+    "pbf": "^4.0.1",
+    "quadbin": "^0.4.2",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "vega": "^6.2.0",
+    "vega-embed": "^7.1.0",
+    "vega-lite": "^6.4.2",
+    "zod": "^4.3.6",
+    "zone.js": "0.15.0"
+  },
+  "devDependencies": {
+    "@angular/build": "20.3.4",
+    "@angular/cli": "20.3.4",
+    "@angular/compiler-cli": "20.3.4",
+    "@types/jasmine": "~5.1.0",
+    "jasmine-core": "~5.9.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "typescript": "~5.9.2"
+  }
+}

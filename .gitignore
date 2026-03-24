@@ -13,6 +13,9 @@ web_modules/
 
 # Build / generate output
 dist
+.angular/
+test-results/
+playwright-report/
 
 # yarn v2
 .yarn/cache
@@ -21,11 +24,25 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# Environment files
+.env
 .env.local
+.env.*.local
+**/environments/environment.ts
 
 # Don't lock libraries in examples
 yarn.lock
 package-lock.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
 
-#.DS_Store
+# IDE
+.vscode/
+.idea/
+.editorconfig
+
+# Claude Code
+.claude/
+
+# System files
 .DS_Store

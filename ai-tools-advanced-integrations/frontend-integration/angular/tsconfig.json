@@ -1,0 +1,36 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve",
+    "noImplicitOverride": false,
+    "useDefineForClassFields": false,
+    "moduleResolution": "bundler",
+    "baseUrl": "./",
+    "paths": {
+      "@deck.gl/core": ["node_modules/@deck.gl/core/dist/index.js"],
+      "@deck.gl/carto": ["node_modules/@deck.gl/carto/dist/index.js"],
+      "@deck.gl/layers": ["node_modules/@deck.gl/layers/dist/index.js"],
+      "@deck.gl/geo-layers": ["node_modules/@deck.gl/geo-layers/dist/index.js"],
+      "@deck.gl/json": ["node_modules/@deck.gl/json/dist/index.js"],
+      "@luma.gl/*": ["node_modules/@luma.gl/*/dist/index.js"]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

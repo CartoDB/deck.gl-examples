@@ -1,0 +1,76 @@
+.draw-tool-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: white;
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.draw-tool-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.draw-tool-btn:hover {
+  background: #f1f5f9;
+}
+
+.draw-tool-btn.active {
+  background: #3b82f6;
+  color: white;
+}
+
+.draw-tool-btn.clear-btn {
+  color: #ef4444;
+}
+
+.draw-tool-btn.clear-btn:hover {
+  background: #fef2f2;
+}
+
+.draw-tool-modes {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 4px;
+}
+
+.mode-btn {
+  width: 36px;
+  height: 28px;
+  border: none;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.mode-btn:hover:not(:disabled) {
+  background: #f1f5f9;
+}
+
+.mode-btn.active {
+  background: #dbeafe;
+  color: #3b82f6;
+}
+
+.mode-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

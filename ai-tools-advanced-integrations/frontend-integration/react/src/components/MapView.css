@@ -1,0 +1,6 @@
+/* MapView container - fills available space */
+.map-view-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
