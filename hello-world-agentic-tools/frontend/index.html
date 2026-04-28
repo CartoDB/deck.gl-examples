@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://app.carto.com/favicon/favicon-32x32.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.12.0/dist/maplibre-gl.css"
+    />
+    <title>CARTO + deck.gl — Hello World Agentic Tools</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Map -->
+      <div id="map"></div>
+      <canvas id="deck-canvas"></canvas>
+
+      <!-- Info panel -->
+      <div id="story-card">
+        <p class="overline">Hello World</p>
+        <h2>Agentic Tools</h2>
+        <p>
+          Minimal integration of
+          <a href="https://www.npmjs.com/package/@carto/agentic-deckgl"
+            >@carto/agentic-deckgl</a
+          >
+          with <a href="https://deck.gl">deck.gl</a> using vanilla JavaScript.
+        </p>
+        <p>
+          Type natural language into the chat panel and an AI agent will control
+          the map &mdash; adding layers, changing the view, and placing markers
+          using CARTO demo datasets.
+        </p>
+        <p class="caption">
+          Try: "Show populated places in the US" or "Show POIs in New York"
+        </p>
+      </div>
+
+      <!-- Chat panel -->
+      <div id="chat">
+        <div id="chat-messages"></div>
+        <form id="chat-form">
+          <input
+            id="chat-input"
+            type="text"
+            placeholder="Ask the AI to control the map..."
+            autocomplete="off"
+          />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

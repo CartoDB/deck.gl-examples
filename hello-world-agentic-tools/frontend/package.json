@@ -1,0 +1,24 @@
+{
+  "name": "hello-world-agentic-tools-frontend",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@carto/agentic-deckgl": "^0.1.0",
+    "@deck.gl/carto": "^9.2.2",
+    "@deck.gl/core": "^9.2.2",
+    "@deck.gl/extensions": "^9.2.6",
+    "@deck.gl/geo-layers": "^9.2.6",
+    "@deck.gl/json": "^9.2.6",
+    "@deck.gl/layers": "^9.2.2",
+    "@deck.gl/mesh-layers": "^9.2.6",
+    "maplibre-gl": "^5.12.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}
