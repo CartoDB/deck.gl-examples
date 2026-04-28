@@ -11,7 +11,7 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { createServer } from 'http';
-import { WebSocketServer, WebSocket } from 'ws';
+import { WebSocketServer } from 'ws';
 import { randomUUID } from 'crypto';
 import { createOpenAI } from '@ai-sdk/openai';
 import { ToolLoopAgent, stepCountIs, tool } from 'ai';
@@ -39,7 +39,7 @@ if (!CARTO_AI_API_BASE_URL || !CARTO_AI_API_KEY) {
 }
 
 // ---------------------------------------------------------------------------
-// AI Provider
+// AI provider
 // ---------------------------------------------------------------------------
 
 const carto = createOpenAI({
@@ -65,106 +65,40 @@ function createMapTools() {
 }
 
 // ---------------------------------------------------------------------------
-// Conversation history (minimal in-memory store)
+// Demo data catalog — tells the AI what tables are available.
+// Kept intentionally short for "hello world" — see the
+// ai-tools-advanced-integrations example for richer prompts.
+// ---------------------------------------------------------------------------
+
+const DEMO_DATA_PROMPT = `
+## Available data
+
+Connection: "carto_dw". Use ONLY these tables — do not invent table names.
+
+| Table | Source helper | Useful columns |
+|---|---|---|
+| carto-demo-data.demo_tables.populated_places | vectorTableSource | name, pop_max, adm0name (country) |
+| carto-demo-data.demo_tables.osm_pois_usa | vectorTableSource | name, group_name (category) |
+| carto-demo-data.demo_tables.usa_counties | vectorTableSource | name, state_name, total_pop |
+| cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2 | h3QuerySource | population, urbanity (H3 res 8) |
+
+Rules:
+- Use VectorTileLayer for vector tables, H3TileLayer for H3 tables.
+- For h3QuerySource, write \`SELECT * FROM <table>\` and an aggregationExp aliased as \`value\`
+  (e.g. "SUM(population) as value"); colorBins should then use attr "value".
+- When styling by a column, include "columns": ["<col>"] in the source config.
+- Do not set accessToken, apiBaseUrl, or connectionName — the frontend injects credentials.
+`;
+
+// ---------------------------------------------------------------------------
+// Conversation history (in-memory, per WebSocket connection — lost on reload)
 // ---------------------------------------------------------------------------
 
 const history = new Map(); // sessionId -> [{role, content}]
 
 // ---------------------------------------------------------------------------
-// Demo data catalog — tells the AI what tables are available
-// ---------------------------------------------------------------------------
-
-const DEMO_DATA_PROMPT = `
-## Available Data
-
-You MUST ONLY use the tables listed below. They all live in connection "carto_dw".
-Do NOT invent table names. If the user asks for data you don't have, say so.
-
-### Tables (vectorTableSource)
-| Table | Description | Key columns |
-|---|---|---|
-| carto-demo-data.demo_tables.populated_places | Major populated places worldwide | name, pop_max, adm0name (country), adm1name (state) |
-| carto-demo-data.demo_tables.osm_pois_usa | 1.4M Points of Interest across the US | name, group_name, subgroup_name, address |
-| carto-demo-data.demo_tables.usa_counties | US county boundaries | name, state_name, total_pop |
-| carto-demo-data.demo_tables.fires_worldwide | Global wildfire incidents | brightness, frp (fire radiative power), confidence |
-| carto-demo-data.demo_tables.riskanalysis_railroad_accidents | US railroad accidents | year, damage, county, state |
-
-### POI Categories (group_name values in osm_pois_usa)
-The group_name column has these exact values: Others, Education, Sustenance, Commercial, Entertainment, Arts & Culture, Financial, Tourism, Healthcare, Civic amenities, Transportation.
-
-**Styling POIs by category:** When asked to style POIs by category (group_name), ALWAYS use colorCategories with the Bold palette and include ALL category values in the domain. Do NOT use @@= expressions for this — there are too many categories and unmatched ones would appear grey.
-
-Example:
-{
-  "getFillColor": {
-    "@@function": "colorCategories",
-    "attr": "group_name",
-    "domain": ["Others", "Education", "Sustenance", "Commercial", "Entertainment, Arts & Culture", "Financial", "Tourism", "Healthcare", "Civic amenities", "Transportation"],
-    "colors": "Bold"
-  },
-  "updateTriggers": {
-    "getFillColor": { "attr": "group_name", "domain": ["Others", "Education", "Sustenance", "Commercial", "Entertainment, Arts & Culture", "Financial", "Tourism", "Healthcare", "Civic amenities", "Transportation"], "colors": "Bold" }
-  }
-}
-You MUST also include "columns": ["group_name"] in the data source.
-
-### County Population (usa_counties)
-The population column is "total_pop" (total population count). Use colorBins or colorContinuous for styling.
-Suggested domain for colorBins: [0, 50000, 100000, 500000, 1000000, 5000000].
-You MUST include "columns": ["total_pop"] in the data source when styling by population.
-
-### H3 Tables (h3QuerySource)
-| Table | Description | Key columns |
-|---|---|---|
-| cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2 | US spatial features aggregated at H3 resolution 8 | population, urbanity |
-
-**H3 usage rules:**
-- Use H3TileLayer with h3QuerySource for H3 tables.
-- h3QuerySource requires \`sqlQuery\` and \`aggregationExp\`. Do NOT use \`columns\` — it is not a valid parameter for h3QuerySource.
-- The \`aggregationExp\` MUST alias the result as \`value\` (e.g. \`SUM(population) as value\`). The \`attr\` in colorBins MUST match this alias: \`"value"\`.
-- You MUST include \`updateTriggers\` for \`getFillColor\` — without it the hexagons will appear grey.
-- H3 layers look best with the dark-matter basemap.
-
-**Complete H3 layer example:**
-\`\`\`json
-{
-  "@@type": "H3TileLayer",
-  "id": "h3-population",
-  "data": {
-    "@@function": "h3QuerySource",
-    "sqlQuery": "SELECT * FROM cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2",
-    "aggregationExp": "SUM(population) as value"
-  },
-  "opacity": 0.8,
-  "pickable": true,
-  "getFillColor": {
-    "@@function": "colorBins",
-    "attr": "value",
-    "domain": [0, 100, 1000, 10000, 100000, 1000000],
-    "colors": "PinkYl"
-  },
-  "updateTriggers": {
-    "getFillColor": { "attr": "value", "domain": [0, 100, 1000, 10000, 100000, 1000000], "colors": "PinkYl" }
-  }
-}
-\`\`\`
-
-### Usage rules
-- Use VectorTileLayer with vectorTableSource for vector tables.
-- Use H3TileLayer with h3QuerySource for H3 tables.
-- Connection name is always "carto_dw".
-- Do not set accessToken, apiBaseUrl, or connectionName — the frontend injects credentials automatically.
-
-### Spatial filtering (set-mask-layer)
-- The "enable-draw" action is NOT available. NEVER use it.
-- When the user asks to filter data to a specific area (city, neighborhood, region, etc.), you MUST generate the GeoJSON geometry yourself and call set-mask-layer with action "set" and the geometry.
-- Create an approximate bounding polygon for the area. For a city, use a rough rectangular or polygonal boundary. For example, for Manhattan you might use a 4-6 point polygon approximating its shape. For a circular area around a point, generate an approximate polygon with ~12 vertices.
-- You are expected to use your geographic knowledge to produce reasonable boundaries. They don't need to be exact administrative boundaries — a rough approximation is fine.
-- To clear a spatial filter, use action "clear".
-`;
-
-// ---------------------------------------------------------------------------
-// Agent runner
+// Strip CARTO credentials from anything we send to the frontend. Belt and
+// braces: tool call payloads should never carry them, but the AI may try.
 // ---------------------------------------------------------------------------
 
 const CREDENTIAL_FIELDS = ['accessToken', 'apiBaseUrl', 'connectionName', 'connection'];
@@ -182,24 +116,21 @@ function stripCredentials(data) {
   return data;
 }
 
+// ---------------------------------------------------------------------------
+// Agent runner
+// ---------------------------------------------------------------------------
+
 async function runAgent(userMessage, ws, sessionId, initialState) {
   const messageId = `msg_${Date.now()}`;
   const messages = history.get(sessionId) || [];
-
-  // Add user message to history
   messages.push({ role: 'user', content: userMessage });
 
-  const toolNames = [...consolidatedToolNames];
   const systemPrompt = buildSystemPrompt({
-    toolNames,
-    initialState: initialState
-      ? {
-          viewState: initialState.viewState,
-          initialViewState: initialState.initialViewState,
-          layers: initialState.layers,
-          activeLayerId: initialState.activeLayerId,
-        }
-      : undefined,
+    toolNames: [...consolidatedToolNames],
+    initialState: initialState && {
+      viewState: initialState.viewState,
+      layers: initialState.layers,
+    },
     additionalPrompt: DEMO_DATA_PROMPT,
   });
 
@@ -211,10 +142,7 @@ async function runAgent(userMessage, ws, sessionId, initialState) {
   });
 
   try {
-    const streamResult = await agent.stream({
-      messages: messages.map((m) => ({ role: m.role, content: m.content })),
-    });
-
+    const streamResult = await agent.stream({ messages });
     let fullText = '';
 
     for await (const part of streamResult.fullStream) {
@@ -250,10 +178,8 @@ async function runAgent(userMessage, ws, sessionId, initialState) {
       }
     }
 
-    // Signal completion
     ws.send(JSON.stringify({ type: 'stream_chunk', content: '', messageId, isComplete: true }));
 
-    // Save assistant reply to history
     const text = (await streamResult.text) || fullText || '';
     messages.push({ role: 'assistant', content: text });
     history.set(sessionId, messages);
@@ -289,16 +215,11 @@ wss.on('connection', (ws) => {
       if (msg.type === 'chat_message') {
         await runAgent(msg.content, ws, sid, msg.initialState);
       } else if (msg.type === 'tool_result') {
-        // Acknowledge tool results from the frontend
+        // Frontend acknowledgement — log for debugging only. The agent already
+        // has the tool's return value from its own loop, so we don't replay
+        // these into history.
         const status = msg.success ? 'success' : 'failed';
-        console.log(`[WS] Tool result: ${msg.toolName} — ${status}`);
-
-        const h = history.get(sid) || [];
-        h.push({
-          role: 'assistant',
-          content: `[Tool ${status}: ${msg.toolName}] ${msg.message}`,
-        });
-        history.set(sid, h);
+        console.log(`[WS] Tool ack: ${msg.toolName} — ${status}`);
       }
     } catch (err) {
       console.error('[WS] Error:', err);
