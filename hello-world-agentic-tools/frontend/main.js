@@ -48,7 +48,7 @@ const cartoCreds = {
   connectionName: env.connectionName,
 };
 
-const wrapSource = (sourceFn) => (config) => sourceFn({ ...cartoCreds, ...config });
+const wrapSource = (sourceFn) => (config) => sourceFn({ ...config, ...cartoCreds });
 
 const jsonConverter = new JSONConverter({
   configuration: {
