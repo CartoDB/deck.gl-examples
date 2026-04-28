@@ -17,10 +17,14 @@ import { createOpenAI } from '@ai-sdk/openai';
 import { ToolLoopAgent, stepCountIs, tool } from 'ai';
 import {
   getToolsForVercelAI,
-  consolidatedToolNames,
+  TOOL_NAMES,
   buildSystemPrompt,
   isFrontendToolResult,
 } from '@carto/agentic-deckgl';
+
+// Hello-world supports a deliberately small subset of @carto/agentic-deckgl.
+// Drop set-mask-layer (no MaskExtension plumbing in this example).
+const ENABLED_TOOLS = [TOOL_NAMES.SET_DECK_STATE, TOOL_NAMES.SET_MARKER];
 
 // ---------------------------------------------------------------------------
 // Config
@@ -29,7 +33,7 @@ import {
 const {
   CARTO_AI_API_BASE_URL,
   CARTO_AI_API_KEY,
-  CARTO_AI_API_MODEL = 'gpt-4o',
+  CARTO_AI_API_MODEL = 'claude-sonnet-4-6',
   PORT = '3003',
 } = process.env;
 
@@ -55,7 +59,7 @@ const model = carto.chat(CARTO_AI_API_MODEL);
 // ---------------------------------------------------------------------------
 
 function createMapTools() {
-  const toolDefs = getToolsForVercelAI(consolidatedToolNames);
+  const toolDefs = getToolsForVercelAI(ENABLED_TOOLS);
   return Object.fromEntries(
     toolDefs.map((def) => [
       def.name,
@@ -71,23 +75,67 @@ function createMapTools() {
 // ---------------------------------------------------------------------------
 
 const DEMO_DATA_PROMPT = `
-## Available data
+## This example: hello world
 
-Connection: "carto_dw". Use ONLY these tables — do not invent table names.
+This is the *minimal* @carto/agentic-deckgl integration. The frontend supports
+a deliberately small set of features. Stay inside it.
+
+### What you CAN do
+
+- Navigate the camera (\`initialViewState\`) and change the basemap (\`mapStyle\`)
+  when explicitly asked.
+- Add, update, and remove deck.gl layers via \`set-deck-state\` using the data
+  catalog below. Layer styling (colorBins / colorCategories / colorContinuous,
+  opacity, radius, etc.) is fully supported.
+- Apply server-side data \`filters\` inside a source config (e.g.
+  \`"filters": { "group_name": { "in": { "values": ["Financial"] } } }\`).
+  Update or clear filters by re-sending the same layer ID with a new (or
+  empty) \`filters\` object. Wrap values in \`{ "values": [...] }\`.
+- Place pin markers with \`set-marker\` (\`add\` to drop one, \`clear-all\` to
+  remove them).
+
+### What you CANNOT do in this example (do NOT attempt)
+
+- **Widgets** — there is no widget panel. Never put a \`widgets\` array or
+  \`removeWidgetIds\` in your tool calls. If asked, say widgets are part of
+  the advanced example, not this one.
+- **Effects** — no effects pipeline. Never include an \`effects\` field.
+- **Spatial masks / drawing** — \`set-mask-layer\` is not available. There is
+  no \`enable-draw\` mode. If the user asks to filter by area, use a server-
+  side \`filters\` clause on a column (e.g. state_name, adm0name) when one
+  fits, or say the masking feature is not in this example.
+- **MCP / async workflows / semantic-layer queries** — none of those tools
+  exist here. Don't reference job IDs, async polling, or MCP results.
+- **Tooltips, legends, controls** — these are not configurable from tool
+  calls in this example.
+
+### Data catalog
+
+Connection: \`carto_dw\`. Use ONLY these tables — do not invent table names or
+columns. If the user asks for data not listed here, say you don't have it.
 
 | Table | Source helper | Useful columns |
 |---|---|---|
-| carto-demo-data.demo_tables.populated_places | vectorTableSource | name, pop_max, adm0name (country) |
+| carto-demo-data.demo_tables.populated_places | vectorTableSource | name, pop_max, adm0name (country), adm1name (state) |
 | carto-demo-data.demo_tables.osm_pois_usa | vectorTableSource | name, group_name (category) |
 | carto-demo-data.demo_tables.usa_counties | vectorTableSource | name, state_name, total_pop |
 | cartobq.public_account.derived_spatialfeatures_usa_h3int_res8_v1_yearly_v2 | h3QuerySource | population, urbanity (H3 res 8) |
 
-Rules:
-- Use VectorTileLayer for vector tables, H3TileLayer for H3 tables.
-- For h3QuerySource, write \`SELECT * FROM <table>\` and an aggregationExp aliased as \`value\`
-  (e.g. "SUM(population) as value"); colorBins should then use attr "value".
-- When styling by a column, include "columns": ["<col>"] in the source config.
-- Do not set accessToken, apiBaseUrl, or connectionName — the frontend injects credentials.
+\`group_name\` values in osm_pois_usa: Others, Education, Sustenance,
+Commercial, Entertainment, Arts & Culture, Financial, Tourism, Healthcare,
+Civic amenities, Transportation.
+
+### Rules of thumb
+
+- Use \`VectorTileLayer\` for vector tables, \`H3TileLayer\` for H3 tables.
+- For \`h3QuerySource\`, write \`SELECT * FROM <table>\` and an
+  \`aggregationExp\` aliased as \`value\` (e.g. \`"SUM(population) as value"\`);
+  matching \`colorBins\` should use \`attr: "value"\`.
+- When styling by a column, include \`"columns": ["<col>"]\` in the source
+  config so the column is fetched.
+- Never set \`accessToken\`, \`apiBaseUrl\`, or \`connectionName\` — the
+  frontend injects credentials automatically.
+- Be concise in chat replies. The map speaks for itself.
 `;
 
 // ---------------------------------------------------------------------------
@@ -126,7 +174,7 @@ async function runAgent(userMessage, ws, sessionId, initialState) {
   messages.push({ role: 'user', content: userMessage });
 
   const systemPrompt = buildSystemPrompt({
-    toolNames: [...consolidatedToolNames],
+    toolNames: ENABLED_TOOLS,
     initialState: initialState && {
       viewState: initialState.viewState,
       layers: initialState.layers,
@@ -206,6 +254,7 @@ wss.on('connection', (ws) => {
   const sessionId = randomUUID();
   sessions.set(ws, sessionId);
   console.log(`[WS] Connected: ${sessionId}`);
+  ws.send(JSON.stringify({ type: 'session_info', model: CARTO_AI_API_MODEL }));
 
   ws.on('message', async (data) => {
     try {

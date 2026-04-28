@@ -72,7 +72,7 @@ Open the URL Vite prints (default `http://localhost:5173`) and start chatting.
 |---|---|
 | `CARTO_AI_API_BASE_URL` | CARTO AI / OpenAI-compatible endpoint |
 | `CARTO_AI_API_KEY` | API key for the AI endpoint |
-| `CARTO_AI_API_MODEL` | Model name (default: `gpt-4o`) |
+| `CARTO_AI_API_MODEL` | Model name (default: `claude-sonnet-4-6`) |
 | `PORT` | Server port (default: `3003`) |
 
 ### Frontend (`.env`)

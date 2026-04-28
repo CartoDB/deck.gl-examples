@@ -222,6 +222,7 @@ const messagesEl = document.getElementById('chat-messages');
 const formEl = document.getElementById('chat-form');
 const inputEl = document.getElementById('chat-input');
 const statusEl = document.getElementById('chat-status');
+const metaEl = document.getElementById('chat-meta');
 
 let loaderEl = null;
 
@@ -281,6 +282,10 @@ function connectWs() {
     const data = JSON.parse(event.data);
 
     switch (data.type) {
+      case 'session_info':
+        if (metaEl) metaEl.textContent = `model: ${data.model}`;
+        break;
+
       case 'stream_chunk': {
         hideLoader();
         if (data.isComplete && !data.content) {
