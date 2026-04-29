@@ -1,0 +1,18 @@
+{
+  "name": "carto-deckgl-example-hello-world-agentic-tools-backend",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^3.0.30",
+    "@carto/agentic-deckgl": "^0.1.0",
+    "ai": "^6.0.94",
+    "cors": "^2.8.6",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "ws": "^8.19.0"
+  }
+}
